@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="margin-bottom:30px;">
+  <a class="navbar-brand" href="/"><img src="https://static.1cf.co/img/atsast/icon_white.png" height="30"> AT SAST</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item <{if $title=='发现' }> active <{/if}>/>">
+        <a class="nav-link" href="/">发现 <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item <{if $title=='课程' }> active <{/if}>/>">
+        <a class="nav-link" href="/courses">课程</a>
+      </li>
+      <li class="nav-item <{if $title=='赛事' }> active <{/if}>/>">
+        <a class="nav-link" href="/contests">赛事</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav mundb-nav-right">
+        <form action="/search" method="get" class="form-inline my-2 my-lg-0 mundb-inline">
+            <input class="form-control mr-sm-2 atsast-searchBox" name="q" type="search" placeholder="搜索" aria-label="搜索">
+        </form>
+      <{if @$_SESSION['OPENID'] }>
+        <li class="nav-item dropdown mundb-btn-ucenter">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><{$greeting}>，<{$userinfo['display_name']}></a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-header"><img src="<{$userinfo['avatar']}>" class="mundb-avatar" id="atsast_nav_avatar" /><div><h6><{$userinfo['name']}><br/><small><{$userinfo['email']}></small></h6></div></div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/account/profile"><i class="MDI account-circle"></i> 个人主页</a>
+                <a class="dropdown-item" href="/account/courses"><i class="MDI briefcase"></i> 报名课程</a>
+                <a class="dropdown-item" href="/account/settings"><i class="MDI settings"></i> 更多设置</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/system/logs"><i class="MDI update"></i> 版本日志</a>
+                <a class="dropdown-item" href="/system/bugs"><i class="MDI bug"></i> 汇报BUG</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" href="/account/logout"><i class="iconfont icon-exit-to-app"></i> 退出</a>
+            </div>
+        </li>
+        <script>
+          window.addEventListener("load", function () {
+            $('.dropdown-header').click(function (e) {
+              e.stopPropagation();
+            });
+          }, false);
+        </script>
+      <{else}>   
+        <li class="nav-item mundb-no-shrink <{if $title=='登录 / 注册' }> active <{/if}>/>">
+            <a class="nav-link" href="/account">登录 / 注册</a>
+        </li>
+      <{/if}>
+    </ul>
+  </div>
+</nav>

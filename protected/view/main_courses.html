@@ -1,0 +1,34 @@
+<div class="container mundb-standard-container">
+    <section class="mb-5">
+        <h1>课程</h1>
+        <p>courses</p>
+        <div class="row">
+            <{foreach $result as $r}>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a class="attsast-course" href="/course/<{$r['cid']}>/detail">
+                    <div class="btn card text-white wemd-<{$r['course_color']}> mb-3 text-center">
+                        <div class="card-body">
+                            <i class="devicon-<{$r['course_logo']}>-plain"></i>
+                            <h5 class="card-title mundb-text-truncate-1"><{$r['course_name']}></h5>
+                            <p class="card-text mundb-text-truncate-1"><{$r['course_desc']}></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <{/foreach}>
+            <{ if 0 }>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a class="attsast-course" href="/course/add">
+                    <div class="btn card bg-light mb-3 text-center">
+                        <div class="card-body">
+                            <i class="MDI plus"></i>
+                            <h5 class="card-title mundb-text-truncate-1">新建课程</h5>
+                            <p class="card-text mundb-text-truncate-1">点击这里新建课程哦</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <{/if}>
+        </div>
+    </section>
+</div>

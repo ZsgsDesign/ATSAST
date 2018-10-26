@@ -1,0 +1,62 @@
+<div class="container mundb-standard-container">
+    <section class="mb-5">
+        <h5>汇报BUG</h5>
+        <div>
+            <div class="form-group">
+                <label for="title" class="bmd-label-floating">BUG简述</label>
+                <input type="text" class="form-control" name="title" id="title" required>
+            </div>
+            <div class="form-group">
+                <label for="desc" class="bmd-label-floating">BUG详细信息</label>
+                <textarea class="form-control" name="desc" id="desc" rows="5" required></textarea>
+                </div>
+            <div class="text-right">
+                <button class="btn btn-default">取消</button>
+                <button type="submit" id="submit" class="btn btn-outline-primary" onclick="submit_bugs()">提交BUG</button>
+            </div>
+        </div>
+    </section>
+</div>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modeal_title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modeal_desc"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    function alert(desc,title="提示"){
+        $('#modeal_desc').html(desc);
+        $('#modeal_title').html(title);
+        $('#modal').modal();
+    }
+
+    function submit_bugs(){
+        $("#submit").css("pointer-events","none");
+        $.post("/ajax/SubmitBugs",{
+            title:$("#title").val(),
+            desc:$("#desc").val()
+        },function(result){
+            result=JSON.parse(result);
+            console.log(result);
+            alert(result.desc);
+            if(result.result==200) {
+                setTimeout(function(){
+                    location.href="/system/logs";
+                },1000);
+            }
+            $("#submit").css("pointer-events","auto");
+        });
+    }
+</script>

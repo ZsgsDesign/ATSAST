@@ -1,0 +1,54 @@
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow: auto;
+}
+#screen {
+  display: inline-block;
+}
+</style>
+<div class="am-container">
+	<article class="am-article">
+    <div class="am-g">
+      <div class="am-u-sm-12 am-u-md-7">
+        <h2 class="am-text-center am-text-xxxl am-margin-top-lg">404. Not Found</h2>
+        <p class="am-text-center">没有找到你要的页面哦</p>
+        <p><small><a href="/">返回主页</small></a></p>
+        <p><small><a href="#screen">居中屏幕</small></a></p>
+          <center><pre class="page-404">
+                    .----.
+                _.'__    `.
+            .--($)($$)---/#\
+          .' @          /###\
+          :         ,   #####
+            `-..__.-' _.-\###/
+                  `;_:    `"'
+                .'"""""`.
+              /,  ya ,\\
+              //  404!  \\
+              `-._______.-'
+              ___`. | .'___
+            (______|______)
+          </pre></center>
+      </div>
+      <div class="am-u-sm-12 am-u-md-5">
+        <div id="screen"></div>
+      </div>
+    </div>
+	</article>
+</div>
+<script src="/i/404/phaser.min.js"></script>
+<script src="/i/404/main.js"></script>
+<script>
+initGame({
+  feedback: '"5"可奉告',
+  feedbackFunc: function() {
+    window.open('https://github.com/tusenpo/FlappyFrog/issues');
+  },
+  parent: document.querySelector('#screen')
+});
+</script>
+

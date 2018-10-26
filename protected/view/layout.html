@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title><{if @$title}><{$title}> | <{/if}> SAST教学辅助平台</title>
+    <!-- Copyright Information -->
+    <meta name="author" content="<{$version_info['author']}>">
+    <meta name="organization" content="<{$version_info['organization']}>">
+    <meta name="developer" content="<{$version_info['developer']}>">
+    <meta name="version" content="<{$version_info['version']}>">
+    <meta name="subversion" content="<{$version_info['subversion']}>">
+    <!-- Necessarily Declarations -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="alternate icon" type="image/png" href="https://static.1cf.co/img/atsast/favicon.png">
+    <!-- Style -->
+    <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,300i,400,400i,500,500i,700,700i">
+    <link rel="stylesheet" href="https://static.1cf.co/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="https://static.1cf.co/css/wemd-color-scheme.css">
+    <link rel="stylesheet" href="https://static.1cf.co/css/atsast.css">
+    <link rel="stylesheet" href="https://static.1cf.co/fonts/MDI-WXSS/MDI.css">
+    <link rel="stylesheet" href="https://static.1cf.co/fonts/Devicon/devicon.css">
+</head>
+
+<body>
+    <loading>
+        <div>
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p>@SAST疯狂加载中……</p>
+        </div>
+    </loading>
+    <div class="mundb-background-container">
+        <img src="<{$bg}>">
+    </div>
+    <{include file="navbar.html" }>
+    <{include file=$__template_file}>
+    <{include file="footer.html" }>
+    <script src="https://static.1cf.co/js/jquery-3.2.1.min.js"></script>
+    <script src="https://static.1cf.co/js/popper.min.js"></script>
+    <script src="https://static.1cf.co/js/bootstrap-material-design.js"></script>
+    <script>
+        $(document).ready(function () { $('body').bootstrapMaterialDesign(); });
+        window.addEventListener("load",function() {
+            $('loading').css({"opacity":"0","pointer-events":"none"});
+        }, false);
+    </script>
+</body>
+
+</html>

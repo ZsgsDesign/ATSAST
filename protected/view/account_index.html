@@ -1,0 +1,174 @@
+<style>
+    input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+        /* -webkit-box-shadow: 0 0 0px 1000px white inset !important; */
+    }
+    .form-control:focus, .form-control:hover {
+        border-bottom-width: 2px;
+    }
+    form .form-group:last-of-type{
+        margin-bottom:0;
+    }
+    .alert > p {
+        margin-bottom:0;
+    }
+    .card .card-header{
+      padding:0;
+    }
+    .card .card-header > ul{
+      margin:0;
+    }
+    .card .card-header > ul .nav-link{
+      padding:1rem;
+      border:none!important;
+    }
+    .card .card-header .nav-tabs .nav-link.active {
+        color: #ff4081;
+    }
+    .nav-tabs-material .nav-tabs-indicator {
+        background-color: #ff4081;
+        bottom: -1px;
+        display: block;
+        width: 50%;
+        height: .15rem;
+        position: absolute;
+        transition: .2s ease-out .0s;
+    }
+    #accountTab{
+        position:relative;
+    }
+    .card-footer{
+        border:none;
+    }
+
+    .checkbox{
+        margin-top:1rem;
+    }
+    form {
+        margin-bottom: 0;
+    }
+    input{
+        box-shadow:none!important;
+    }
+
+    .was-validated input[type="checkbox"].form-control:invalid+span+span{
+        color:#f44336!important;
+    }
+
+    label[for="agreement"]{
+        display:inline-block;
+    }
+</style>
+<div class="container mundb-standard-container">
+    <div class="row justify-content-sm-center">
+        <div class="col-sm-12 col-md-8 col-lg-6">
+            <div class="text-center" style="margin-top:10vh;margin-bottom:20px;">
+            <h1 style="padding:20px;display:inline-block;">@SAST</h1>
+            <p>Auxiliary Teaching for SAST</p>
+            </div>
+            <{if $msg1 || $msg2 }>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <p><strong><i class="iconfont icon-alert-circle"></i> 出现错误了！</strong> <{$msg1}> <{$msg2}></p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"><i class="iconfont icon-close"></i></span>
+            </button>
+            </div>
+            <{/if}>
+            <div class="card" style="margin-bottom:20vh;">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs nav-justified nav-tabs-material" id="accountTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link <{ if $current==0 }>active<{/if}>" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true"><span class="d-none d-lg-inline">使用您的 @SAST / 作业平台 账号</span>登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <{ if $current==1 }>active<{/if}>" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">注册<span class="d-none d-lg-inline">一个新的 @SAST 账号</span></a>
+                </li>
+                <div class="nav-tabs-indicator" id="nav-tabs-indicator" style="left: <{ if $current==0 }>0px<{else}>50%<{/if}>;"></div>
+                </ul>
+            </div>
+                <div class="tab-content" id="accountTabContent">
+                    <div class="tab-pane fade <{ if $current==0 }>show active<{/if}>" id="login" role="tabpanel" aria-labelledby="login-tab">
+                        <form class="needs-validation" action="?action=login" method="post" id="login_form" novalidate>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="email" class="bmd-label-floating">电子邮箱</label>
+                                    <input type="email" name="email" class="form-control" id="login_email" required>
+                                    <span class="bmd-help">仅开放NJUPT校内邮箱注册</span>
+                                    <div class="invalid-feedback">请填写邮箱</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="bmd-label-floating">密码</label>
+                                    <input type="password" name="password" class="form-control" id="login_password" required>
+                                    <div class="invalid-feedback">请填写密码</div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <button type="button" class="btn btn-secondary">忘记密码？</button>
+                                <button type="submit" class="btn btn-danger">登录</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade <{ if $current==1 }>show active<{/if}>" id="register" role="tabpanel" aria-labelledby="register-tab">
+                        <form class="needs-validation" action="?action=register" method="post" id="register_form" novalidate>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="email" class="bmd-label-floating">电子邮箱</label>
+                                    <input type="email" name="email" class="form-control" id="register_email" required>
+                                    <span class="bmd-help">仅开放NJUPT校内邮箱注册</span>
+                                    <div class="invalid-feedback">请填写邮箱</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="bmd-label-floating">设置一个密码</label>
+                                    <input type="password" name="password" class="form-control" id="register_password" required>
+                                    <div class="invalid-feedback">请填写密码</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label for="agreement"><input class="form-control" type="checkbox" name="agreement" id="agreement" required><span>我已阅读并同意隐私条款和服务条款</span></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-danger">注册</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>       
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.addEventListener("load",function() {
+
+        $('#login-tab').on('click', function (e) {
+            e.preventDefault();
+            $('#nav-tabs-indicator').css("left", "0px");
+        })
+        $('#register-tab').on('click', function (e) {
+            e.preventDefault();
+            $('#nav-tabs-indicator').css("left", "50%");
+        })
+
+        $('input:-webkit-autofill').each(function(){
+            if ($(this).val().length !== "") {
+                console.log($(this).siblings('label'));
+                $(this).siblings('label').addClass('active');
+                $(this).parent().addClass('is-filled');
+            }
+        });
+
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+
+        }, false);
+
+    }, false);
+</script>

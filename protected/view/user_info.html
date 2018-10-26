@@ -1,0 +1,70 @@
+<div class="am-g am-container" style="max-width:500px!important;">
+  <div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><{$newuserinfo['name']}>的资料卡</strong> / <small>Profile</small></div>
+  </div>
+  <div class="am-u-sm-12 am-u-md-12">
+    <div class="am-panel am-panel-default">
+      <div class="am-panel-bd am-cf">
+        <div class="am-u-sm-6 am-u-sm-centered">
+          <img style="width:256px;" src="https://static.1cf.co/img/avatar/<{$newuserinfo['avatar']}>" class="am-img-responsive am-img-thumbnail am-circle" />
+        </div>
+        <div class="am-u-sm-12" style="margin-top:2rem;">
+        <center>
+		  <h1>
+            <{$newuserinfo['name']}>
+          </h1>
+          <div>注册时间：
+            <{$newuserinfo['rtime']}>
+          </div>
+          <div>性别 :
+            <{if $newuserinfo['sex']==1}>男
+              <{else if $newuserinfo['sex']==2}>女
+                <{else}>保密
+                  <{/if}>
+          </div>
+          <div>
+            <{if $newuserinfo['intro']!=''}>自我介绍 :<{$newuserinfo['intro']}>
+			<{/if}>
+          </div>
+		</center>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="am-u-sm-12 am-u-md-12">
+    <div class="am-panel am-panel-default">
+      <div class="am-panel-bd am-cf">
+        <div class="am-u-sm-6 am-text-center">
+          <div class="am-text-xl">
+            <{$newuserinfo['ans']}>
+          </div>
+          <div>回答</div>
+        </div>
+        <div class="am-u-sm-6 am-text-center">
+          <div class="am-text-xl">
+            <{$newuserinfo['rate']}>%</div>
+          <div>正答</div>
+        </div>
+        <div class="am-u-sm-12">&nbsp;</div>
+        <div class="am-u-sm-4 am-text-center">
+          <div class="am-text-xl">
+            <{$newuserinfo['score']}>
+          </div>
+          <div>积分</div>
+        </div>
+        <div class="am-u-sm-4 am-text-center">
+          <div class="am-text-xl">
+            <{$newuserinfo['credit']}>
+          </div>
+          <div>爱心值</div>
+        </div>
+        <div class="am-u-sm-4 am-text-center">
+          <div class="am-text-xl">
+            <{$donatecount}>
+          </div>
+          <div>捐助项目</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

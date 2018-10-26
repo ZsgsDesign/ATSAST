@@ -1,0 +1,257 @@
+<style>
+    card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+    }
+    card.img-card{
+        padding:0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    card.img-card > img{
+        width:100%;
+        height:10rem;
+        object-fit: cover;
+    }
+    card.img-card > div{
+        text-align: center;
+        padding: 1rem;
+    }
+
+    card.album-selected {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 40px!important;
+        transform: scale(1.02);
+    }
+    card:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+    h5{
+        margin-bottom:1rem;
+    }
+    .form-control:disabled, .form-control[disabled]{
+        background-color: transparent;
+    }
+    .atsast-img-container{
+        width: 100%;
+        padding:2rem;
+    }
+    .atsast-img-container > img{
+        width: 100%;
+    }
+    .atsast-upload{
+        display: none;
+    }
+
+    #avatar{
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="container mundb-standard-container">
+    <h1 class="mb-3"><i class="MDI settings"></i> 设置</h1>
+    <hr class="atsast-line mb-5">
+    <card class="mb-5" id="user-info">
+        <h5><i class="MDI account-circle"></i> 用户信息</h5>
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <div class="atsast-img-container">
+                    <img id="avatar" src="<{$detail['avatar']}>">
+                </div>
+                <div class="text-center">
+                    <form id="avatar_upload_form" class="atsast-upload">
+                        <input type="file" name="file" class="custom-file-input" id="avatar_upload_input" accept="image/*" onchange='uploadAvatar(this)'>
+                    </form>
+                    <button class="btn btn-outline-warning" onclick="$('#avatar_upload_input').click()"><i class="MDI upload"></i> 上传新头像</button>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+                <div class="form-group">
+                    <label for="name" class="bmd-label-floating">用户名</label>
+                    <input type="text" class="form-control" name="name" value="<{$detail['name']}>" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="real_name" class="bmd-label-floating">真实姓名</label>
+                    <input type="text" class="form-control" name="real_name" value="<{$detail['real_name']}>" id="real_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="bmd-label-floating">邮箱</label>
+                    <input type="email" class="form-control" name="email" value="<{$detail['email']}>" id="email" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="SID" class="bmd-label-floating">学号</label>
+                    <input type="text" class="form-control" name="SID" value="<{$detail['SID']}>" id="SID" disabled>
+                </div>
+                <div class="form-group" style="padding-top: 2.75rem;">
+                    <label for="gender" class="bmd-label-floating">性别</label>
+        
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="gender" id="gender_0" value="0" <{ if $detail[ 'gender']==0 }>checked
+                            <{/if}> required>保密
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="gender" id="gender_1" value="1" <{ if $detail[ 'gender']==1 }>checked
+                            <{/if}> required>男
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="gender" id="gender_2" value="2" <{ if $detail[ 'gender']==2 }>checked
+                            <{/if}> required>女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="title" class="bmd-label-floating">认证</label>
+                    <input type="text" class="form-control" value="<{$detail['title']}>" name="title" id="title" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right">
+            <button class="btn btn-default" onclick="location.reload()">放弃更改</button>
+            <button type="submit" class="btn btn-outline-primary" onclick="updateInfo()">更新</button>
+        </div>
+    </card>
+    <card class="mb-5" id="cover-image">
+        <h5><i class="MDI image-filter-hdr"></i> 封面图设置</h5>
+        <div class="text-right">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <card class="img-card <{ if $detail['album']=='bing' }>album-selected<{/if}>" data-album="bing" onclick="changeAlbum(this)">
+                        <img src="https://static.1cf.co/img/bing.png">
+                        <div>必应&trade;精选美图</div>
+                    </card>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <card class="img-card <{ if $detail['album']=='njupt' }>album-selected<{/if}>" data-album="njupt" onclick="changeAlbum(this)">
+                        <img src="https://static.1cf.co/img/njupt.jpg">
+                        <div>南邮印象</div>
+                    </card>
+                </div>
+            </div>
+            <button class="btn btn-default" onclick="location.reload()">放弃更改</button>
+            <button type="submit" class="btn btn-outline-info" onclick="applyAlbum()">应用</button>
+        </div>
+    </card>
+</div>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modeal_title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modeal_desc"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.addEventListener("load",function() {
+        ;
+    }, false);
+
+    var album="<{$detail['album']}>";
+
+    function changeAlbum(ele) {
+        album = $(ele).attr("data-album");
+        $(".album-selected").removeClass("album-selected");
+        $(ele).addClass("album-selected");
+    }
+
+    function updateInfo(){
+        var gender = $('input[name="gender"]:checked').val();
+        var name = $('#name').val();
+        var real_name = $('#real_name').val();
+        if(!name) return alert("请填写用户名");
+        else if(!real_name) return alert("请填写真实姓名");
+        else {
+            $.post("/ajax/updateInfo",{
+                name:name,
+                real_name:real_name,
+                gender:gender
+            },function(result){
+                result=JSON.parse(result);
+                alert(result.desc);
+            });
+        }
+    }
+
+    function uploadAvatar(ele) {
+        // console.log($("#avatar_upload_input").val());
+        if($("#avatar_upload_input").val()=="")return;
+        var imgArr = [];
+        var form = document.getElementById('avatar_upload_form');
+        var data = new FormData(form);
+        var files = ele.files;
+        for (var i = 0; i < files.length; i++) {
+            imgArr.push(getObjectURL(files[i]));
+        }
+        
+        $.ajax({
+            url: "/ajax/UploadAvatar",
+            type: "POST",
+            data: data,
+            contentType: false,
+            processData: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (result) {
+                result = JSON.parse(result);
+                alert(result.desc);
+                if (result.ret == 200) {
+                    $("#avatar").attr("src", result.data.path);
+                    $("#atsast_nav_avatar").attr("src", result.data.path);
+                }
+            },
+            error: function (data) {
+                alert("上传失败");
+            }
+        });
+    }
+
+    function getObjectURL(file) {
+        var url = '';
+        if (window.createObjectURL != undefined) {
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) {
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+    function applyAlbum(){
+        $.post("/ajax/changeAlbum",{
+            album:album
+        },function(result){
+            result=JSON.parse(result);
+            alert(result.desc);
+        });
+    }
+    function alert(desc,title="提示"){
+        $('#modeal_desc').html(desc);
+        $('#modeal_title').html(title);
+        $('#modal').modal();
+    }
+</script>
