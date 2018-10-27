@@ -180,7 +180,7 @@
     }
 
     .atsast-action small{
-        padding-right:1rem;
+        padding-right:0;
     }
 
     [id^="code_submit_section"]{
@@ -276,11 +276,11 @@
     <section>
         <file-info class="mb-3">
             <div>
-                <img src="<{$user_details['avatar']}>" onerror="this.src=unknown_svg;">
+                <img src="<{$user_details['avatar']}>" style="border-radius:200px;" onerror="this.src=unknown_svg;">
             </div>
             <div>
-                <h5 class="mundb-text-truncate-1"><{$user_details['SID']}></h5>
-                <p class="text-info"><{$user_details['email']}></p>
+                <h5 class="mundb-text-truncate-1 text-info"><{$user_details['SID']}></h5>
+                <p class=""><{$user_details['email']}></p>
             </div>
         </file-info>        
     </section>
