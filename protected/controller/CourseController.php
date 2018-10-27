@@ -414,7 +414,7 @@ class CourseController extends BaseController
                     $h['homework_content_slashed'] = str_replace(">", "\>", $h['homework_content_slashed']);
                 }
                 
-                $homework_submit_users=$homework_submit->query("SELECT DISTINCT(h.uid),u.SID,u.avatar from homework_submit as h left join users u on h.uid = u.uid where h.cid=:cid and h.syid=:syid",array(":cid"=>$cid,":syid"=>$syid));
+                $homework_submit_users=$homework_submit->query("SELECT DISTINCT(h.uid),u.SID,u.avatar,u.real_name from homework_submit as h left join users u on h.uid = u.uid where h.cid=:cid and h.syid=:syid",array(":cid"=>$cid,":syid"=>$syid));
                 $this->result=$result;
                 $this->syllabus_info=$syllabus_info;
                 $this->homework=$homework_details;
