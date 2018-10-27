@@ -29,6 +29,10 @@
                 <a class="dropdown-item" href="/account/profile"><i class="MDI account-circle"></i> 个人主页</a>
                 <a class="dropdown-item" href="/account/courses"><i class="MDI briefcase"></i> 报名课程</a>
                 <a class="dropdown-item" href="/account/settings"><i class="MDI settings"></i> 更多设置</a>
+                <{ if $userinfo['access_admin'] }>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/admin"><i class="MDI view-dashboard"></i> 管理工具</a>        
+                <{ /if }>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/system/logs"><i class="MDI update"></i> 版本日志</a>
                 <a class="dropdown-item" href="/system/bugs"><i class="MDI bug"></i> 汇报BUG</a>

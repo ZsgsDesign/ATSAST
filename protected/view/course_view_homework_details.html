@@ -273,6 +273,17 @@
     <section class="mb-5">
         <h2><{$syllabus_info['title']}> - 作业详情</h2>
     </section>
+    <section>
+        <file-info class="mb-3">
+            <div>
+                <img src="<{$user_details['avatar']}>" onerror="this.src=unknown_svg;">
+            </div>
+            <div>
+                <h5 class="mundb-text-truncate-1"><{$user_details['SID']}></h5>
+                <p class="text-info"><{$user_details['email']}></p>
+            </div>
+        </file-info>        
+    </section>
     <{foreach $homework as $h}>
     <section class="mb-5">
         <div class="mb-1" id="markdown_container_<{$h['hid']}>">
@@ -286,7 +297,6 @@
             <div class="atsast-action"><p>截止日期 <{$h['due_submit']}></p></div>
             <div class="atsast-action">
                 <small id="info_submit_<{$h['hid']}>" class="text-secondary"><{ if @$homework_submit[$h['hid']] }>已于 <{ $homework_submit[$h['hid']]['submit_time'] }> 提交<{/if}></small>
-                <button onclick="submit_code(this)" data-hid="<{$h['hid']}>" id="btn_submit_<{$h['hid']}>" class="btn btn-outline-primary"><{ if @$homework_submit[$h['hid']] }>再次<{/if}>提交</button>
             </div>
         </div>
         <{ elseif $h['type']==2 }>
@@ -295,7 +305,6 @@
             <div class="atsast-action"><p>截止日期 <{$h['due_submit']}></p></div>
             <div class="atsast-action">
                 <small id="info_submit_<{$h['hid']}>" class="text-secondary"><{ if @$homework_submit[$h['hid']] }>已于 <{ $homework_submit[$h['hid']]['submit_time'] }> 提交<{/if}></small>
-                <button onclick="submit_markdown(this)" data-hid="<{$h['hid']}>" id="btn_submit_<{$h['hid']}>" class="btn btn-outline-primary"><{ if @$homework_submit[$h['hid']] }>再次<{/if}>提交</button>
             </div>
         </div>
         <{ elseif $h['type']==3 }>
@@ -317,7 +326,6 @@
             <div class="atsast-action"><p>截止日期 <{$h['due_submit']}></p></div>
             <div class="atsast-action">
                 <small id="info_submit_<{$h['hid']}>" class="text-secondary"><{ if @$homework_submit[$h['hid']] }>已于 <{ $homework_submit[$h['hid']]['submit_time'] }> 提交<{/if}></small>
-                <button onclick="$('#file_uploade_input_<{$h['hid']}>').click()" data-hid="<{$h['hid']}>" id="btn_submit_<{$h['hid']}>" class="btn btn-outline-info"><{ if @$homework_submit[$h['hid']] }>再次<{/if}>选择文件并提交</button>
             </div>
         </div>
         <{/if}>
@@ -379,7 +387,8 @@
                         <{ if $h['type']==1}>
                         editor[<{$h["hid"]}>] = monaco.editor.create(document.getElementById('vscode_<{$h["hid"]}>'), {
                             value: "<{ if isset($homework_submit[$h['hid']]['submit_content_slashed'])}><{$homework_submit[$h['hid']]['submit_content_slashed'] nofilter}><{/if}>",
-                            language: "<{$h['support_lang']}>"
+                            language: "<{$h['support_lang']}>",
+                            readOnly: true
                         });
                         $("#code_submit_section_<{$h['hid']}>").css("opacity",1);
                         <{/if}>
@@ -445,73 +454,6 @@
             $('#modal').modal();
         }
 
-        function submit_code(ele){
-            var code=editor[$(ele).attr("data-hid")].getValue();
-            editor[$(ele).attr("data-hid")].updateOptions({ readOnly: true });
-            $.post("/ajax/SubmitCodes",{
-                content:code,
-                action:"submit",
-                cid:<{$cid}>,
-                syid:<{$syid}>,
-                hid:$(ele).attr("data-hid"),
-            },function(result){
-                result=JSON.parse(result);
-                console.log(result);
-                alert(result.desc);
-                if(result.ret==200) {
-                    $("#btn_submit_"+$(ele).attr("data-hid")).html("再次提交");
-                    $("#info_submit_"+$(ele).attr("data-hid")).html(`已于 ${result.data.time} 提交`);
-                }
-                editor[$(ele).attr("data-hid")].updateOptions({ readOnly: false });
-            });
-        }
 
-        function SubmitFile(ele) { 
-            var hid=$(ele).attr("data-hid");
-            if(!ele.files[0]) return;
-            var form = document.getElementById('file_uploade_form_'+hid);
-            var data = new FormData(form);
-            data.append("cid", <{$cid}>);
-            data.append("syid", <{$syid}>);
-            data.append("hid", hid);
-            data.append("action", "submit");
-            var files = ele.files;
-            
-            $.ajax({
-                url: "/ajax/SubmitFile",
-                type: "POST",
-                data: data,
-                contentType: false,
-                processData: false,
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function (result) {
-                    result = JSON.parse(result);
-                    alert(result.desc);
-                    if (result.ret == 200) {
-                        $("#file_uploade_name_"+hid).html(result.data.file_name);
-                        $("#file_uploade_extension_"+hid).attr("src","https://static.1cf.co/img/files/"+result.data.file_extension+".svg");
-                        $("#file_uploade_link_"+hid).attr("href",result.data.file_link);
-                        $("#file_uploade_link_"+hid).removeClass("d-none");
-                        $("#btn_submit_"+hid).html("再次选择文件并提交");
-                        $("#info_submit_"+hid).html(`已于 ${result.data.time} 提交`);
-                    }
-                    var temp_input=$("#file_uploade_form_"+hid).html();
-                    $("#file_uploade_form_"+hid).html("");
-                    setTimeout(function(){
-                        $("#file_uploade_form_"+hid).html(temp_input);
-                    },10);
-                },
-                error: function (data) {
-                    alert("上传失败");
-                    var temp_input=$("#file_uploade_form_"+hid).html();
-                    $("#file_uploade_form_"+hid).html("");
-                    setTimeout(function(){
-                        $("#file_uploade_form_"+hid).html(temp_input);
-                    },10);
-                }
-            });
-        }
     </script>
 </div>
