@@ -44,6 +44,7 @@ class ERR {
 			'3002' => "课程未找到",
 			'3003' => "课时未找到",
 			'3004' => "作业未找到",
+			'3005' => "作业已截止提交",
 		);
 		return isset($ERR_DESC[$ERR_CODE])?$ERR_DESC[$ERR_CODE]:$ERR_DESC['1000'];
 	}

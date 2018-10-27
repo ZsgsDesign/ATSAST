@@ -38,8 +38,14 @@ class AjaxController extends BaseController
                 $homework_submit_status=$homework_submit->find(array("hid=:hid and cid=:cid and syid=:syid and uid=:uid",":hid"=>$hid,":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
 
                 if (arg("action")=="submit") {
+                    $due_time=date("Y-m-d H:i:s",strtotime($homework_details['due_submit']));
+                    $submit_time=date("Y-m-d H:i:s");
+
+                    if(strtotime($submit_time) > strtotime($due_time)){
+                        ERR::Catcher(3001);
+                    }
+
                     if (empty($homework_submit_status)) {
-                        $submit_time=date("Y-m-d H:i:s");
                         $newrow=array(
                             "cid"=>$cid,
                             "hid"=>$hid,
@@ -51,7 +57,6 @@ class AjaxController extends BaseController
                         $homework_submit->create($newrow);
                         return SUCCESS::Catcher("提交成功", array("time"=>$submit_time));
                     } else {
-                        $submit_time=date("Y-m-d H:i:s");
                         $homework_submit->update(
                             array(
                                 "hid=:hid and cid=:cid and syid=:syid and uid=:uid",
