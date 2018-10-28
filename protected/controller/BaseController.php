@@ -9,8 +9,8 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
-            "version"=>"0.2.2=3 Beta",
-            "subversion"=>"201810271708",
+            "version"=>"0.3.0 Beta",
+            "subversion"=>"201810281706",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
@@ -64,11 +64,8 @@ class BaseController extends Controller
     public static function err404($controller_name, $action_name)
     {
         header("HTTP/1.0 404 Not Found");
-        //echo $controller_name."<br>".$action_name;
-        //echo "<BR>".arg("username");
         $controlObj = new BaseController;
         $controlObj->display("404/index.html");
-        //$controlObj->jump("/");
         exit;
     }
 }
