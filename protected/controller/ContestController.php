@@ -65,10 +65,24 @@ class ContestController extends BaseController
             $types=new Model("contest_require_info");
             $userdb=new Model("users");
             $tmpdata=new Model("user_temp_info");
-            $result=$courses->find(array("contest_id=:contest_id",":contest_id"=>$coid));
-            if (empty($result)) $this->jump("/contest");
-            $this->contest_name=$result['name'];
-            $requirements=explode(',',$result['require_register']);
+            // $result=$courses->find(array("contest_id=:contest_id",":contest_id"=>$coid));
+            // if (empty($result)) $this->jump("/contest");
+
+            $basic_info=$courses->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name,require_register from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$coid));
+            if(empty($basic_info))$this->jump("/contest");
+
+
+            $basic_info=$basic_info[0];
+            if ($basic_info["start_date"]==$basic_info["end_date"]) {
+                $basic_info["parse_date"]=$basic_info["start_date"];
+            } else {
+                $basic_info["parse_date"]=$basic_info["start_date"]." ~ ".$basic_info["end_date"];
+            }
+            $this->basic_info=$basic_info;
+
+
+            $this->contest_name=$basic_info['name'];
+            $requirements=explode(',',$basic_info['require_register']);
             $fields=array();
             $result=$types->findAll();
             // var_dump($result);
