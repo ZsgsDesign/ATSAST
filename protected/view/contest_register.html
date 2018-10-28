@@ -47,7 +47,7 @@
             }
             function submit() {
                 var $inputs = $("contest input");
-                var data = {uid: <{$userinfo['uid']}>, contest_id:<{$coid}>};
+                var data = {contest_id:<{$coid}>};
                 for (var i = 0; i < $inputs.length; ++i) {
                     var input = $inputs[i];
                     data[input.id] = input.value;
