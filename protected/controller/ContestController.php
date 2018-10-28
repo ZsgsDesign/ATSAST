@@ -55,41 +55,47 @@ class ContestController extends BaseController
 
     public function actionRegister()
     {
-        $this->url="course/register";
-        $this->title="报名";
+        $this->url="contest/register";
+        $this->title="赛事报名";
 
-        if (!($this->islogin)) {
-            return $this->jump("/courses");
-        }
-        if (arg("cid")) {
-            $cid=arg("cid");
-            if (is_numeric($cid)) {
-                $this->cid=$cid;
-                $db=new Model("courses");
-                $course_register=new Model("course_register");
-                $result=$db->find(array("cid=:cid",":cid"=>$cid));
-                if (empty($result)) {
-                    return $this->jump("/courses");
+        if (arg("contest_id") && is_numeric(arg("contest_id")) && $this->islogin) {
+            $coid=arg("contest_id");
+            $this->coid=$coid;
+            $courses=new Model("contest");
+            $types=new Model("contest_require_info");
+            $userdb=new Model("users");
+            $tmpdata=new Model("user_temp_info");
+            $result=$courses->find(array("contest_id=:contest_id",":contest_id"=>$coid));
+            if (empty($result)) $this->jump("/contest");
+            $this->contest_name=$result['name'];
+            $requirements=explode(',',$result['require_register']);
+            $fields=array();
+            $result=$types->findAll();
+            // var_dump($result);
+            foreach($result as $type) {
+                $type['fixed']=$type['name']=='SID';
+                if (in_array($type['name'],$requirements)) {
+                    $type['required']=false;
+                    $fields[$type['name']]=$type;
+                } elseif (in_array('*'.$type['name'],$requirements)) {
+                    $type['required']=true;
+                    $fields[$type['name']]=$type;
+                    $requirements[array_search('*'.$type['name'],$requirements)]=$type['name'];
                 }
-                $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
-                if (empty($register_status)) {
-                    //报名
-                    $newrow = array(
-                        'uid' => $this->userinfo['uid'],
-                        'cid' => $cid,
-                        'status' => 1
-                    );
-                    $course_register->create($newrow);
-                    $this->register_status=1;
-                } else {
-                    $this->register_status=0;
-                }
-                $this->cid=$cid;
-            } else {
-                $this->jump("/courses");
             }
+            $result=$userdb->find(array("uid=:uid",":uid"=>$this->userinfo['uid']));
+            if (in_array('SID',$requirements)) $fields['SID']['value']=$result['SID'];
+            if (in_array('real_name',$requirements)) $fields['real_name']['value']=$result['real_name'];
+            $result=$tmpdata->findAll(array("uid=:uid",":uid"=>$this->userinfo['uid']));
+            foreach($result as $pair) {
+                if (isset($fields[$pair['key']])) {
+                    $fields[$pair['key']]['value']=$pair['value'];
+                }
+            }
+            $this->requirements=$requirements;
+            $this->fields=$fields;
         } else {
-            $this->jump("/courses");
+            $this->jump("/contest");
         }
     }
 

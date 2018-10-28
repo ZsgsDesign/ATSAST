@@ -1,0 +1,68 @@
+    <style>
+    contest{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    </style>
+    <div class="container mundb-standard-container">
+        <section class="mb-5">
+            <h2>赛事报名</h2>
+            <contest>
+                <div class="col-md-8 col-sm-12">
+                    <h1><{$contest_name}></h1>
+                    <{foreach $requirements as $r}>
+                    <div class="form-group">
+                        <label for="name" class="bmd-label-floating"><{$fields[$r]['placeholder']}><{ if $fields[$r]['required']}>*<{/if}></label>
+                        <input type="text" class="form-control" name="<{$fields[$r]['name']}>" value="<{ if isset($fields[$r]['value'])}><{$fields[$r]['value']}><{/if}>" id="<{$fields[$r]['name']}>"<{ if $fields[$r]['required']}> required<{/if}><{ if $fields[$r]['fixed']}> disabled<{/if}>>
+                    </div>
+                    <{/foreach}>
+                    <button onclick="submit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">提交<div class="ripple-container"></div></button>
+                </div>
+            </contest>
+        </section>
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modeal_title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modeal_desc"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function alert(desc,title="提示"){
+                $('#modeal_desc').html(desc);
+                $('#modeal_title').html(title);
+                $('#modal').modal();
+            }
+            function submit() {
+                var $inputs = $("contest input");
+                var data = {uid: <{$userinfo['uid']}>, contest_id:<{$coid}>};
+                for (var i = 0; i < $inputs.length; ++i) {
+                    var input = $inputs[i];
+                    data[input.id] = input.value;
+                    if (input.required && input.value == "") {
+                        alert("请填写所有未填项");
+                        return;
+                    }
+                }
+                console.log(data);
+                $.post("/ajax/RegisterContest", data, (data, status) => {
+                    data = JSON.parse(data);
+                    alert(data.desc);
+                }).fail((req) => {
+                    alert("发生错误");
+                });
+            }
+        </script>
+    </div>
