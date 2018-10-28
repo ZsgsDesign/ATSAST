@@ -1,0 +1,27 @@
+    <style>
+    contest{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    </style>
+    <div class="container mundb-standard-container">
+        <section class="mb-5">
+            <h2>赛事报名</h2>
+            <contest>
+                <h1><{$contest_name}></h1>
+                <div class="col-md-8 col-sm-12">
+                    <div class="form-group">
+                        <label for="name" class="bmd-label-floating">学号</label>
+                        <input class="form-control" name="sid" value="B23333333" id="sid" required disabled>
+                    </div>
+                    <{foreach $requirements as $r}>
+                    <div class="form-group">
+                        <label for="name" class="bmd-label-floating"><{$fields[$r]['placeholder']}></label>
+                        <input type="<{$fields[$r]['type']}>" class="form-control" name="<{$fields[$r]['name']}>" value="" id="<{$fields[$r]['name']}>" required>
+                    </div>
+                    <{/foreach}>
+                </div>
+            </contest>
+        </section>
+    </div>
