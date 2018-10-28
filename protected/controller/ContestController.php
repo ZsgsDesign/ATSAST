@@ -55,41 +55,29 @@ class ContestController extends BaseController
 
     public function actionRegister()
     {
-        $this->url="course/register";
-        $this->title="报名";
+        $this->url="contest/register";
+        $this->title="赛事报名";
 
-        if (!($this->islogin)) {
-            return $this->jump("/courses");
-        }
-        if (arg("cid")) {
-            $cid=arg("cid");
-            if (is_numeric($cid)) {
-                $this->cid=$cid;
-                $db=new Model("courses");
-                $course_register=new Model("course_register");
-                $result=$db->find(array("cid=:cid",":cid"=>$cid));
-                if (empty($result)) {
-                    return $this->jump("/courses");
+        if (arg("coid") && is_numeric(arg("coid"))) {
+            $coid=arg("coid");
+            $courses=new Model("contest");
+            $types=new Model("contest_require_type");
+            $result=$courses->find(array("coid=:coid",":coid"=>$coid));
+            if (empty($result)) $this->jump("/contest");
+            $this->contest_name=$result['name'];
+            $requirements=explode(',',$result['require']);
+            $fields=array();
+            $result=$types->findAll();
+            // var_dump($result);
+            foreach($result as $type) {
+                if (in_array($type['name'],$requirements)) {
+                    $fields[$type['name']]=$type;
                 }
-                $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
-                if (empty($register_status)) {
-                    //报名
-                    $newrow = array(
-                        'uid' => $this->userinfo['uid'],
-                        'cid' => $cid,
-                        'status' => 1
-                    );
-                    $course_register->create($newrow);
-                    $this->register_status=1;
-                } else {
-                    $this->register_status=0;
-                }
-                $this->cid=$cid;
-            } else {
-                $this->jump("/courses");
             }
+            $this->requirements=$requirements;
+            $this->fields=$fields;
         } else {
-            $this->jump("/courses");
+            $this->jump("/contest");
         }
     }
 
