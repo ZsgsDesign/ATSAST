@@ -300,4 +300,11 @@ class AjaxController extends BaseController
             ERR::Catcher(1003);
         }
     }
+
+    public function actionRegisterContest()
+    {
+        $uid=this->user_info['uid'];
+        
+        SUCCESS::Catcher("title");
+    }
 }
