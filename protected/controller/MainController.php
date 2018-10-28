@@ -41,6 +41,16 @@ class MainController extends BaseController
     {
         $this->url="contests";
         $this->title="赛事";
+        $contest=new Model("contest");
+        $result=$contest->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name from contest c left join organization o on c.creator = o.oid where c.status=1");
+        foreach ($result as &$r) {
+            if ($r["start_date"]==$r["end_date"]) {
+                $r["parse_date"]=$r["start_date"];
+            } else {
+                $r["parse_date"]=$r["start_date"]." ~ ".$r["end_date"];
+            }
+        }
+        $this->result=$result;
     }
 
     public function actionSearch()
