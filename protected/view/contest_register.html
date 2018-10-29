@@ -150,7 +150,7 @@
                     <{/if}>
                     <{foreach $members as $order=>$member}>
                         <card>
-                            <h5><i class="MDI <{ if $member@first }>account-star<{else}>account<{/if}>"></i> 队<{ if $member@first }>长<{else}>员<{/if}>信息<{ if $order >= $minp}>（选填）<{/if}></h5>
+                            <{if $maxp > 1}> <h5><i class="MDI <{ if $member@first }>account-star<{else}>account<{/if}>"></i> 队<{ if $member@first }>长<{else}>员<{/if}>信息<{ if $order >= $minp}>（选填）<{/if}></h5> <{ else }> <h5><i class="MDI account-circle"></i> 个人信息</h5> <{ /if }>
                             <{foreach $fields as $field}>
                             <div class="form-group">
                                 <label for="name" class="bmd-label-floating"><{$field['placeholder']}><{ if $field['required'] && $order < $minp}>*<{/if}></label>
