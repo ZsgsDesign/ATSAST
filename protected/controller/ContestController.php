@@ -49,7 +49,7 @@ class ContestController extends BaseController
                 }
                 $this->basic_info=$basic_info;
 
-                $contest_detail_info=$contest_detail->findAll(array("contest_id=contest_id and status=1",":contest_id"=>$contest_id));
+                $contest_detail_info=$contest_detail->findAll(array("contest_id=:contest_id and status=1",":contest_id"=>$contest_id));
                 foreach ($contest_detail_info as &$c) {
                     if ($c['type']==0) {
                         $c['content_slashed'] = str_replace('\\', '\\\\', $c['content']);
