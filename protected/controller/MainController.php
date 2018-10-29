@@ -53,12 +53,17 @@ class MainController extends BaseController
             } else {
                 $r["parse_date"]=$r["start_date"]." ~ ".$r["end_date"];
             }
-            $r['is_register']=false;
-            $result2=$register->find(["contest_id=:coid and uid=:uid", ":coid"=>$r['contest_id'], ":uid"=>$this->userinfo['uid']]);
-            if (!empty($result2)) $r['is_register']=true;
-            else {
-                $result2=$register->find(["contest_id=:coid and info like :info", ":coid"=>$r['contest_id'], ":info"=>'%"SID":"'.$sid.'"%']);
-                if (!empty($result2)) $r['is_register']=true;
+            if ($this->islogin) {
+                $r['is_register']=false;
+                $result2=$register->find(["contest_id=:coid and uid=:uid", ":coid"=>$r['contest_id'], ":uid"=>$this->userinfo['uid']]);
+                if (!empty($result2)) {
+                    $r['is_register']=true;
+                } else {
+                    $result2=$register->find(["contest_id=:coid and info like :info", ":coid"=>$r['contest_id'], ":info"=>'%"SID":"'.$sid.'"%']);
+                    if (!empty($result2)) {
+                        $r['is_register']=true;
+                    }
+                }
             }
         }
         $this->result=$result;

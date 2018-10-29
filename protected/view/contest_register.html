@@ -139,26 +139,34 @@
                     </contest>
                 </div>
                 <div class="col-md-8 col-sm-12">
-                    <card>
-                        <h5><{$contest_name}></h5>
-                        <{if $maxp > 1}>
-                        <div class="form-group">
-                            <label for="name" class="bmd-label-floating">队伍名*</label>
-                            <input type="text" class="form-control" name="group_name" value="<{$group_name}>" id="group_name" required>
-                        </div>
-                        <{/if}>
-                        <{foreach $members as $order=>$member}>
+                    <{if $maxp > 1}>    
+                        <card>
+                            <h5><i class="MDI account-multiple"></i> 团队信息</h5> 
+                            <div class="form-group">
+                                <label for="name" class="bmd-label-floating">队伍名*</label>
+                                <input type="text" class="form-control" name="group_name" value="<{$group_name}>" id="group_name" required>
+                            </div>
+                        </card>
+                    <{/if}>
+                    <{foreach $members as $order=>$member}>
+                        <card>
+                            <h5><i class="MDI <{ if $member@first }>account-star<{else}>account<{/if}>"></i> 队<{ if $member@first }>长<{else}>员<{/if}>信息<{ if $order >= $minp}>（选填）<{/if}></h5>
                             <{foreach $fields as $field}>
                             <div class="form-group">
                                 <label for="name" class="bmd-label-floating"><{$field['placeholder']}><{ if $field['required'] && $order < $minp}>*<{/if}></label>
                                 <input type="text" class="form-control" name="<{$field['name']}>_<{$order}>" value="<{$member[$field['name']]}>" id="<{$field['name']}>_<{$order}>"<{ if $field['required'] && $order < $minp}> required<{/if}><{ if $field['fixed'] && $order == 0}> disabled<{/if}>>
                             </div>
                             <{/foreach}>
-                        <{/foreach}>
-                        <div class="text-right">
-                            <button onclick="submit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">提交<div class="ripple-container"></div></button>
-                        </div>
-                    </card>
+                        </card>
+                    <{/foreach}>
+                        <card>
+                            <h5 class="text-center"><i class="MDI information"></i> 其他信息</h5>
+                            <p class="text-center">请确认上述填写信息均为准确信息，然后点击下方的提交按钮。</p>
+                            <div class="text-center">
+                                <button onclick="submit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">提交<div class="ripple-container"></div></button>
+                            </div>
+                        </card>
+
                 </div>
             </div>
         </section>
