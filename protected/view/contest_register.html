@@ -154,7 +154,7 @@
                             <{foreach $fields as $field}>
                             <div class="form-group">
                                 <label for="name" class="bmd-label-floating"><{$field['placeholder']}><{ if $field['required'] && $order < $minp}>*<{/if}></label>
-                                <input type="text" class="form-control" name="<{$field['name']}>_<{$order}>" value="<{$member[$field['name']]}>" id="<{$field['name']}>_<{$order}>"<{ if $field['required'] && $order < $minp}> required<{/if}><{ if $field['fixed'] && $order == 0}> disabled<{/if}>>
+                                <input type="text" class="form-control" name="<{$field['name']}>_<{$order}>" value="<{$member[$field['name']]}>" id="<{$field['name']}>_<{$order}>"<{ if $field['required'] && $order < $minp}> required<{/if}><{ if $field['fixed'] && $order == 0 || $registered}> disabled<{/if}>>
                             </div>
                             <{/foreach}>
                         </card>
@@ -163,7 +163,7 @@
                             <h5 class="text-center"><i class="MDI information"></i> 其他信息</h5>
                             <p class="text-center">请确认上述填写信息均为准确信息，然后点击下方的提交按钮。</p>
                             <div class="text-center">
-                                <button onclick="submit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">提交<div class="ripple-container"></div></button>
+                                <button onclick="<{ if $registered }><{ if $isleader }>edit()<{else}><{/if}><{else}>submit()<{/if}>" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary"><{ if $registered }><{ if $isleader }>修改报名信息<{else}>修改报名信息请联系队长<{/if}><{else}>提交<{/if}><div class="ripple-container"></div></button>
                             </div>
                         </card>
 
@@ -219,6 +219,12 @@
                 }).fail((req) => {
                     alert("发生错误");
                 });
+            }
+            function edit() {
+                $("card input[id!=\"SID_0\"]").removeAttr("disabled");
+                var btn=$("#btn_submit_3")[0];
+                btn.innerText="提交修改";
+                btn.onclick=submit;
             }
         </script>
     </div>

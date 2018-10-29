@@ -121,15 +121,22 @@ class ContestController extends BaseController
             }
             $result=$userdb->find(array("uid=:uid",":uid"=>$this->userinfo['uid']));
             $members[0]=array();
-            if (in_array('SID',$requirements)) $members[0]['SID']=$result['SID'];
+            $members[0]['SID']=$result['SID'];
             if (in_array('real_name',$requirements)) $members[0]['real_name']=$result['real_name'];
             $group_name='';
+            $registered=false;
+            $isleader=false;
             $result=$registerdb->find(array("uid=:uid and contest_id=:coid", ":uid"=>$this->userinfo['uid'], ":coid"=>$coid));
+            if (!empty($result)) $registered=$isleader=true;
+            elseif ($maxp>1) {
+                $result=$registerdb->find(["contest_id=:coid and info like :info", ":coid"=>$coid, ":info"=>'%"SID":"'.$members[0]['SID'].'"%']);
+                if (!empty($result)) $registered=true;
+            }
             if (!empty($result)) {
                 $values=json_decode($result['info'], true);
                 if (isset($values['members'])) {
                     $members=$values['members'];
-                    $group_name=$values['team_name'];
+                    if ($maxp>1) $group_name=$values['team_name'];
                 } else $members[0]=$values;
                 for ($i=0;$i<$maxp;++$i) {
                     if (!isset($members[$i])) $members[$i]=array();
@@ -148,6 +155,8 @@ class ContestController extends BaseController
             $this->group_name=$group_name;
             $this->fields=$fields;
             $this->members=$members;
+            $this->registered=$registered;
+            $this->isleader=$isleader;
         } else {
             $this->jump("/contest");
         }

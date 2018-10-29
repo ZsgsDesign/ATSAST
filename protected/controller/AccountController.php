@@ -253,6 +253,20 @@ class AccountController extends BaseController
         }
         $this->register_contest_result=$register_contest_result;
         
+        $userdb=new Model("users");
+        $sid=$userdb->find(["uid=:uid", ":uid"=>$this->userinfo['uid']])['SID'];
+        $attend_contest_result=$contest->query("select r.contest_id,c.name,creator,`desc`,type,start_date,end_date,r.`status`,due_register,image,o.`name` creator_name from contest_register r left join contest c on r.contest_id=c.contest_id left join organization o on c.creator = o.oid where uid<>:uid and info like :info and c.status=1",array(":uid"=>$this->userinfo['uid'], ":info"=>'%"SID":"'.$sid.'"%'));
+        foreach ($attend_contest_result as &$r) {
+            if ($r["start_date"]==$r["end_date"]) {
+                $r["parse_date"]=$r["start_date"];
+            } else {
+                $r["parse_date"]=$r["start_date"]." ~ ".$r["end_date"];
+            }
+            if($r["status"]==1) $r["parse_status"]='<span class="wemd-green-text"><i class="MDI checkbox-marked-circle-outline"></i> 已成功报名</span>';
+            else if($r["status"]==0) $r["parse_status"]='<span class="wemd-light-blue-text"><i class="MDI timer-sand"></i> 已提交报名</span>';
+            else if($r["status"]==-1) $r["parse_status"]='<span class="wemd-red-text"><i class="MDI alert-circle-outline"></i> 报名已被拒绝</span>';
+        }
+        $this->attend_contest_result=$attend_contest_result;
 
     }
 }
