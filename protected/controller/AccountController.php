@@ -60,6 +60,7 @@ class AccountController extends BaseController
                 'email'=>$email,
                 'ip'=>$ip,
                 'album'=>"bing",
+                'cloud_size'=>5,
                 'OPENID'=>$OPENID,
                 'avatar'=>"https://static.1cf.co/img/avatar/default.png",
                 'gender'=>0
@@ -152,6 +153,21 @@ class AccountController extends BaseController
         $course_register=new Model("course_register");
         $result=$course_register->query("select r.cid,course_name,course_logo,course_desc,course_color from course_register as r left join courses c on r.cid = c.cid where r.uid=:uid and status=1 limit 2", array(":uid"=>$this->userinfo['uid']));
         $this->result=$result;
+
+        $storage=array();
+        $storage["usage"]=getDirSize("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/{$this->userinfo['uid']}");
+        $storage["usage_string"]=sizeConverter($storage["usage"]);
+        $storage["tot"]=$detail['cloud_size'];
+        $storage["percent"]=$storage["usage_string"] / $storage["tot"] * 100;
+        if($storage["percent"]>=90) {
+            $storage["color"]="danger";
+        } else if($storage["percent"]>=50) {
+            $storage["color"]="warning";
+        } else {
+            $storage["color"]="success";
+        }
+        $this->storage=$storage;
+
         if ($detail['album']=="bing") {
             $str = file_get_contents('http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN');
             $array = json_decode($str);

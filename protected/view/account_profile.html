@@ -6,7 +6,7 @@
         padding-right: 0.5rem;
     }
     .list-group-item :first-child {
-        margin-right: 0.5rem;
+        margin-right: 0rem;
     }
     .atsast-profile-focus{
         top: 0;
@@ -158,6 +158,9 @@
     card:hover {
         box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
     }
+    .progress{
+        margin-bottom: 0.5rem;
+    }
 </style>
 <img class="atsast-profile-focus" src="<{ $imgurl }>">
 <div class="container mundb-standard-container">
@@ -170,6 +173,13 @@
                     <li class="list-group-item"><strong>用户名</strong><p><{ $detail['name'] }></p></li>
                     <li class="list-group-item"><strong>邮箱</strong><p><{ $detail['email'] }></p></li>
                     <li class="list-group-item"><strong>学号</strong><p><{ $detail['SID'] }></p></li>
+                    <li class="list-group-item">
+                        <strong>ATSAST云空间</strong>
+                        <div class="progress">
+                            <div class="progress-bar bg-<{ $storage['color'] }>" role="progressbar" style="width: <{ $storage['percent'] }>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <p><{ $storage['usage_string'] }> / <{ $storage['tot'] }> MB</p>
+                    </li>
                   </ul>
                 </div>
                 <div class="card-body text-right">

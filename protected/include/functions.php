@@ -145,6 +145,34 @@ function get_thumbnail($data_string)
     return array($return_code, $return_content);
 }
 
+function sizeConverter($bit)
+{
+    $type = array('Bytes','KB','MB','GB','TB');
+    for($i = 0; $bit >= 1024; $i++)
+    {
+        $bit/=1024;
+    }
+    return (floor($bit*100)/100)." ".$type[$i];
+}
+
+
+function getDirSize($dir)
+{
+    $size = 0;
+    $handle = opendir($dir);
+    while (($folderOrFile = readdir($handle)) != false) {
+        if ($folderOrFile != '.' && $folderOrFile != '..') {
+            if (is_dir($folderOrFile)) {
+                $size += getDirSize("$dir/$folderOrFile");
+            } else {
+                $size += filesize("$dir/$folderOrFile");
+            }
+        }
+    }
+    closedir($handle);
+    return $size;
+}
+
 function sendactivatemail()
 {
     $db=new Model("users");
