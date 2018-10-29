@@ -62,13 +62,14 @@ class ContestController extends BaseController
             $coid=arg("contest_id");
             $this->coid=$coid;
             $courses=new Model("contest");
+            $registerdb=new Model("contest_register");
             $types=new Model("contest_require_info");
             $userdb=new Model("users");
             $tmpdata=new Model("user_temp_info");
             // $result=$courses->find(array("contest_id=:contest_id",":contest_id"=>$coid));
             // if (empty($result)) $this->jump("/contest");
 
-            $basic_info=$courses->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name,require_register from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$coid));
+            $basic_info=$courses->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name,require_register,min_participants,max_participants from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$coid));
             if(empty($basic_info))$this->jump("/contest");
 
 
@@ -82,32 +83,58 @@ class ContestController extends BaseController
 
 
             $this->contest_name=$basic_info['name'];
+            $this->minp=$minp=$basic_info['min_participants'];
+            $this->maxp=$maxp=$basic_info['max_participants'];
             $requirements=explode(',',$basic_info['require_register']);
             $fields=array();
             $result=$types->findAll();
-            // var_dump($result);
+            $types=array();
+            $members=array();
             foreach($result as $type) {
                 $type['fixed']=$type['name']=='SID';
-                if (in_array($type['name'],$requirements)) {
-                    $type['required']=false;
-                    $fields[$type['name']]=$type;
-                } elseif (in_array('*'.$type['name'],$requirements)) {
-                    $type['required']=true;
-                    $fields[$type['name']]=$type;
-                    $requirements[array_search('*'.$type['name'],$requirements)]=$type['name'];
+                unset($type['Id']);
+                $types[$type['name']]=$type;
+            }
+            for($i=0; $i<count($requirements); ++$i) {
+                $require=$requirements[$i];
+                $required=false;
+                if (substr($require, 0, 1) == '*') {
+                    $requirements[$i]=$require=substr($require, 1);
+                    $required=true;
                 }
+                assert(isset($types[$require]));
+                $types[$require]['required']=$required;
+                $fields[$require]=$types[$require];
             }
             $result=$userdb->find(array("uid=:uid",":uid"=>$this->userinfo['uid']));
-            if (in_array('SID',$requirements)) $fields['SID']['value']=$result['SID'];
-            if (in_array('real_name',$requirements)) $fields['real_name']['value']=$result['real_name'];
-            $result=$tmpdata->findAll(array("uid=:uid",":uid"=>$this->userinfo['uid']));
-            foreach($result as $pair) {
-                if (isset($fields[$pair['key']])) {
-                    $fields[$pair['key']]['value']=$pair['value'];
+            $members[0]=array();
+            if (in_array('SID',$requirements)) $members[0]['SID']=$result['SID'];
+            if (in_array('real_name',$requirements)) $members[0]['real_name']=$result['real_name'];
+            $group_name='';
+            $result=$registerdb->find(array("uid=:uid and contest_id=:coid", ":uid"=>$this->userinfo['uid'], ":coid"=>$coid));
+            if (!empty($result)) {
+                $values=json_decode($result['info'], true);
+                if (isset($values['members'])) {
+                    $members=$values['members'];
+                    $group_name=$values['team_name'];
+                } else $members[0]=$values;
+                for ($i=0;$i<$maxp;++$i) {
+                    if (!isset($members[$i])) $members[$i]=array();
+                    foreach($requirements as $req) if(empty($members[$i][$req])) $members[$i][$req]='';
+                }
+            } else {
+                for ($i=0;$i<$maxp;++$i) {
+                    if (!isset($members[$i])) $members[$i]=array();
+                    foreach($requirements as $req) if(empty($members[$i][$req])) $members[$i][$req]='';
+                }
+                $result=$tmpdata->findAll(array("uid=:uid",":uid"=>$this->userinfo['uid']));
+                foreach($result as $pair) {
+                    $members[0][$pair['key']]=$pair['value'];
                 }
             }
-            $this->requirements=$requirements;
+            $this->group_name=$group_name;
             $this->fields=$fields;
+            $this->members=$members;
         } else {
             $this->jump("/contest");
         }

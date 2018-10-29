@@ -305,6 +305,7 @@ class AjaxController extends BaseController
     {
         if (!arg("contest_id")) ERR::Catcher(1003);
         if (!is_numeric(arg("contest_id"))) ERR::Catcher(1004);
+        if (!$this->islogin) ERR::Catcher(2001);
         $uid=$this->userinfo['uid'];
         $coid=arg("contest_id");
         $datas=array();
@@ -316,54 +317,81 @@ class AjaxController extends BaseController
         $types=array("contest_id"=>"number");
         $contest=$contest->find(array("contest_id=:coid", ":coid"=>$coid));
         if (empty($contest)) ERR::Catcher(1004);
+        $fields=array();
         $requires=array();
         $defaultStatus=$contest['default_register_status'];
         foreach(explode(',',$contest['require_register']) as $require) {
             if (substr($require, 0, 1) == '*') {
                 $foo=substr($require,1);
-                if (!arg($foo)) ERR::Catcher(1004);
+                array_push($fields, $foo);
                 array_push($requires, $foo);
             } else {
-                array_push($requires, $require);
+                array_push($fields, $require);
             }
         }
         foreach($result as $type) {
             $types[$type['name']]=$type['type'];
         }
-        foreach($_POST as $key=>$value) {
-            if ($key == 'uid') continue;
-            if ($key == 'SID') {
-                $users = new Model("users");
-                $result=$users->find(array("uid=:uid",":uid"=>$uid));
-                $datas['SID']=$result['SID'];
-            } else {
-                if ($types[$key]=='number') {
-                    if (!preg_match('/^\d+$/', $value)) ERR::Catcher(1004);
-                } elseif ($types[$key]=='email') {
-                    if (!preg_match('/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/', $value)) ERR::Catcher(1004);
+        $minp=$contest['min_participants'];
+        $maxp=$contest['max_participants'];
+        if ($maxp>1) {
+            if (empty(arg('group_name'))) ERR::Catcher(4004);
+            $result=$registerdb->find(array('contest_id=:coid and info like :info and uid<>:uid', ":coid"=>$coid, ":info"=>'%"team_name":"'.arg('group_name').'"%', ":uid"=>$uid));
+            if (!empty($result)) ERR::Catcher(4002);
+        }
+        $inserts=array();
+        for($i=0; $i<$maxp; ++$i) {
+            if ($i>=$minp) {
+                $empty=true;
+                if (!isset($_POST[$i])) continue;
+                foreach($fields as $field) if (!empty($_POST[$i][$field])) {
+                    $empty=false;
+                    break;
                 }
-                if (empty($types[$key])) continue;
-                if ($key == 'contest_id') continue;
-                if (!in_array($key, $requires)) ERR::Catcher(1004);
-                $datas[$key]=$value;
-                $result=$tmpdb->find(array("uid=:uid and `key`=:key", ":uid"=>$uid, ":key"=>$key));
-                if (empty($result)) {
-                    $tmpdb->create(array(
-                        "uid"=>$uid,
-                        "key"=>$key,
-                        "value"=>$value,
-                    ));
-                } else {
-                    $tmpdb->update(array(
-                        "uid=:uid and `key`=:key",
-                        ":uid"=>$uid,
-                        ":key"=>$key,
-                    ), array(
-                        "value"=>$value,
-                    ));
+                if ($empty) continue;
+            }
+            foreach($requires as $field) if (empty($_POST[$i][$field])) ERR::Catcher(4004);
+            $foo=array();
+            foreach($fields as $field) if (!empty($_POST[$i][$field])) {
+                $foo[$field]=$_POST[$i][$field];
+                if ($types[$field]=='number') {
+                    if (!preg_match('/^\d+$/', $foo[$field])) ERR::Catcher(4005);
+                } elseif ($types[$field]=='email') {
+                    if (!preg_match('/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/', $foo[$field])) ERR::Catcher(4006);
                 }
             }
+            if ($i==0) {
+                $users = new Model("users");
+                $result=$users->find(array("uid=:uid",":uid"=>$uid));
+                $foo['SID']=$result['SID'];
+                foreach($fields as $field) if (!empty($foo[$field])) {
+                    $result=$tmpdb->find(array("uid=:uid and `key`=:key", ":uid"=>$uid, ":key"=>$field));
+                    if (empty($result)) {
+                        $tmpdb->create(array(
+                            "uid"=>$uid,
+                            "key"=>$field,
+                            "value"=>$foo[$field],
+                        ));
+                    } else {
+                        $tmpdb->update(array(
+                            "uid=:uid and `key`=:key",
+                            ":uid"=>$uid,
+                            ":key"=>$field,
+                        ), array(
+                            "value"=>$foo[$field],
+                        ));
+                    }
+                }
+            } else foreach($inserts as $insert) {
+                if ($foo['SID']==$insert['SID']) ERR::Catcher(4003);
+            }
+            $result=$registerdb->find(array('contest_id=:coid and info like :info and uid<>:uid', ":coid"=>$coid, ":info"=>'%"SID":"'.$foo['SID'].'"%', ":uid"=>$uid));
+            if (!empty($result)) ERR::Catcher(4003);
+            array_push($inserts, $foo);
         }
+        $datas=array();
+        if ($maxp>1) $datas['team_name']=arg('group_name');
+        $datas['members']=$inserts;
         $result=$registerdb->find(array("uid=:uid and contest_id=:coid", ":uid"=>$uid, ":coid"=>$coid));
         if (empty($result)) {
             $result=$registerdb->create(array(
@@ -374,7 +402,7 @@ class AjaxController extends BaseController
                 "register_time"=>date("Y-m-d H:i:s"),
             ));
             if (!$result) ERR::Catcher(1002);
-            SUCCESS::Catcher("报名成功");
+            SUCCESS::Catcher("报名成功", "/account/contests");
         }
         $result=$registerdb->update(array(
             "uid=:uid and contest_id=:coid",
@@ -385,6 +413,6 @@ class AjaxController extends BaseController
             "status"=>$defaultStatus,
             "register_time"=>date("Y-m-d H:i:s"),
         ));
-        SUCCESS::Catcher("修改成功");
+        SUCCESS::Catcher("修改成功", "/account/contests");
     }
 }
