@@ -133,7 +133,7 @@
                         <h3 class="mundb-text-truncate-2"><{$basic_info['name']}></h3>
                         <p class="mundb-text-truncate-1"><{$basic_info['creator_name']}> · <{if $basic_info['type']==1}>线上<{else}>线下<{/if}>比赛</p>
                         <p class="mundb-text-truncate-1"><i class="MDI clock"></i> <{$basic_info['parse_date']}> </p>
-                        <{ if $islogin }><{ if !$basic_info['is_register'] }><a href="/contest/<{$basic_info['contest_id']}>/register"><button class="btn btn-outline-info">立即报名</button></a><{ else }><a href="/account/contests/"><button class="btn btn-outline-success">已报名</button></a><{/if}><{/if}>
+                        <{ if $islogin }><{ if !$basic_info['is_register'] }><a href="/contest/<{$basic_info['contest_id']}>/register"><button class="btn btn-outline-info">立即报名</button></a><{ else }><a href="/contest/<{$basic_info['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a><{/if}><{/if}>
                     </div>
                 </contest>
             </div>
