@@ -74,3 +74,4 @@ class MainController extends BaseController
     {
         $this->jump("/admin/");
     }
+}
