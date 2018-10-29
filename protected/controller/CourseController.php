@@ -240,7 +240,7 @@ class CourseController extends BaseController
                 if (empty($register_status)) {
                     return $this->jump("/course/$cid/detail");
                 }
-                $syllabus_info=$syllabus->find(array("cid=:cid",":cid"=>$cid));
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("/courses");
                 }

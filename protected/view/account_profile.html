@@ -161,6 +161,91 @@
     .progress{
         margin-bottom: 0.5rem;
     }
+
+    contest{
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+
+    contest > .atsast-img-container{
+        overflow: hidden;
+        height:15rem;
+        width:35rem;
+        position: absolute;
+        top:-2.5rem;
+        right:-2.5rem;
+    }
+
+    contest:hover{
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+
+    contest > .atsast-img-container-small{
+        width:100%;
+        height:15rem;
+    }
+
+    contest > .atsast-img-container-small > img{
+        height:100%;
+        width:100%;
+        object-fit: cover;
+    }
+
+
+    contest > .atsast-img-container::after{
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 1;
+        top:-2.5rem;
+        left:-2.5rem;
+        bottom:-2.5rem;
+        right:-1px;
+        background:linear-gradient(to right,rgba(255,255,255,1) 10%,rgba(255,255,255,0) 100%);
+    }
+
+    contest > .atsast-content-container{
+        /* display: flex;
+        align-items: center; */
+        height:100%;
+        flex-shrink: 1;
+        flex-grow: 1;
+        padding:1rem;
+        z-index: 1;
+    }
+
+    contest > .atsast-img-container > img{
+        height:100%;
+        width:100%;
+        object-fit: cover;
+    }
+
+    .atsast-empty{
+        justify-content: center;
+        align-items: center;
+        height: 10rem;
+    }
+
+    badge{
+        display: inline-block;
+        padding: 0.25rem 0.75em;
+        font-weight: 700;
+        line-height: 1.5;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.125rem;
+        background-color: #f5f5f5;
+    }
 </style>
 <img class="atsast-profile-focus" src="<{ $imgurl }>">
 <div class="container mundb-standard-container">
@@ -201,9 +286,9 @@
             </div>
             <card class="mb-3" id="user-info">
                 <h5><i class="MDI note-text"></i> 报名课程</h5>
-                <div class="row">
+                <div class="row <{if empty($result)}>atsast-empty<{/if}>">
                 <{if empty($result)}>
-                    <p>暂无</p>
+                    <badge>暂无</badge>
                 <{else}>
                     <{foreach $result as $r}>
                     <div class="col-lg-6 col-md-12 atsast-courses">
@@ -231,32 +316,31 @@
             </card>
             <card class="mb-5" id="user-info">
                 <h5><i class="MDI airballoon"></i> 报名比赛</h5>
-                <div class="row">
-                <{if empty($result)}>
-                    <p>暂无</p>
+                <div class="row <{if empty($contest_result)}>atsast-empty<{/if}>">
+                <{if empty($contest_result)}>
+                    <badge>暂无</badge>
                 <{else}>
-                    <{foreach $result as $r}>
+                    <{foreach $contest_result as $c}>
                     <div class="col-lg-6 col-md-12 atsast-courses">
-                        <a href="/course/<{$r['cid']}>/detail">
-                            <course>
-                                <div class="wemd-<{$r['course_color']}>">
-                                    <i class="devicon-<{$r['course_logo']}>-plain"></i>
-                                </div>
-                                <div>
-                                    <div>
-                                        <h6 class="mundb-text-truncate-1"><{$r['course_name']}></h6>
-                                        <p class="mundb-text-truncate-2"><small><{$r['course_desc']}></small></p>
-                                    </div>
-                                </div>
-                            </course>
-                        </a>
+                        <contest>
+                            <div class="atsast-img-container-small">
+                                <img src="<{$c['image']}>">
+                            </div>
+                            <div class="atsast-content-container">
+                                <h3 class="mundb-text-truncate-1"><{$c['name']}></h3>
+                                <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>比赛</p>
+                                <p class="mundb-text-truncate-1"> <{$c['parse_status'] nofilter }> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
+                                <a href="/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI note"></i> 查看详情</button></a>
+                                <a href="/contest/<{$c['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pen"></i> 修改报名信息</button></a>
+                            </div>
+                        </contest>
                     </div>
                     <{/foreach}>
                 <{/if}>
                 </div>
 
                 <div class="text-right mt-1">
-                    <button class="btn btn-info">查看更多</button>
+                    <a href="/account/contests/"><button class="btn btn-info">查看更多</button></a>
                 </div>
             </card>
 
