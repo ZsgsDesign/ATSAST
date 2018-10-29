@@ -11,15 +11,16 @@
         border: 1px solid rgba(0, 0, 0, 0.15);
         margin-bottom: 2rem;
         overflow: hidden;
+        z-index: 0;
     }
 
     contest > .atsast-img-container{
         overflow: hidden;
-        height:15rem;
         width:35rem;
         position: absolute;
         top:-2.5rem;
         right:-2.5rem;
+        bottom: -2.5rem;
     }
 
     card:hover {
@@ -73,6 +74,12 @@
 
     h5{
         margin-bottom:1rem;
+    }
+
+    @media (min-width: 992px){
+        contest > .atsast-content-container {
+            width: calc(100% - 35rem);
+        }
     }
 </style>
 <div class="container mundb-standard-container">
