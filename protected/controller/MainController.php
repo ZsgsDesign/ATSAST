@@ -42,12 +42,23 @@ class MainController extends BaseController
         $this->url="contests";
         $this->title="赛事";
         $contest=new Model("contest");
+        $register=new Model("contest_register");
+        $userdb=new Model("users");
+        $result=$userdb->find(["uid=:uid", ":uid"=>$this->userinfo['uid']]);
+        $sid=$result['SID'];
         $result=$contest->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name from contest c left join organization o on c.creator = o.oid where c.status=1");
         foreach ($result as &$r) {
             if ($r["start_date"]==$r["end_date"]) {
                 $r["parse_date"]=$r["start_date"];
             } else {
                 $r["parse_date"]=$r["start_date"]." ~ ".$r["end_date"];
+            }
+            $r['is_register']=false;
+            $result2=$register->find(["contest_id=:coid and uid=:uid", ":coid"=>$r['contest_id'], ":uid"=>$this->userinfo['uid']]);
+            if (!empty($result2)) $r['is_register']=true;
+            else {
+                $result2=$register->find(["contest_id=:coid and info like :info", ":coid"=>$r['contest_id'], ":info"=>'%"SID":"'.$sid.'"%']);
+                if (!empty($result2)) $r['is_register']=true;
             }
         }
         $this->result=$result;
