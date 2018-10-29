@@ -120,29 +120,32 @@ function getusersettings($loginid)
     return $result;
 }
 
-function get_thumbnail($data_string)
+function sizeConverter($bit)
 {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_URL, 'https://api.projectoxford.ai/vision/v1.0/generateThumbnail?width=100&height=100&smartCropping=true)');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-    curl_setopt(
-        $ch,
-        CURLOPT_HTTPHEADER,
-        array(
-        'Content-Type: application/json; charset=utf-8',
-        'Host: api.projectoxford.ai',
-        'Ocp-Apim-Subscription-Key: 86c2a4018d964a64b43558ed925eaea4',
-        'Content-Length: ' . strlen($data_string))
-    );
-            
-    ob_start();
-    curl_exec($ch);
-    $return_content = ob_get_contents();
-    ob_end_clean();
-      
-    $return_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    return array($return_code, $return_content);
+    $type = array('Bytes','KB','MB','GB','TB');
+    for($i = 0; $bit >= 1024; $i++)
+    {
+        $bit/=1024;
+    }
+    return (floor($bit*100)/100)." ".$type[$i];
+}
+
+
+function getDirSize($dir)
+{
+    $size = 0;
+    $handle = opendir($dir);
+    while (($folderOrFile = readdir($handle)) != false) {
+        if ($folderOrFile != '.' && $folderOrFile != '..') {
+            if (is_dir($folderOrFile)) {
+                $size += getDirSize("$dir/$folderOrFile");
+            } else {
+                $size += filesize("$dir/$folderOrFile");
+            }
+        }
+    }
+    closedir($handle);
+    return $size;
 }
 
 function sendactivatemail()
