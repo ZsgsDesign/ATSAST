@@ -92,7 +92,7 @@
                 <p class="mundb-text-truncate-1"><{$r['creator_name']}> · <{if $r['type']==1}>线上<{else}>线下<{/if}>比赛</p>
                 <p class="mundb-text-truncate-1"><i class="MDI clock"></i> <{$r['parse_date']}> </p>
                 <a href="/contest/<{$r['contest_id']}>/detail"><button class="btn btn-outline-info">了解更多</button></a>
-                <a href="/contest/<{$r['contest_id']}>/register"><button class="btn btn-info">立即报名</button></a>
+                <{ if $r['is_register'] }><a href="/contest/<{$r['contest_id']}>/register"><button class="btn btn-info">立即报名</button></a><{ elseif }><button class="btn btn-info" disabled>已报名</button><{/if}>
             </div>
         </contest>
         <{/foreach}>
