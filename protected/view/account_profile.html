@@ -199,8 +199,38 @@
                     </div>
                 </div>
             </div>
-            <card class="mb-5" id="user-info">
+            <card class="mb-3" id="user-info">
                 <h5><i class="MDI note-text"></i> 报名课程</h5>
+                <div class="row">
+                <{if empty($result)}>
+                    <p>暂无</p>
+                <{else}>
+                    <{foreach $result as $r}>
+                    <div class="col-lg-6 col-md-12 atsast-courses">
+                        <a href="/course/<{$r['cid']}>/detail">
+                            <course>
+                                <div class="wemd-<{$r['course_color']}>">
+                                    <i class="devicon-<{$r['course_logo']}>-plain"></i>
+                                </div>
+                                <div>
+                                    <div>
+                                        <h6 class="mundb-text-truncate-1"><{$r['course_name']}></h6>
+                                        <p class="mundb-text-truncate-2"><small><{$r['course_desc']}></small></p>
+                                    </div>
+                                </div>
+                            </course>
+                        </a>
+                    </div>
+                    <{/foreach}>
+                <{/if}>
+                </div>
+
+                <div class="text-right mt-1">
+                    <button class="btn btn-info">查看更多</button>
+                </div>
+            </card>
+            <card class="mb-5" id="user-info">
+                <h5><i class="MDI airballoon"></i> 报名比赛</h5>
                 <div class="row">
                 <{if empty($result)}>
                     <p>暂无</p>
