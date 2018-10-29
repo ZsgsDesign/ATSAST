@@ -65,7 +65,10 @@ class AccountController extends BaseController
                 'avatar'=>"https://static.1cf.co/img/avatar/default.png",
                 'gender'=>0
             );
-            $json=$db->create($user);
+            $uid=$db->create($user);
+            if (!file_exists("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid")) {
+                mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
+            }
             $_SESSION['OPENID']=$OPENID;
             //sendactivatemail();
             $this->jump("/");

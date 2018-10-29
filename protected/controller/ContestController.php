@@ -23,7 +23,7 @@ class ContestController extends BaseController
                 $contest=new Model("contest");
                 $contest_detail=new Model("contest_detail");
                 $register=new Model("contest_register");
-                
+
                 $basic_info=$contest->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$contest_id));
                 if(empty($basic_info))$this->jump("/contest");
                 $basic_info=$basic_info[0];
@@ -33,6 +33,9 @@ class ContestController extends BaseController
                     $basic_info["parse_date"]=$basic_info["start_date"]." ~ ".$basic_info["end_date"];
                 }
                 if ($this->islogin) {
+                    $userdb=new Model("users");
+                    $result=$userdb->find(["uid=:uid", ":uid"=>$this->userinfo['uid']]);
+                    $sid=$result['SID'];
                     $basic_info['is_register']=false;
                     $result2=$register->find(["contest_id=:coid and uid=:uid", ":coid"=>$basic_info['contest_id'], ":uid"=>$this->userinfo['uid']]);
                     if (!empty($result2)) {

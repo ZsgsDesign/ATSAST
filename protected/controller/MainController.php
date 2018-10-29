@@ -43,9 +43,11 @@ class MainController extends BaseController
         $this->title="赛事";
         $contest=new Model("contest");
         $register=new Model("contest_register");
-        $userdb=new Model("users");
-        $result=$userdb->find(["uid=:uid", ":uid"=>$this->userinfo['uid']]);
-        $sid=$result['SID'];
+        if ($this->islogin) {
+            $userdb=new Model("users");
+            $result=$userdb->find(["uid=:uid", ":uid"=>$this->userinfo['uid']]);
+            $sid=$result['SID'];
+        }
         $result=$contest->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name from contest c left join organization o on c.creator = o.oid where c.status=1");
         foreach ($result as &$r) {
             if ($r["start_date"]==$r["end_date"]) {
