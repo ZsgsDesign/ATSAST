@@ -141,11 +141,19 @@
                 <div class="col-md-8 col-sm-12">
                     <card>
                         <h5><{$contest_name}></h5>
-                        <{foreach $requirements as $r}>
+                        <{if $maxp > 1}>
                         <div class="form-group">
-                            <label for="name" class="bmd-label-floating"><{$fields[$r]['placeholder']}><{ if $fields[$r]['required']}>*<{/if}></label>
-                            <input type="text" class="form-control" name="<{$fields[$r]['name']}>" value="<{ if isset($fields[$r]['value'])}><{$fields[$r]['value']}><{/if}>" id="<{$fields[$r]['name']}>"<{ if $fields[$r]['required']}> required<{/if}><{ if $fields[$r]['fixed']}> disabled<{/if}>>
+                            <label for="name" class="bmd-label-floating">队伍名*</label>
+                            <input type="text" class="form-control" name="group_name" value="<{$group_name}>" id="group_name" required>
                         </div>
+                        <{/if}>
+                        <{foreach $members as $order=>$member}>
+                            <{foreach $fields as $field}>
+                            <div class="form-group">
+                                <label for="name" class="bmd-label-floating"><{$field['placeholder']}><{ if $field['required'] && $order < $minp}>*<{/if}></label>
+                                <input type="text" class="form-control" name="<{$field['name']}>_<{$order}>" value="<{$member[$field['name']]}>" id="<{$field['name']}>_<{$order}>"<{ if $field['required'] && $order < $minp}> required<{/if}><{ if $field['fixed'] && $order == 0}> disabled<{/if}>>
+                            </div>
+                            <{/foreach}>
                         <{/foreach}>
                         <div class="text-right">
                             <button onclick="submit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">提交<div class="ripple-container"></div></button>
@@ -183,16 +191,23 @@
                 var data = {contest_id:<{$coid}>};
                 for (var i = 0; i < $inputs.length; ++i) {
                     var input = $inputs[i];
-                    data[input.id] = input.value;
+                    if (input.id == 'group_name') data['group_name'] = input.value;
+                    else {
+                        var off = input.id.lastIndexOf('_');
+                        var name = input.id.substr(0, off);
+                        var order = input.id.substr(off + 1);
+                        if (data[order] == undefined) data[order] = {};
+                        data[order][name] = input.value;
+                    }
                     if (input.required && input.value == "") {
-                        alert("请填写所有未填项");
+                        alert("请填写所有应填项");
                         return;
                     }
                 }
-                console.log(data);
                 $.post("/ajax/RegisterContest", data, (data, status) => {
                     data = JSON.parse(data);
                     alert(data.desc);
+                    if (data.data != null) setTimeout(() => location.href=data.data, 1000);
                 }).fail((req) => {
                     alert("发生错误");
                 });
