@@ -158,13 +158,15 @@ class AccountController extends BaseController
         $storage["usage"]=getDirSize("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/{$this->userinfo['uid']}");
         $storage["usage_string"]=sizeConverter($storage["usage"]);
         $storage["tot"]=$detail['cloud_size'];
-        $storage["percent"]=$storage["usage_string"] / $storage["tot"] * 100;
+        $storage["percent"]=$storage["usage"] / ($storage["tot"] * 1024 * 1024) * 100;
         if($storage["percent"]>=90) {
-            $storage["color"]="danger";
-        } else if($storage["percent"]>=50) {
-            $storage["color"]="warning";
+            $storage["color"]="red";
+        } else if($storage["percent"]>=60) {
+            $storage["color"]="amber";
+        } else if($storage["percent"]>=40) {
+            $storage["color"]="lime";
         } else {
-            $storage["color"]="success";
+            $storage["color"]="green";
         }
         $this->storage=$storage;
 
