@@ -85,7 +85,7 @@ class ContestController extends BaseController
             // $result=$courses->find(array("contest_id=:contest_id",":contest_id"=>$coid));
             // if (empty($result)) $this->jump("/contest");
 
-            $basic_info=$courses->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name,require_register,min_participants,max_participants,tips from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$coid));
+            $basic_info=$courses->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name,require_register,min_participants,max_participants from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$coid));
             if(empty($basic_info))$this->jump("/contest");
 
 
