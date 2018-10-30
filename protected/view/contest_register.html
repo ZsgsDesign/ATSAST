@@ -164,6 +164,7 @@
                         <card>
                             <h5 class="text-center"><i class="MDI information"></i> 其他信息</h5>
                             <p class="text-center">请确认上述填写信息均为准确信息，然后点击下方的提交按钮。</p>
+                            <p class="text-center"><{$basic_info['tips']}></p>
                             <div class="text-center">
                                 <button onclick="<{ if $registered }><{ if $isleader }>edit()<{else}><{/if}><{else}>submit()<{/if}>" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary"><{ if $registered }><{ if $isleader }>修改报名信息<{else}>修改报名信息请联系队长<{/if}><{else}>提交<{/if}><div class="ripple-container"></div></button>
                             </div>
