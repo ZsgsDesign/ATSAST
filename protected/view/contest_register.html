@@ -192,36 +192,36 @@
             </div>
         </div>
         <script>
-            // function alert(desc,title="提示"){
-            //     $('#modeal_desc').html(desc);
-            //     $('#modeal_title').html(title);
-            //     $('#modal').modal();
-            // }
+            function alert(desc,title="提示"){
+                $('#modeal_desc').html(desc);
+                $('#modeal_title').html(title);
+                $('#modal').modal();
+            }
             function submit() {
-                var $inputs = $("card input");
-                var data = {contest_id:<{$coid}>};
-                for (var i = 0; i < $inputs.length; ++i) {
-                    var input = $inputs[i];
-                    if (input.id == 'group_name') data['group_name'] = input.value;
-                    else {
-                        var off = input.id.lastIndexOf('_');
-                        var name = input.id.substr(0, off);
-                        var order = input.id.substr(off + 1);
-                        if (data[order] == undefined) data[order] = {};
-                        data[order][name] = input.value;
-                    }
-                    if (input.required && input.value == "") {
-                        alert("请填写所有应填项");
-                        return;
-                    }
-                }
-                $.post("/ajax/RegisterContest", data, (data, status) => {
-                    data = JSON.parse(data);
-                    alert(data.desc);
-                    if (data.data != null) setTimeout(() => location.href=data.data, 1000);
-                }).fail((req) => {
-                    alert("发生错误");
-                });
+                // var $inputs = $("card input");
+                // var data = {contest_id:<{$coid}>};
+                // for (var i = 0; i < $inputs.length; ++i) {
+                //     var input = $inputs[i];
+                //     if (input.id == 'group_name') data['group_name'] = input.value;
+                //     else {
+                //         var off = input.id.lastIndexOf('_');
+                //         var name = input.id.substr(0, off);
+                //         var order = input.id.substr(off + 1);
+                //         if (data[order] == undefined) data[order] = {};
+                //         data[order][name] = input.value;
+                //     }
+                //     if (input.required && input.value == "") {
+                //         alert("请填写所有应填项");
+                //         return;
+                //     }
+                // }
+                // $.post("/ajax/RegisterContest", data, (data, status) => {
+                //     data = JSON.parse(data);
+                //     alert(data.desc);
+                //     if (data.data != null) setTimeout(() => location.href=data.data, 1000);
+                // }).fail((req) => {
+                //     alert("发生错误");
+                // });
             }
             function edit() {
                 $("card input[id!=\"SID_0\"]").removeAttr("disabled");
