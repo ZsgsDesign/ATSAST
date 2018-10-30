@@ -75,6 +75,8 @@ function validateOPENID($OPENID, $mode='browser')
             echo json_encode($output);
             exit;
         } else {
+            session_unset();
+            session_destroy();
             return 0;
         }
     } else {

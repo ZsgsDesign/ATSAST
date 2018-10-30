@@ -20,7 +20,7 @@
         <form action="/search" method="get" class="form-inline my-2 my-lg-0 mundb-inline">
             <input class="form-control mr-sm-2 atsast-searchBox" name="q" type="search" placeholder="搜索" aria-label="搜索">
         </form>
-      <{if @$_SESSION['OPENID'] }>
+      <{if $islogin }>
         <li class="nav-item dropdown mundb-btn-ucenter">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><{$greeting}>，<{$userinfo['display_name']}></a>
             <div class="dropdown-menu dropdown-menu-right">

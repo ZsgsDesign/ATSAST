@@ -1,8 +1,51 @@
-<div class="am-container">
-<h1>恭喜！您的邮箱已经被激活！</h1>
-<{if $islogin}>
-<p><a href="/">去答题</a></p>
-<{else}>
-<p><a href="/account/login">去登录</a></p>
-<{/if}>
+<style>
+	.atsast-middle-container{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-shrink: 0;
+		flex-grow: 1;
+	}
+	.card-img-top{
+		height:15rem;
+		width:100%;
+		font-size:6rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color:rgba(255,255,255,0.75);
+	}
+	.card{
+		margin-bottom:30px;
+	}
+	label{
+		left: 0;
+	}
+	form{
+		margin-bottom: 0;
+	}
+	button{
+		margin-top:1rem;
+	}
+</style>
+<div class="container mundb-standard-container atsast-middle-container">
+	<div class="row atsast-middle-container">
+		<div class="col-md-8 col-sm-12">
+			<div class="card">
+				<div class="card-img-top bg-<{$color}>">
+					<i class="MDI <{$icon}>"></i>
+				</div>
+				<div class="card-body text-center">
+					<h5 class="card-title"><{$status}></h5>
+					<p class="card-text"><{$msg}></p>
+					<a href="/account/" class="btn btn-outline-<{$color}>">用户中心</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<script>
+	setTimeout(function(){
+		location.href="/account/";
+	}, 1000);
+</script>
