@@ -9,13 +9,13 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
-            "version"=>"0.5.3 Beta",
-            "subversion"=>"201810310017",
+            "version"=>"0.5.4 Beta",
+            "subversion"=>"201810311618",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
         $this->bg="";
-        session_start();
+        if (!session_id()) session_start();
         // error_reporting(0);
         header("Content-type: text/html; charset=utf-8");
         require(APP_DIR.'/protected/include/functions.php');

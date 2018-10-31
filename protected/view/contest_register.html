@@ -192,14 +192,15 @@
             </div>
         </div>
         <script>
-            function alert(desc,title="提示"){
+            function alert(desc) {
+                var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
                 $('#modeal_desc').html(desc);
                 $('#modeal_title').html(title);
                 $('#modal').modal();
             }
             function submit() {
                 var $inputs = $("card input");
-                var data = {contest_id:<{$coid}>};
+                var data = { contest_id: <{$coid}> };
                 for (var i = 0; i < $inputs.length; ++i) {
                     var input = $inputs[i];
                     if (input.id == 'group_name') data['group_name'] = input.value;
@@ -215,19 +216,19 @@
                         return;
                     }
                 }
-                $.post("/ajax/RegisterContest", data, (data, status) => {
+                $.post("/ajax/RegisterContest", data, function (data, status) {
                     data = JSON.parse(data);
                     alert(data.desc);
-                    if (data.data != null) setTimeout(() => location.href=data.data, 1000);
-                }).fail((req) => {
+                    if (data.data != null) setTimeout(function () { return location.href = data.data; }, 1000);
+                }).fail(function (req) {
                     alert("发生错误");
                 });
             }
             function edit() {
                 $("card input[id!=\"SID_0\"]").removeAttr("disabled");
-                var btn=$("#btn_submit_3")[0];
-                btn.innerText="提交修改";
-                btn.onclick=submit;
+                var btn = $("#btn_submit_3")[0];
+                btn.innerText = "提交修改";
+                btn.onclick = submit;
             }
         </script>
     </div>

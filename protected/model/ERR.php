@@ -37,6 +37,7 @@ class ERR {
 			'2000' => "Account-Related Error",
 
 			'2001' => "请先登录",
+			'2002' => "未找到该用户",
 
 			'3000' => "Course-Related Error",
 

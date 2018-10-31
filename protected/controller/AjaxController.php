@@ -415,4 +415,18 @@ class AjaxController extends BaseController
         ));
         SUCCESS::Catcher("修改成功", "/account/contests");
     }
+
+    public function actionRetrievePassword(){
+        if(!arg("email")) ERR::Catcher(1003);
+        $email=arg("email");
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) ERR::Catcher(1004);
+        $users=new Model("users");
+        $user_info=$users->find(array("email=:email",":email"=>$email));
+        if(empty($user_info)) ERR::Catcher(2002);
+        $uid=$user_info['uid'];
+        $OPENID=$user_info['OPENID'];
+        $result=AccountController::sendRetrievePasswordEmail($email,$uid,$OPENID);
+        if($result) SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
+        else ERR::Catcher(1002);
+    }
 }

@@ -439,7 +439,8 @@
             loadJsAsync2("https://static.1cf.co/js/highlight.min.js");
         }, false);
 
-        function alert(desc,title="提示"){
+        function alert(desc) {
+            var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
             $('#modeal_desc').html(desc);
             $('#modeal_title').html(title);
             $('#modal').modal();
