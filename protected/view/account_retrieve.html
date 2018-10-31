@@ -40,6 +40,17 @@
 						<h5 class="card-title"><{$status}></h5>
 						<p class="card-text"><{$msg}></p>
 						<{if $color == "info"}>
+							<{if $step==0 }>
+								<div class="form-group text-left">
+									<label for="password" class="bmd-label-floating">注册使用的邮箱</label>
+									<input type="email" name="email" class="form-control" id="email" required>
+								</div>
+								<input name="id" type="hidden" value="<{$id}>">
+								<input name="ret" type="hidden" value="<{$ret}>">
+								<div class="text-right">
+									<button onclick="sendRet()" class="btn btn-danger">找回密码</button>
+								</div>							
+							<{ else }>
 							<form action="#" method="POST">
 								<div class="form-group text-left">
 									<label for="password" class="bmd-label-floating">新的密码</label>
@@ -56,6 +67,7 @@
 									<button type="submit" class="btn btn-danger">更新密码</button>
 								</div>
 							</form>
+							<{/if}>
 						<{elseif $color=="success"}>
 						<a href="/account/" class="btn btn-outline-<{$color}>">用户中心</a>
 						<{/if}>
@@ -70,5 +82,53 @@
 	setTimeout(function(){
 		location.href="/account/";
 	}, 1000);
+</script>
+<{/if}>
+<{if $step==0 }>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="modeal_title"></h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<p id="modeal_desc"></p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+		</div>
+		</div>
+	</div>
+</div>
+<script>
+	function alert(desc) {
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
+        $('#modeal_desc').html(desc);
+        $('#modeal_title').html(title);
+        $('#modal').modal();
+    }
+	function sendRet(){
+		$.post({
+            url: "/ajax/RetrievePassword",
+            data: {
+				email: $("#email").val()
+			},
+            success: function (result) {
+                result = JSON.parse(result);
+                alert(result.desc);
+                if (result.ret == 200) {
+                    setInterval(function(){
+						location.href="/account/";
+					});
+                }
+            },
+            error: function (data) {
+                alert("发送邮件失败");
+            }
+        });
+	}
 </script>
 <{/if}>

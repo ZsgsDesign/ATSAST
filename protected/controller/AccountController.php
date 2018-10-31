@@ -126,7 +126,7 @@ class AccountController extends BaseController
                 mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
             }
             $_SESSION['OPENID']=$OPENID;
-            self::sendActivateEmail($email,$OPENID);
+            @self::sendActivateEmail($email,$OPENID);
             $this->jump("/");
 
         //echo json_encode($output);
@@ -328,6 +328,10 @@ class AccountController extends BaseController
         $this->title="找回密码";
         $this->bg="";
 
+        if($this->islogin){
+            return $this->jump("/");
+        }
+
 		$password=arg("password");
 		$this->step=1;
 		$this->status="重置密码";
@@ -365,10 +369,7 @@ class AccountController extends BaseController
 				}		
 			}
 		}else{
-			$this->status="重置密码失败";
-			$this->msg="抱歉，重置密码出了一些问题。";
-			$this->color="danger";
-			$this->icon="alert-circle-outline";
+            $this->step=0;
 		}
 	}
 }

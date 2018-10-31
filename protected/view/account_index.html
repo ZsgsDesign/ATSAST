@@ -80,10 +80,10 @@
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs nav-justified nav-tabs-material" id="accountTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link <{ if $current==0 }>active<{/if}>" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true"><span class="d-none d-lg-inline">使用您的 @SAST / 作业平台 账号</span>登录</a>
+                    <a class="nav-link <{ if $current==0 }>active<{/if}>" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true"><span class="d-none d-lg-inline">使用您的 ATSAST 账号</span>登录</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <{ if $current==1 }>active<{/if}>" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">注册<span class="d-none d-lg-inline">一个新的 @SAST 账号</span></a>
+                    <a class="nav-link <{ if $current==1 }>active<{/if}>" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">注册<span class="d-none d-lg-inline">一个新的 ATSAST 账号</span></a>
                 </li>
                 <div class="nav-tabs-indicator" id="nav-tabs-indicator" style="left: <{ if $current==0 }>0px<{else}>50%<{/if}>;"></div>
                 </ul>
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button type="button" class="btn btn-secondary">忘记密码？</button>
+                                <a href="/account/retrieve"><button type="button" class="btn btn-secondary">忘记密码？</button></a>
                                 <button type="submit" class="btn btn-danger">登录</button>
                             </div>
                         </form>
