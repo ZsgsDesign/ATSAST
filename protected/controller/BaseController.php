@@ -15,6 +15,13 @@ class BaseController extends Controller
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
         $this->bg="";
+
+        // For the convenience of proxy
+        $this->ATSAST_DOMAIN=CONFG::GET("ATSAST_DOMAIN");
+        $this->ATSAST_CDN=CONFG::GET("ATSAST_CDN");
+        if(isset($_SERVER["HTTP_ATSAST_DOMAIN"])) $this->ATSAST_DOMAIN=$_SERVER["HTTP_ATSAST_DOMAIN"];
+        if(isset($_SERVER["HTTP_ATSAST_CDN"])) $this->ATSAST_CDN=$_SERVER["HTTP_ATSAST_CDN"];
+        
         if (!session_id()) session_start();
         // error_reporting(0);
         header("Content-type: text/html; charset=utf-8");

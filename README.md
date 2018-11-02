@@ -30,9 +30,9 @@ class CONFIG {
 			"ATSAST_MYSQL_DATABASE"=>"",
 			"ATSAST_MYSQL_PASSWORD"=>"",
 
-			"ATSAST_SALT"=>"",
-			"ATSAST_EMAIL_DOMAIN"=>"",
-			"ATSAST_DOMAIN"=>""
+			"ATSAST_CDN"=>"https://static.1cf.co",
+			"ATSAST_DOMAIN"=>"https://mundb.xyz",
+			"ATSAST_SALT"=>"@SAST+1s"
 		);
 		return $config[$KEY];
 	}

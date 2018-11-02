@@ -42,7 +42,7 @@ class AjaxController extends BaseController
                     $submit_time=date("Y-m-d H:i:s");
 
                     if(strtotime($submit_time) > strtotime($due_time)){
-                        ERR::Catcher(3005);
+                        ERR::Catcher(3006);
                     }
 
                     if (empty($homework_submit_status)) {
