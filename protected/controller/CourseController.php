@@ -37,7 +37,7 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->detail=$details;
                 if ($this->islogin) {
-                    $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid from syllabus as s left join sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+                    $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
                 } else {
                     $syllabus_info=$syllabus->findAll(array("cid=:cid",":cid"=>$cid));
                 }
@@ -91,7 +91,8 @@ class CourseController extends BaseController
                 $result['creator_logo']=$creator['logo'];
                 $this->result=$result;
                 $this->detail=$details;
-                $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid from syllabus as s left join sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+                $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+                // 关联查询sign的原因：历史遗留
                 $this->instructor=$instructor_info;
                 $this->syllabus=$syllabus_info;
                 // var_dump($syllabus_info);
@@ -170,7 +171,7 @@ class CourseController extends BaseController
             $syid=arg("syid");
             if (is_numeric($cid) && is_numeric($syid)) {
                 $this->cid=$cid;
-                $script=new Model("script");
+                $script=new Model("syllabus_script");
                 $organization=new Model("organization");
                 $syllabus=new Model("syllabus");
                 $result=$db->find(array("cid=:cid",":cid"=>$cid));
@@ -181,9 +182,12 @@ class CourseController extends BaseController
                 if (empty($register_status)) {
                     return $this->jump("/course/$cid/detail");
                 }
-                $syllabus_info=$syllabus->find(array("cid=:cid",":cid"=>$cid));
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("/courses");
+                }
+                if($syllabus_info["script"]==0){
+                    return $this->jump("/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
@@ -243,6 +247,9 @@ class CourseController extends BaseController
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("/courses");
+                }
+                if($syllabus_info["homework"]==0){
+                    return $this->jump("/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
@@ -313,7 +320,7 @@ class CourseController extends BaseController
             $syid=arg("syid");
             if (is_numeric($cid) && is_numeric($syid)) {
                 $this->cid=$cid;
-                $sign=new Model("sign");
+                $sign=new Model("syllabus_sign");
                 $organization=new Model("organization");
                 $syllabus=new Model("syllabus");
                 $result=$db->find(array("cid=:cid",":cid"=>$cid));
@@ -324,9 +331,12 @@ class CourseController extends BaseController
                 if (empty($register_status)) {
                     return $this->jump("/course/$cid/detail");
                 }
-                $syllabus_info=$syllabus->find(array("cid=:cid",":cid"=>$cid));
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("/courses");
+                }
+                if($syllabus_info["signed"]==0){
+                    return $this->jump("/course/$cid/detail");
                 }
                 $sign_status=$sign->find(array("cid=:cid and syid=:syid and uid=:uid",":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
                 if (empty($sign_status)) {
@@ -390,7 +400,7 @@ class CourseController extends BaseController
                     return $this->jump("/course/$cid/");
                 }
 
-                $syllabus_info=$syllabus->find(array("cid=:cid",":cid"=>$cid));
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("/courses");
@@ -464,7 +474,7 @@ class CourseController extends BaseController
                     return $this->jump("/course/$cid/detail");
                 }
 
-                $syllabus_info=$syllabus->find(array("cid=:cid",":cid"=>$cid));
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("/courses");
@@ -503,6 +513,58 @@ class CourseController extends BaseController
                     }
                     $this->homework_submit=$homework_submit_info;
                 }
+            } else {
+                $this->jump("/courses");
+            }
+        } else {
+            $this->jump("/courses");
+        }
+    }
+
+    public function actionFeedBack()
+    {
+        $this->url="course/feedback";
+        $this->title="课堂反馈";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $homework=new Model("homework");
+                $homework_submit=new Model("homework_submit");
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $feedback=new Model("syllabus_feedback");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $course_register=new Model("course_register");
+                if ($this->islogin) {
+                    $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
+                }
+                if (empty($register_status)) {
+                    return $this->jump("/course/$cid/detail");
+                }
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("/courses");
+                }
+                if($syllabus_info["feedback"]==0){
+                    return $this->jump("/course/$cid/detail");
+                }
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                $feedback_submit_status=$feedback->find(array("cid=:cid and syid=:syid and uid=:uid",":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
+                $this->feedback_submit_status=$feedback_submit_status;
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
             } else {
                 $this->jump("/courses");
             }

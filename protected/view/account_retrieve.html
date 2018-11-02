@@ -48,7 +48,7 @@
 								<input name="id" type="hidden" value="<{$id}>">
 								<input name="ret" type="hidden" value="<{$ret}>">
 								<div class="text-right">
-									<button onclick="sendRet()" class="btn btn-danger">找回密码</button>
+									<button onclick="sendRet()" class="btn btn-danger" id="actionRet">找回密码</button>
 								</div>							
 							<{ else }>
 							<form action="#" method="POST">
@@ -111,6 +111,7 @@
         $('#modal').modal();
     }
 	function sendRet(){
+		$("#actionRet").attr("disabled",true);
 		$.post({
             url: "/ajax/RetrievePassword",
             data: {
@@ -127,6 +128,7 @@
             },
             error: function (data) {
                 alert("发送邮件失败");
+				$("#actionRet").attr("disabled",false);
             }
         });
 	}

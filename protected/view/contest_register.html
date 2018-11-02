@@ -220,6 +220,7 @@
                     data = JSON.parse(data);
                     alert(data.desc);
                     if (data.data != null) setTimeout(function () { return location.href = data.data; }, 1000);
+                    // 这段注释用来纪念刁老板被祭天
                 }).fail(function (req) {
                     alert("发生错误");
                 });

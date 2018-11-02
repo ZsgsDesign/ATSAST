@@ -42,7 +42,7 @@ class AjaxController extends BaseController
                     $submit_time=date("Y-m-d H:i:s");
 
                     if(strtotime($submit_time) > strtotime($due_time)){
-                        ERR::Catcher(3001);
+                        ERR::Catcher(3005);
                     }
 
                     if (empty($homework_submit_status)) {
@@ -103,6 +103,62 @@ class AjaxController extends BaseController
                 );
                 $bug->create($newrow);
                 SUCCESS::Catcher("提交成功");
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionSubmitFeedBack()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if ( !is_null(arg("rank")) && !is_null(arg("cid")) && !is_null(arg("syid")) ) {
+            $rank=intval(arg("rank"));
+            $desc=arg("desc");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if ( $rank===0 || $rank===1 ) {
+                $feedback=new Model("syllabus_feedback");
+                $syllabus=new Model("syllabus");
+                $course_register=new Model("course_register");
+                $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
+                $feedback_submit_status=$feedback->find(array("cid=:cid and syid=:syid and uid=:uid",":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
+
+                if (empty($register_status)) {
+                    ERR::Catcher(3001);
+                }
+
+                $submit_time=date("Y-m-d H:i:s");
+                if (empty($feedback_submit_status)) {
+                    $feedback->create(array(
+                        "cid"=>$cid,
+                        "syid"=>$syid,
+                        "uid"=>$this->userinfo['uid'],
+                        "desc"=>$desc,
+                        "rank"=>$rank,
+                        "feedback_time"=>$submit_time,
+                    ));
+                    SUCCESS::Catcher("提交成功");
+                } else {
+                    $feedback->update(
+                        array(
+                            "cid=:cid and syid=:syid and uid=:uid",
+                            ":cid"=>$cid,
+                            ":syid"=>$syid,
+                            ":uid"=>$this->userinfo['uid']
+                        ),
+                        array(
+                            "desc"=>$desc,
+                            "rank"=>$rank,
+                            "feedback_time"=>$submit_time,
+                        )
+                    );
+                    SUCCESS::Catcher("重新提交成功");
+                }
             } else {
                 ERR::Catcher(1004);
             }

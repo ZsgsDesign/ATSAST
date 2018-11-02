@@ -19,6 +19,7 @@ $config = array(
         'course/<cid>/view_homework/<syid>/details/<uid>'    => 'course/view_homework_details',
         'course/<cid>/view_homework/<syid>'                  => 'course/view_homework',
         'course/<cid>/sign/<syid>'                           => 'course/sign',
+        'course/<cid>/feedback/<syid>'                       => 'course/feedback',
         'course/<cid>/homework/<syid>'                       => 'course/homework',
         'course/<cid>/script/<syid>'                         => 'course/script',
         'course/<cid>/<a>/'                                  => 'course/<a>',
