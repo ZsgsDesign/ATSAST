@@ -26,7 +26,9 @@ class ERR {
     {
         $ERR_DESC=array(
             
-            '1000' => "Unspecified Error",
+            '1000' => "Unspecified Error",  /** Under normal condictions those errors shouldn't displayed to end users unless they attempt to do so
+                                             *  some submissions should be intercepted by the frontend before the request sended 
+                                             */
             '1001' => "Internal Sever Error : SECURE_VALUE 非法",
             '1002' => "内部服务器错误：操作失败",
             '1003' => "内部服务器错误：参数不全",
