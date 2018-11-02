@@ -10,15 +10,15 @@ class BaseController extends Controller
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
             "version"=>"0.6.0 Beta",
-            "subversion"=>"201811020837",
+            "subversion"=>"201811020916",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
         $this->bg="";
 
         // For the convenience of proxy
-        $this->ATSAST_DOMAIN=CONFG::GET("ATSAST_DOMAIN");
-        $this->ATSAST_CDN=CONFG::GET("ATSAST_CDN");
+        $this->ATSAST_DOMAIN=CONFIG::GET("ATSAST_DOMAIN");
+        $this->ATSAST_CDN=CONFIG::GET("ATSAST_CDN");
         if(isset($_SERVER["HTTP_ATSAST_DOMAIN"])) $this->ATSAST_DOMAIN=$_SERVER["HTTP_ATSAST_DOMAIN"];
         if(isset($_SERVER["HTTP_ATSAST_CDN"])) $this->ATSAST_CDN=$_SERVER["HTTP_ATSAST_CDN"];
         
