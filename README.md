@@ -31,7 +31,7 @@ class CONFIG {
 			"ATSAST_MYSQL_PASSWORD"=>"",
 
 			"ATSAST_CDN"=>"https://static.1cf.co",
-			"ATSAST_DOMAIN"=>"https://mundb.xyz",
+			"ATSAST_DOMAIN"=>"",
 			"ATSAST_SALT"=>"@SAST+1s"
 		);
 		return $config[$KEY];
@@ -45,3 +45,7 @@ class CONFIG {
 The type in the configuration of your mysql server to this file.
 
 **NOTICE :** Normally, you only need to set fields with DEBUG.
+
+## For Developers
+
+We highly recommend VSCode and PHPStorm for development. And do aware, **AT THIS MOMENT ALL PUSH ACTION WOULD DIRECTLY DEPLOIED TO PRODUCE ENVIRONMENT**. Please do not push unless gain permission from the leader.
