@@ -493,7 +493,7 @@ class AjaxController extends BaseController
         if (empty($result)) ERR::Catcher(1004);
         $contest_name=$result['name'];
         header('Content-Type: text/comma-separated-values; charset=gb2312');
-        header("Content-Disposition: attachment; filename=\"${contest_name}报名信息.csv\"");
+        header(iconv('utf-8', 'gb2312', "Content-Disposition: attachment; filename=\"${contest_name}报名信息.csv\""));
         $response='';
         $requires=explode(',', $result['require_register']);
         $max=$result['max_participants'];
