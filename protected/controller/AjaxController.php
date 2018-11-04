@@ -485,4 +485,53 @@ class AjaxController extends BaseController
         if($result) SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
         else ERR::Catcher(1002);
     }
+
+    public function actionExportContestRegisterInfo() {
+        if (!arg('contest_id')) ERR::Catcher(1003);
+        $contest=new Model('contest');
+        $result=$contest->find(['contest_id=:contest_id', ':contest_id'=>arg('contest_id')]);
+        if (empty($result)) ERR::Catcher(1004);
+        $contest_name=$result['name'];
+        header('Content-Type: text/comma-separated-values; charset=gb2312');
+        header("Content-Disposition: attachment; filename=\"${contest_name}报名信息.csv\"");
+        $response='';
+        $requires=explode(',', $result['require_register']);
+        $max=$result['max_participants'];
+        $grouped=$max>1;
+        $requirens=array();
+        $result=(new Model('contest_require_info'))->findAll();
+        foreach($result as $type) {
+            $requirens[$type['name']]=$type['placeholder'];
+        }
+        foreach($requires as $i=>$require) {
+            if (substr($require, 0, 1) == '*') $requires[$i]=substr($require, 1);
+            if (!$grouped) $response.=$requirens[$require].',';
+        }
+        if ($grouped) {
+            $response.='团队名,状态';
+            for($i=0; $i<$max; ++$i) {
+                foreach($requires as $require) {
+                    $response.=','.$requirens[$require];
+                }
+            }
+        } else $response.='状态';
+        $response.="\r\n";
+        $registers=(new Model('contest_register'))->findAll(['contest_id=:contest_id', ':contest_id'=>arg('contest_id')]);
+        $status=['1'=>'已通过','-1'=>'已拒绝','0'=>'未通过'];
+        foreach($registers as $register) {
+            $info=json_decode($register['info'], true);
+            if (!$grouped && !isset($info['members'])) $info=['members'=>[$info]];
+            if ($grouped) $response.=$info['team_name'].','.$status[$register['status']].',';
+            foreach($info['members'] as $member) {
+                foreach($requires as $require) {
+                    if (!isset($member[$require])) $member[$require]='';
+                    $response.=$member[$require].',';
+                }
+            }
+            if (!$grouped) $response.=$status[$register['status']];
+            $response.="\r\n";
+        }
+        echo iconv('utf-8', 'gb2312', $response);
+        exit;
+    }
 }
