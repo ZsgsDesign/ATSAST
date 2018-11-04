@@ -5,13 +5,13 @@ class BaseController extends Controller
     public $layout = "layout.html";
     public function init()
     {
-        // echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+        echo $_SERVER['REQUEST_URI'];
         $this->version_info=array(
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
             "version"=>"0.6.2 Beta",
-            "subversion"=>"20181104215950",
+            "subversion"=>"20181104221642",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
