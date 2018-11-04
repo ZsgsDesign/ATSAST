@@ -504,7 +504,7 @@ class AjaxController extends BaseController
             $requirens[$type['name']]=$type['placeholder'];
         }
         foreach($requires as $i=>$require) {
-            if (substr($require, 0, 1) == '*') $requires[$i]=substr($require, 1);
+            if (substr($require, 0, 1) == '*') $require=$requires[$i]=substr($require, 1);
             if (!$grouped) $response.=$requirens[$require].',';
         }
         if ($grouped) {
