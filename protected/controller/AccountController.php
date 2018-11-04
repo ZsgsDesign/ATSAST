@@ -84,7 +84,7 @@ class AccountController extends BaseController
                 return self::account_err_report("请不要皮这个系统");
             }
             if (!preg_match($pattern, $password)) {
-                return self::account_err_report("请设置6位以上密码，不要过长");
+                return self::account_err_report("请设置6位以上100位以下密码，只能包含字母、数字及下划线");
             }
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)==false) {
