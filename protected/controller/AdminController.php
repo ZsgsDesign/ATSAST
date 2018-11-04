@@ -36,9 +36,6 @@ class AdminController extends BaseController
             } else {
                 $r["parse_date"]=$r["start_date"]." ~ ".$r["end_date"];
             }
-            if($r["status"]==1) $r["parse_status"]='<span class="wemd-green-text"><i class="MDI checkbox-marked-circle-outline"></i> 已成功报名</span>';
-            else if($r["status"]==0) $r["parse_status"]='<span class="wemd-light-blue-text"><i class="MDI timer-sand"></i> 已提交报名</span>';
-            else if($r["status"]==-1) $r["parse_status"]='<span class="wemd-red-text"><i class="MDI alert-circle-outline"></i> 报名已被拒绝</span>';
         }
         $this->contest_result=$contest_result;
     }
