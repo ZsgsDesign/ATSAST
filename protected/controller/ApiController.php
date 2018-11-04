@@ -17,6 +17,7 @@ class ApiController extends BaseController
         $email=arg("email");
         $password=arg("password");
         $submit_time=date("Y-m-d H:i:s");
+        
         if (empty($password) || empty($email)) {
             ERR::Catcher(1003);
         }
