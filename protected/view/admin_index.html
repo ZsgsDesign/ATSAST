@@ -202,7 +202,7 @@
                         <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>比赛</p>
                         <p class="mundb-text-truncate-1 atsast-basic-info"> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
                         <a href="/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 比赛信息</button></a>
-                        <a href="/ajax/ExportContestRegisterInfo?contest_id=<{$r['contest_id']}>"><button class="btn btn-outline-warning"><i class="MDI eye"></i> 查看报名</button></a>
+                        <a href="/ajax/ExportContestRegisterInfo?contest_id=<{$c['contest_id']}>"><button class="btn btn-outline-warning"><i class="MDI eye"></i> 查看报名</button></a>
                     </div>
                 </contest>
             </div>
