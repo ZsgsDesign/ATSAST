@@ -336,7 +336,7 @@ class CourseController extends BaseController
                     return $this->jump("/courses");
                 }
                 if($syllabus_info["signed"]==0){
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("/course/$cid/detail2");
                 }
                 $sign_status=$sign->find(array("cid=:cid and syid=:syid and uid=:uid",":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
                 if (empty($sign_status)) {
