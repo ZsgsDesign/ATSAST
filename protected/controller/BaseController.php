@@ -9,8 +9,8 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
-            "version"=>"0.6.1 Beta",
-            "subversion"=>"20181104165024",
+            "version"=>"0.6.2 Beta",
+            "subversion"=>"20181104184235",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";

@@ -488,6 +488,12 @@ class AjaxController extends BaseController
 
     public function actionExportContestRegisterInfo() {
         if (!arg('contest_id')) ERR::Catcher(1003);
+        if(!$this->islogin) ERR::Catcher(2001);
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='contest_id' and type_value=:contest_id and clearance>0",":uid"=>$this->userinfo['uid'],":contest_id"=>arg('contest_id')));
+        if (empty($access_right)) {
+            ERR::Catcher(2003);
+        }
         $contest=new Model('contest');
         $result=$contest->find(['contest_id=:contest_id', ':contest_id'=>arg('contest_id')]);
         if (empty($result)) ERR::Catcher(1004);
