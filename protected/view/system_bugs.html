@@ -45,7 +45,7 @@
 
     function submit_bugs(){
         $("#submit").css("pointer-events","none");
-        $.post("/ajax/SubmitBugs",{
+        $.post("<{$ATSAST_DOMAIN}>/ajax/SubmitBugs",{
             title:$("#title").val(),
             desc:$("#desc").val()
         },function(result){
@@ -54,7 +54,7 @@
             alert(result.desc);
             if(result.result==200) {
                 setTimeout(function(){
-                    location.href="/system/logs";
+                    location.href="<{$ATSAST_DOMAIN}>/system/logs";
                 },1000);
             }
             $("#submit").css("pointer-events","auto");

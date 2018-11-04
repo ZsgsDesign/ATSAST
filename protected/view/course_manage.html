@@ -200,7 +200,7 @@
         </div>
         <p class="d-none d-lg-block"><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
         <h1 class="d-none d-lg-block"><{$result['course_name']}></h1>
-        <a href="/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-lg btn-raised d-none d-lg-inline-block"><i class="MDI check-circle-outline"></i> 编辑</button></a>
+        <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-lg btn-raised d-none d-lg-inline-block"><i class="MDI check-circle-outline"></i> 编辑</button></a>
     </div>
 </div>
 </div>
@@ -208,7 +208,7 @@
     <div class="d-block d-lg-none atsast-title">
         <h1><{$result['course_name']}></h1>
         <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
-        <a href="/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-raised d-inline-block d-lg-none"><i class="MDI check-circle-outline"></i> 编辑</button></a>
+        <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-raised d-inline-block d-lg-none"><i class="MDI check-circle-outline"></i> 编辑</button></a>
     </div>
     <section class="mb-5">
 

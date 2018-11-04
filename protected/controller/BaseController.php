@@ -10,7 +10,7 @@ class BaseController extends Controller
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
             "version"=>"0.6.2 Beta",
-            "subversion"=>"20181104184235",
+            "subversion"=>"20181104210956",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
@@ -20,7 +20,7 @@ class BaseController extends Controller
         $this->ATSAST_DOMAIN=CONFIG::GET("ATSAST_DOMAIN");
         $this->ATSAST_CDN=CONFIG::GET("ATSAST_CDN");
         if(isset($_SERVER["HTTP_ATSAST_DOMAIN"])) $this->ATSAST_DOMAIN=$_SERVER["HTTP_ATSAST_DOMAIN"];
-        if(isset($_SERVER["HTTP_ATSAST_CDN"])) $this->ATSAST_CDN=$_SERVER["HTTP_ATSAST_CDN"];
+        if(isset($_SERVER["HTTP_ATSAST_STATIC"])) $this->ATSAST_CDN=$_SERVER["HTTP_ATSAST_STATIC"];
         
         if (!session_id()) session_start();
         // error_reporting(0);

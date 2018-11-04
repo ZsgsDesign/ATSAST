@@ -10,7 +10,7 @@ class AdminController extends BaseController
         if ($this->islogin) {
             $OPENID=$_SESSION['OPENID'];
         } else {
-            return $this->jump("/");
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
         }
         
         $detail=getuserinfo($OPENID);
@@ -21,7 +21,7 @@ class AdminController extends BaseController
         if ($access_right) {
             ;
         } else {
-            return $this->jump("/");
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
         }
 
         $courses=new Model("courses");

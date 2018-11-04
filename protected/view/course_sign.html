@@ -65,7 +65,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">签到<{ if $sign_status>0 }>成功<{else}>失败<{/if}></h5>
                         <p class="card-text"><{ if $sign_status==1 }>签到成功<{else if $sign_status==-1 }>已经签到过了哦<{else}>签到码错误<{/if}>，请返回。</p>
-                        <a href="/course/<{$cid}>/detail" class="btn btn-primary">点击返回</a>
+                        <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail" class="btn btn-primary">点击返回</a>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
 </div>
 <script>
     setTimeout(function(){
-        location.href="/course/<{$cid}>/detail";
+        location.href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail";
     }, 1000);
 </script>
 <{ /if }>

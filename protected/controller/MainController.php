@@ -29,12 +29,12 @@ class MainController extends BaseController
 
     public function actionCourse()
     {
-        $this->jump("/courses");
+        $this->jump("{$this->ATSAST_DOMAIN}/courses");
     }
     
     public function actionSystem()
     {
-        $this->jump("/system/logs");
+        $this->jump("{$this->ATSAST_DOMAIN}/system/logs");
     }
 
     public function actionContests()
@@ -77,7 +77,7 @@ class MainController extends BaseController
         $this->title="搜索结果";
         $keyword=arg("q");
         if (is_null($keyword)) {
-            $this->jump("/");
+            $this->jump("{$this->ATSAST_DOMAIN}/");
         } else {
             $this->keyword=$keyword;
         }
@@ -85,11 +85,11 @@ class MainController extends BaseController
 
     public function actionAccount()
     {
-        $this->jump("/account/");
+        $this->jump("{$this->ATSAST_DOMAIN}/account/");
     }
 
     public function actionAdmin()
     {
-        $this->jump("/admin/");
+        $this->jump("{$this->ATSAST_DOMAIN}/admin/");
     }
 }

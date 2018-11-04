@@ -269,7 +269,7 @@
                   </ul>
                 </div>
                 <div class="card-body text-right">
-                  <a href="/account/settings#user-info"><button class="btn btn-primary">修改基本信息</button></a>
+                  <a href="<{$ATSAST_DOMAIN}>/account/settings#user-info"><button class="btn btn-primary">修改基本信息</button></a>
                 </div>
             </div>
         </div>
@@ -281,7 +281,7 @@
                         <p><{ $detail['title'] }></p>
                     </div>
                     <div class="atsast-title-acton">
-                            <a href="/account/settings#cover-image"><button type="button" class="btn btn-outline-light"><i class="MDI image-filter-hdr"></i> 修改封面</button></a>
+                            <a href="<{$ATSAST_DOMAIN}>/account/settings#cover-image"><button type="button" class="btn btn-outline-light"><i class="MDI image-filter-hdr"></i> 修改封面</button></a>
                     </div>
                 </div>
             </div>
@@ -293,7 +293,7 @@
                 <{else}>
                     <{foreach $result as $r}>
                     <div class="col-lg-6 col-md-12 atsast-courses">
-                        <a href="/course/<{$r['cid']}>/detail">
+                        <a href="<{$ATSAST_DOMAIN}>/course/<{$r['cid']}>/detail">
                             <course>
                                 <div class="wemd-<{$r['course_color']}>">
                                     <i class="devicon-<{$r['course_logo']}>-plain"></i>
@@ -331,8 +331,8 @@
                                 <h3 class="mundb-text-truncate-1"><{$c['name']}></h3>
                                 <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>比赛</p>
                                 <p class="mundb-text-truncate-1"> <{$c['parse_status'] nofilter }> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
-                                <a href="/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI note"></i> 查看详情</button></a>
-                                <a href="/contest/<{$c['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pen"></i> 查看报名信息</button></a>
+                                <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI note"></i> 查看详情</button></a>
+                                <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pen"></i> 查看报名信息</button></a>
                             </div>
                         </contest>
                     </div>
@@ -341,7 +341,7 @@
                 </div>
 
                 <div class="text-right mt-1">
-                    <a href="/account/contests/"><button class="btn btn-info">查看更多</button></a>
+                    <a href="<{$ATSAST_DOMAIN}>/account/contests/"><button class="btn btn-info">查看更多</button></a>
                 </div>
             </card>
 

@@ -142,8 +142,8 @@
         }
     }
 </style>
-<link rel="stylesheet" href="https://static.1cf.co/css/atom-one-dark.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="https://static.1cf.co/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
     <img src="https://1cf.co/searchEngine/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
@@ -186,7 +186,7 @@
                 <textarea class="form-control" name="desc" id="desc" rows="5" required><{ if $feedback_submit_status}><{ $feedback_submit_status['desc'] }><{/if}></textarea>
                 </div>
             <div class="text-right">
-                <a href="/course/<{$cid}>/"><button class="btn btn-default">取消</button></a>
+                <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/"><button class="btn btn-default">取消</button></a>
                 <button type="submit" id="submit" class="btn btn-outline-primary" onclick="submit_feedback()"><{ if $feedback_submit_status}>修改<{else}>提交<{/if}>反馈</button>
             </div>
         </div>
@@ -231,7 +231,7 @@
     function submit_feedback(){
         if(rankVal<0) return alert("请选择一个评价");
         $("#submit").css("pointer-events","none");
-        $.post("/ajax/SubmitFeedBack",{
+        $.post("<{$ATSAST_DOMAIN}>/ajax/SubmitFeedBack",{
             cid:<{$cid}>,
             syid:<{$syid}>,
             rank:rankVal,
@@ -242,7 +242,7 @@
             alert(result.desc);
             if(result.result==200) {
                 setTimeout(function(){
-                    location.href="/course/<{$cid}>/";
+                    location.href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/";
                 },1000);
             }
             $("#submit").css("pointer-events","auto");

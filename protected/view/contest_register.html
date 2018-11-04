@@ -216,7 +216,7 @@
                         return;
                     }
                 }
-                $.post("/ajax/RegisterContest", data, function (data, status) {
+                $.post("<{$ATSAST_DOMAIN}>/ajax/RegisterContest", data, function (data, status) {
                     data = JSON.parse(data);
                     alert(data.desc);
                     if (data.data != null) setTimeout(function () { return location.href = data.data; }, 1000);

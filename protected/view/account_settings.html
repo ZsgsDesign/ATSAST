@@ -131,13 +131,13 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <card class="img-card <{ if $detail['album']=='bing' }>album-selected<{/if}>" data-album="bing" onclick="changeAlbum(this)">
-                        <img src="https://static.1cf.co/img/bing.png">
+                        <img src="<{$ATSAST_CDN}>/img/bing.png">
                         <div>必应&trade;精选美图</div>
                     </card>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <card class="img-card <{ if $detail['album']=='njupt' }>album-selected<{/if}>" data-album="njupt" onclick="changeAlbum(this)">
-                        <img src="https://static.1cf.co/img/njupt.jpg">
+                        <img src="<{$ATSAST_CDN}>/img/njupt.jpg">
                         <div>南邮印象</div>
                     </card>
                 </div>
@@ -185,7 +185,7 @@
         if(!name) return alert("请填写用户名");
         else if(!real_name) return alert("请填写真实姓名");
         else {
-            $.post("/ajax/updateInfo",{
+            $.post("<{$ATSAST_DOMAIN}>/ajax/updateInfo",{
                 name:name,
                 real_name:real_name,
                 gender:gender
@@ -208,7 +208,7 @@
         }
         
         $.ajax({
-            url: "/ajax/UploadAvatar",
+            url: "<{$ATSAST_DOMAIN}>/ajax/UploadAvatar",
             type: "POST",
             data: data,
             contentType: false,
@@ -242,7 +242,7 @@
         return url;
     }
     function applyAlbum(){
-        $.post("/ajax/changeAlbum",{
+        $.post("<{$ATSAST_DOMAIN}>/ajax/changeAlbum",{
             album:album
         },function(result){
             result=JSON.parse(result);

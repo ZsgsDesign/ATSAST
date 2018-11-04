@@ -29,7 +29,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">报名<{ if $register_status }>成功<{else}>失败<{/if}></h5>
                         <p class="card-text">报名<{ if $register_status }>成功<{else}>失败<{/if}>，请返回页面查看。</p>
-                        <a href="/course/<{$cid}>/detail" class="btn btn-primary">点击返回</a>
+                        <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail" class="btn btn-primary">点击返回</a>
                     </div>
                 </div>
             </div>
@@ -37,6 +37,6 @@
 </div>
 <script>
     setTimeout(function(){
-        location.href="/course/<{$cid}>/detail";
+        location.href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail";
     }, 1000);
 </script>

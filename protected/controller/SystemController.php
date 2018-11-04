@@ -4,9 +4,9 @@ class SystemController extends BaseController
     public function actionIndex()
     {
         if (!($this->islogin)) {
-            return $this->jump("/account");
+            return $this->jump("{$this->ATSAST_DOMAIN}/account");
         }
-        $this->jump("/system/logs");
+        $this->jump("{$this->ATSAST_DOMAIN}/system/logs");
     }
     public function actionLogs()
     {
@@ -22,7 +22,7 @@ class SystemController extends BaseController
         $this->bg="";
 
         if (!($this->islogin)) {
-            return $this->jump("/account");
+            return $this->jump("{$this->ATSAST_DOMAIN}/account");
         }
     }
 }

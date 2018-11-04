@@ -4,9 +4,9 @@ class ContestController extends BaseController
     public function actionIndex()
     {
         if (arg("contest_id")) {
-            $this->jump("/contest/".arg("contest_id")."/detail");
+            $this->jump("{$this->ATSAST_DOMAIN}/contest/".arg("contest_id")."/detail");
         } else {
-            $this->jump("/contest");
+            $this->jump("{$this->ATSAST_DOMAIN}/contest");
         }
     }
 
@@ -25,7 +25,7 @@ class ContestController extends BaseController
                 $register=new Model("contest_register");
 
                 $basic_info=$contest->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$contest_id));
-                if(empty($basic_info))$this->jump("/contest");
+                if(empty($basic_info))$this->jump("{$this->ATSAST_DOMAIN}/contest");
                 $basic_info=$basic_info[0];
                 if ($basic_info["start_date"]==$basic_info["end_date"]) {
                     $basic_info["parse_date"]=$basic_info["start_date"];
@@ -62,10 +62,10 @@ class ContestController extends BaseController
                 }
                 $this->contest_detail_info=$contest_detail_info;
             } else {
-                $this->jump("/contest");
+                $this->jump("{$this->ATSAST_DOMAIN}/contest");
             }
         } else {
-            $this->jump("/contest");
+            $this->jump("{$this->ATSAST_DOMAIN}/contest");
         }
     }
 
@@ -83,10 +83,10 @@ class ContestController extends BaseController
             $userdb=new Model("users");
             $tmpdata=new Model("user_temp_info");
             // $result=$courses->find(array("contest_id=:contest_id",":contest_id"=>$coid));
-            // if (empty($result)) $this->jump("/contest");
+            // if (empty($result)) $this->jump("{$this->ATSAST_DOMAIN}/contest");
 
             $basic_info=$courses->query("select contest_id,c.name,creator,`desc`,type,start_date,end_date,`status`,due_register,image,o.`name` creator_name,require_register,min_participants,max_participants,tips from contest c left join organization o on c.creator = o.oid where c.status=1 and c.contest_id=:contest_id",array(":contest_id"=>$coid));
-            if(empty($basic_info))$this->jump("/contest");
+            if(empty($basic_info))$this->jump("{$this->ATSAST_DOMAIN}/contest");
 
 
             $basic_info=$basic_info[0];
@@ -161,7 +161,7 @@ class ContestController extends BaseController
             $this->registered=$registered;
             $this->isleader=$isleader;
         } else {
-            $this->jump("/contest");
+            $this->jump("{$this->ATSAST_DOMAIN}/contest");
         }
     }
 

@@ -200,7 +200,7 @@
         </div>
         <p class="d-none d-lg-block"><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
         <h1 class="d-none d-lg-block"><{$result['course_name']}></h1>
-        <{ if $islogin}><a href="/course/<{$cid}>/register"><button type="button" class="btn btn-<{ if $register_status }>success<{ else }>info<{ /if }> btn-lg btn-raised d-none d-lg-inline-block" <{ if $register_status }>disabled<{ /if }> ><i class="MDI <{ if $register_status }>check-circle-outline<{ else }>checkbox-marked-circle-outline<{ /if }>"></i> <{ if $register_status }>已<{ /if }>报名</button></a><{/if}>
+        <{ if $islogin}><a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/register"><button type="button" class="btn btn-<{ if $register_status }>success<{ else }>info<{ /if }> btn-lg btn-raised d-none d-lg-inline-block" <{ if $register_status }>disabled<{ /if }> ><i class="MDI <{ if $register_status }>check-circle-outline<{ else }>checkbox-marked-circle-outline<{ /if }>"></i> <{ if $register_status }>已<{ /if }>报名</button></a><{/if}>
     </div>
 </div>
 </div>
@@ -208,7 +208,7 @@
     <div class="d-block d-lg-none atsast-title">
         <h1><{$result['course_name']}></h1>
         <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
-        <{ if $islogin}><a href="/course/<{$cid}>/register"><button type="button" class="btn btn-<{ if $register_status }>success<{ else }>info<{ /if }> btn-raised d-inline-block d-lg-none" <{ if $register_status }>disabled<{ /if }> ><i class="MDI <{ if $register_status }>check-circle-outline<{ else }>checkbox-marked-circle-outline<{ /if }>"></i> <{ if $register_status }>已<{ /if }>报名</button></a><{/if}>
+        <{ if $islogin}><a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/register"><button type="button" class="btn btn-<{ if $register_status }>success<{ else }>info<{ /if }> btn-raised d-inline-block d-lg-none" <{ if $register_status }>disabled<{ /if }> ><i class="MDI <{ if $register_status }>check-circle-outline<{ else }>checkbox-marked-circle-outline<{ /if }>"></i> <{ if $register_status }>已<{ /if }>报名</button></a><{/if}>
     </div>
     <section class="mb-5">
 

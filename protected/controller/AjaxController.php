@@ -251,7 +251,7 @@ class AjaxController extends BaseController
                 mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
             }
             imagejpeg($dim, "/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid/$stamp.jpg", 100);
-            $avatar = "https://static.1cf.co/img/atsast/upload/$uid/$stamp.jpg";
+            $avatar = "{$this->ATSAST_CDN}/img/atsast/upload/$uid/$stamp.jpg";
             $users = new Model("users");
             $result = $users -> find(array("uid = :uid", ':uid' => $uid));
             if ($result) {
@@ -314,7 +314,7 @@ class AjaxController extends BaseController
                             mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
                         }
                         file_put_contents("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'], $filestream);
-                        $link="https://static.1cf.co/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'];
+                        $link="{$this->ATSAST_CDN}/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'];
                     } else {
                         ERR::Catcher(1005);
                     }
@@ -458,7 +458,7 @@ class AjaxController extends BaseController
                 "register_time"=>date("Y-m-d H:i:s"),
             ));
             if (!$result) ERR::Catcher(1002);
-            SUCCESS::Catcher("报名成功", "/account/contests");
+            SUCCESS::Catcher("报名成功", "{$this->ATSAST_DOMAIN}/account/contests");
         }
         $result=$registerdb->update(array(
             "uid=:uid and contest_id=:coid",
@@ -469,7 +469,7 @@ class AjaxController extends BaseController
             "status"=>$defaultStatus,
             "register_time"=>date("Y-m-d H:i:s"),
         ));
-        SUCCESS::Catcher("修改成功", "/account/contests");
+        SUCCESS::Catcher("修改成功", "{$this->ATSAST_DOMAIN}/account/contests");
     }
 
     public function actionRetrievePassword(){
@@ -481,7 +481,7 @@ class AjaxController extends BaseController
         if(empty($user_info)) ERR::Catcher(2002);
         $uid=$user_info['uid'];
         $OPENID=$user_info['OPENID'];
-        @$result=AccountController::sendRetrievePasswordEmail($email,$uid,$OPENID);
+        @$result=AccountController::sendRetrievePasswordEmail($email,$uid,$OPENID,$this->ATSAST_DOMAIN);
         if($result) SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
         else ERR::Catcher(1002);
     }

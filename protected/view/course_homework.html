@@ -252,8 +252,8 @@
         }
     }
 </style>
-<link rel="stylesheet" href="https://static.1cf.co/css/atom-one-dark.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="https://static.1cf.co/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
     <img src="https://1cf.co/searchEngine/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
@@ -306,7 +306,7 @@
                 </form>
                 <file-info>
                     <div>
-                        <img id="file_uploade_extension_<{$h['hid']}>" src="https://static.1cf.co/img/files/unknown.svg" onerror="this.src=unknown_svg;">
+                        <img id="file_uploade_extension_<{$h['hid']}>" src="<{$ATSAST_CDN}>/img/files/unknown.svg" onerror="this.src=unknown_svg;">
                     </div>
                     <div>
                         <h5 class="mundb-text-truncate-1" id="file_uploade_name_<{$h['hid']}>">尚未提交文件</h5>
@@ -343,7 +343,7 @@
     </div>
     <script>
         var unknown_svg='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 56 56" style="enable-background:new 0 0 56 56" xml:space="preserve"><g><path style="fill:%23e9e9e0" d="M36.985,0H7.963C7.155,0,6.5,0.655,6.5,1.926V55c0,0.345,0.655,1,1.463,1h40.074 c0.808,0,1.463-0.655,1.463-1V12.978c0-0.696-0.093-0.92-0.257-1.085L37.607,0.257C37.442,0.093,37.218,0,36.985,0z"/><polygon style="fill:%23d9d7ca" points="37.5,0.151 37.5,12 49.349,12"/><path style="fill:%23c8bdb8" d="M48.037,56H7.963C7.155,56,6.5,55.345,6.5,54.537V39h43v15.537C49.5,55.345,48.845,56,48.037,56z"/><circle style="fill:%23fff" cx="18.5" cy="47" r="3"/><circle style="fill:%23fff" cx="28.5" cy="47" r="3"/><circle style="fill:%23fff" cx="38.5" cy="47" r="3"/></g></svg>';
-        var require = { paths: { 'vs': 'https://static.1cf.co/vscode/vs' } };
+        var require = { paths: { 'vs': '<{$ATSAST_CDN}>/vscode/vs' } };
         var editor=Array,jsCnt=0,jsCnt2=0;
         function loadJsAsync(url){
             var body = document.getElementsByTagName('body')[0];
@@ -356,7 +356,7 @@
             jsNode.onload = function() {
                 jsCnt++;
                 if(jsCnt==1){
-                    require.config({ paths: { 'vs': 'https://static.1cf.co/vscode/vs' }});
+                    require.config({ paths: { 'vs': '<{$ATSAST_CDN}>/vscode/vs' }});
 
                     // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
                     // the default worker url location (used when creating WebWorkers). The problem here is that
@@ -367,9 +367,9 @@
                     getWorkerUrl: function(workerId, label) {
                         return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
                         self.MonacoEnvironment = {
-                            baseUrl: 'https://static.1cf.co/vscode/'
+                            baseUrl: '<{$ATSAST_CDN}>/vscode/'
                         };
-                        importScripts('https://static.1cf.co/vscode/vs/base/worker/workerMain.js');`
+                        importScripts('<{$ATSAST_CDN}>/vscode/vs/base/worker/workerMain.js');`
                         )}`;
                     }
                     };
@@ -420,7 +420,7 @@
                     <{/foreach}>
                     hljs.initHighlighting();
                     // 链式调用VSCODE
-                    loadJsAsync("https://static.1cf.co/vscode/vs/loader.js");
+                    loadJsAsync("<{$ATSAST_CDN}>/vscode/vs/loader.js");
                 }
             }
         }
@@ -429,14 +429,14 @@
                 <{ if $h['type']==3}>
                 <{ if isset($homework_submit[$h['hid']]['submit_content_slashed']) }>
                 $("#file_uploade_name_<{$h['hid']}>").html("<{$homework_submit[$h['hid']]['submit_content_slashed']}>".substring("<{$homework_submit[$h['hid']]['submit_content_slashed']}>".lastIndexOf('/')+1));
-                $("#file_uploade_extension_<{$h['hid']}>").attr("src","https://static.1cf.co/img/files/"+"<{$homework_submit[$h['hid']]['submit_content_slashed']}>".substring("<{$homework_submit[$h['hid']]['submit_content_slashed']}>".lastIndexOf('.')+1)+".svg");
+                $("#file_uploade_extension_<{$h['hid']}>").attr("src","<{$ATSAST_CDN}>/img/files/"+"<{$homework_submit[$h['hid']]['submit_content_slashed']}>".substring("<{$homework_submit[$h['hid']]['submit_content_slashed']}>".lastIndexOf('.')+1)+".svg");
                 $("#file_uploade_link_<{$h['hid']}>").attr("href","<{$homework_submit[$h['hid']]['submit_content_slashed']}>");
                 $("#file_uploade_link_<{$h['hid']}>").removeClass("d-none");
                 <{/if}>
                 <{/if}>
             <{/foreach}>
-            loadJsAsync2("https://static.1cf.co/js/marked.min.js");
-            loadJsAsync2("https://static.1cf.co/js/highlight.min.js");
+            loadJsAsync2("<{$ATSAST_CDN}>/js/marked.min.js");
+            loadJsAsync2("<{$ATSAST_CDN}>/js/highlight.min.js");
         }, false);
 
         function alert(desc) {
@@ -449,7 +449,7 @@
         function submit_code(ele){
             var code=editor[$(ele).attr("data-hid")].getValue();
             editor[$(ele).attr("data-hid")].updateOptions({ readOnly: true });
-            $.post("/ajax/SubmitCodes",{
+            $.post("<{$ATSAST_DOMAIN}>/ajax/SubmitCodes",{
                 content:code,
                 action:"submit",
                 cid:<{$cid}>,
@@ -479,7 +479,7 @@
             var files = ele.files;
             
             $.ajax({
-                url: "/ajax/SubmitFile",
+                url: "<{$ATSAST_DOMAIN}>/ajax/SubmitFile",
                 type: "POST",
                 data: data,
                 contentType: false,
@@ -492,7 +492,7 @@
                     alert(result.desc);
                     if (result.ret == 200) {
                         $("#file_uploade_name_"+hid).html(result.data.file_name);
-                        $("#file_uploade_extension_"+hid).attr("src","https://static.1cf.co/img/files/"+result.data.file_extension+".svg");
+                        $("#file_uploade_extension_"+hid).attr("src","<{$ATSAST_CDN}>/img/files/"+result.data.file_extension+".svg");
                         $("#file_uploade_link_"+hid).attr("href",result.data.file_link);
                         $("#file_uploade_link_"+hid).removeClass("d-none");
                         $("#btn_submit_"+hid).html("再次选择文件并提交");

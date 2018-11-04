@@ -4,9 +4,9 @@ class CourseController extends BaseController
     public function actionIndex()
     {
         if (arg("cid")) {
-            $this->jump("/course/".arg("cid")."/detail");
+            $this->jump("{$this->ATSAST_DOMAIN}/course/".arg("cid")."/detail");
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
     public function actionDetail()
@@ -27,7 +27,7 @@ class CourseController extends BaseController
                 $syllabus=new Model("syllabus");
                 $result=$db->find(array("cid=:cid",":cid"=>$cid));
                 if (empty($result)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid));
@@ -55,10 +55,10 @@ class CourseController extends BaseController
                 // var_dump($syllabus_info);
                 $this->cid=$cid;
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -82,7 +82,7 @@ class CourseController extends BaseController
                 $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
                 $result=$db->find(array("cid=:cid",":cid"=>$cid));
                 if (empty($result) || empty($access_right)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid));
@@ -98,10 +98,10 @@ class CourseController extends BaseController
                 // var_dump($syllabus_info);
                 $this->cid=$cid;
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -111,7 +111,7 @@ class CourseController extends BaseController
         $this->title="报名";
 
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
         if (arg("cid")) {
             $cid=arg("cid");
@@ -121,7 +121,7 @@ class CourseController extends BaseController
                 $course_register=new Model("course_register");
                 $result=$db->find(array("cid=:cid",":cid"=>$cid));
                 if (empty($result)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
                 if (empty($register_status)) {
@@ -138,10 +138,10 @@ class CourseController extends BaseController
                 }
                 $this->cid=$cid;
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -151,7 +151,7 @@ class CourseController extends BaseController
         $this->title="新增课程";
         $this->bg="";
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -162,7 +162,7 @@ class CourseController extends BaseController
         $this->bg="";
 
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
 
         if (arg("cid") && arg("syid")) {
@@ -180,14 +180,14 @@ class CourseController extends BaseController
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
                 }
                 if (empty($register_status)) {
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 if($syllabus_info["script"]==0){
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
@@ -195,7 +195,7 @@ class CourseController extends BaseController
                 $result2=$script->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
 
                 if (empty($result2)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
 
                 $this->result=$result;
@@ -209,10 +209,10 @@ class CourseController extends BaseController
 
                 $this->script=$result2;
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -222,7 +222,7 @@ class CourseController extends BaseController
         $this->title="作业提交";
         $this->bg="";
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
 
         if (arg("cid") && arg("syid")) {
@@ -242,21 +242,21 @@ class CourseController extends BaseController
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
                 }
                 if (empty($register_status)) {
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 if($syllabus_info["homework"]==0){
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
                 $homework_details=$homework->findAll(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($homework_details)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 foreach ($homework_details as &$h) {
                     $h['homework_content_slashed'] = str_replace('\\', '\\\\', $h['homework_content']);
@@ -296,13 +296,13 @@ class CourseController extends BaseController
                         "submit_time"=>$submit_time,
                     );
                     $homework_submit->create($newrow);
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -311,7 +311,7 @@ class CourseController extends BaseController
         $this->url="course/sign";
         $this->title="签到";
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
 
         if (arg("cid") && arg("syid")) {
@@ -329,14 +329,14 @@ class CourseController extends BaseController
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
                 }
                 if (empty($register_status)) {
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 if($syllabus_info["signed"]==="0"){
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $sign_status=$sign->find(array("cid=:cid and syid=:syid and uid=:uid",":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
                 if (empty($sign_status)) {
@@ -347,7 +347,7 @@ class CourseController extends BaseController
                 $this->sign_status=$sign_status;
                 $this->syllabus=$syllabus_info;
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
 
             if (arg("password")) {
@@ -368,7 +368,7 @@ class CourseController extends BaseController
                 $this->sign_status=$sign_status;
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -378,7 +378,7 @@ class CourseController extends BaseController
         $this->title="查看作业提交";
         $this->bg="";
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
 
         if (arg("cid") && arg("syid")) {
@@ -397,13 +397,13 @@ class CourseController extends BaseController
                 $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
 
                 if (empty($access_right)) {
-                    return $this->jump("/course/$cid/");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
 
                 if (empty($result) || empty($syllabus_info)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
 
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
@@ -412,7 +412,7 @@ class CourseController extends BaseController
                 $homework_details=$homework->findAll(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
 
                 if (empty($homework_details)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
 
                 foreach ($homework_details as &$h) {
@@ -434,10 +434,10 @@ class CourseController extends BaseController
                     $this->homework_submit=$homework_submit_users;
                 }
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -447,7 +447,7 @@ class CourseController extends BaseController
         $this->title="查看作业提交详情";
         $this->bg="";
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
 
         if (arg("cid") && arg("syid") && arg("uid")) {
@@ -471,20 +471,20 @@ class CourseController extends BaseController
                 $this->user_details=$users->find(array("uid=:uid",":uid"=>$uid));
 
                 if (empty($access_right)) {
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
 
                 if (empty($result) || empty($syllabus_info)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
                 $homework_details=$homework->findAll(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($homework_details)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 foreach ($homework_details as &$h) {
                     $h['homework_content_slashed'] = str_replace('\\', '\\\\', $h['homework_content']);
@@ -514,10 +514,10 @@ class CourseController extends BaseController
                     $this->homework_submit=$homework_submit_info;
                 }
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 
@@ -527,7 +527,7 @@ class CourseController extends BaseController
         $this->title="课堂反馈";
         $this->bg="";
         if (!($this->islogin)) {
-            return $this->jump("/courses");
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
 
         if (arg("cid") && arg("syid")) {
@@ -548,14 +548,14 @@ class CourseController extends BaseController
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
                 }
                 if (empty($register_status)) {
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
                 if (empty($result) || empty($syllabus_info)) {
-                    return $this->jump("/courses");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 if($syllabus_info["feedback"]==0){
-                    return $this->jump("/course/$cid/detail");
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
@@ -566,10 +566,10 @@ class CourseController extends BaseController
                 $this->syllabus_info=$syllabus_info;
 
             } else {
-                $this->jump("/courses");
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
         } else {
-            $this->jump("/courses");
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
 }
