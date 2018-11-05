@@ -277,6 +277,51 @@
     instructor p {
         margin: 0;
     }
+
+        card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    card.img-card{
+        padding:0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    card.img-card > img{
+        width:100%;
+        height:10rem;
+        object-fit: cover;
+    }
+    card.img-card > div{
+        text-align: center;
+        padding: 1rem;
+    }
+
+    card.album-selected {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 40px!important;
+        transform: scale(1.02);
+    }
+    card:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+    h5{
+        margin-bottom:1rem;
+    }
+    .atsast-title-h5{
+        color: #7a8e97;
+        padding:0.5rem 1rem;
+    }
 </style>
 <link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
 <link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
@@ -296,11 +341,22 @@
         <h1><{$result['course_name']}></h1>
         <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
     </div>
-    <section class="mb-5">
-        <h2><{$syllabus_info['title']}> - 签到详情</h2>
-    </section>
+    <card class="mb-3">
+        <h5><i class="MDI file-document"></i> 课时详情</h5>
+        <div>
+            <h2><{$syllabus_info['title']}></h2>
+            <p><{$syllabus_info['desc']}></p>
+            <p>            <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> <{ $syllabus_info['time'] }></span>
+                <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> <{ $syllabus_info['location'] }></span></p>
+        </div>
+        <div class="text-right">
+            <button class="btn btn-default" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail'">查看课时详情</button>
+            <button type="submit" class="btn btn-outline-primary" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
+        </div>
+    </card>
+    <h5 class="atsast-title-h5">签到情况</h5>
     
-    <divclass="mb-5">
+    <div class="mb-5">
         <{foreach $sign_details as $s }>
         <user-card class="mb-3">
                 <div>

@@ -339,9 +339,22 @@
         <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
     </div>
     
-    <divclass="mb-5">
+    <div class="mb-5">
         <card class="mb-3">
-            <h5><i class="MDI pencil"></i> <{$syllabus_info['title']}> - 设置签到</h5>
+            <h5><i class="MDI file-document"></i> 课时详情</h5>
+            <div>
+                <h2><{$syllabus_info['title']}></h2>
+                <p><{$syllabus_info['desc']}></p>
+                <p>            <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> <{ $syllabus_info['time'] }></span>
+                    <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> <{ $syllabus_info['location'] }></span></p>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-default" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail'">查看课时详情</button>
+                <button type="submit" class="btn btn-outline-primary" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
+            </div>
+        </card>
+        <card class="mb-3">
+            <h5><i class="MDI pencil"></i> 设置签到</h5>
             <div>
                 <div class="form-group <{ if $syllabus_info[ 'signed']==="0" }>d-none<{/if}>" id="sign_code">
                     <label for="signed" class="bmd-label-floating">签到码</label>

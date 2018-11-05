@@ -193,7 +193,7 @@
         opacity: 0;
     }
 
-    file-info{
+    user-card{
         display: flex;
         align-items: center;
         max-width: 100%;
@@ -207,15 +207,15 @@
         border: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-    file-info a:hover{
+    user-card a:hover{
         text-decoration: none;
     }
 
-    file-info:hover {
+    user-card:hover {
         box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
     }
 
-    file-info > div:first-of-type{
+    user-card > div:first-of-type{
         display: flex;
         align-items: center;
         padding-right:1rem;
@@ -225,17 +225,17 @@
         flex-grow: 0;
     }
 
-    file-info img{
+    user-card img{
         display: block;
         width:100%;
     }
 
-    file-info > div:last-of-type{
+    user-card > div:last-of-type{
         flex-shrink: 1;
         flex-grow: 1;
     }
 
-    file-info p{
+    user-card p{
         margin:0;
     }
 
@@ -252,7 +252,33 @@
         }
     }
 
-    card {
+    instructor {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    instructor>img {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 2000px;
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+
+    instructor>div {
+        padding-left: 1rem;
+        flex-shrink: 1;
+        flex-grow: 1;
+    }
+
+    instructor p {
+        margin: 0;
+    }
+
+        card {
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
         border-radius: 4px;
@@ -263,9 +289,7 @@
         position: relative;
         border: 1px solid rgba(0, 0, 0, 0.15);
         margin-bottom: 2rem;
-        overflow: hidden;
     }
-
     card.img-card{
         padding:0;
         overflow: hidden;
@@ -292,9 +316,8 @@
     h5{
         margin-bottom:1rem;
     }
-    .atsast-title-h5{
-        color: #7a8e97;
-        padding:0.5rem 1rem;
+    .form-control:disabled, .form-control[disabled]{
+        background-color: transparent;
     }
 </style>
 <link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
@@ -315,37 +338,75 @@
         <h1><{$result['course_name']}></h1>
         <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
     </div>
-    <card class="mb-3">
-        <h5><i class="MDI file-document"></i> 课时详情</h5>
-        <div>
-            <h2><{$syllabus_info['title']}></h2>
-            <p><{$syllabus_info['desc']}></p>
-            <p>            <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> <{ $syllabus_info['time'] }></span>
-                <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> <{ $syllabus_info['location'] }></span></p>
-        </div>
-        <div class="text-right">
-            <button class="btn btn-default" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail'">查看课时详情</button>
-            <button type="submit" class="btn btn-outline-primary" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
-        </div>
-    </card>
-    <h5 class="atsast-title-h5">作业提交</h5>
-    <div id="accordion" class="mb-5">
-        <{foreach $homework_submit as $h }>
-        <card class="p-0">
-            <div class="card-header" id="heading<{$h['uid']}>">
-                <h5 class="mb-0">
-                    <button class="btn wemd-transparent" data-toggle="collapse" data-target="#collapse<{$h['uid']}>" aria-expanded="false" aria-controls="collapse<{$h['uid']}>">
-                        <{$h['real_name']}> <{$h['SID']}>
-                    </button>
-                </h5>
-            </div>
     
-            <div id="collapse<{$h['uid']}>" class="collapse" aria-labelledby="heading<{$h['uid']}>" data-parent="#accordion">
-                <div class="card-body">
-                    <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/view_homework/<{$syid}>/details/<{$h['uid']}>"><button type="button" class="btn btn-outline-primary">查看作业</button></a>
-                </div>
+    <div class="mb-5">
+        <card class="mb-3">
+            <h5><i class="MDI file-document"></i> 课时详情</h5>
+            <div>
+                    <div class="form-group">
+                        <label for="title" class="bmd-label-floating">课时标题</label>
+                        <input type="text" class="form-control" name="title" value="<{$syllabus_info['title']}>" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc" class="bmd-label-floating">课时内容</label>
+                        <input type="text" class="form-control" name="desc" value="<{$syllabus_info['desc']}>" id="desc" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time" class="bmd-label-floating">授课时间</label>
+                        <input type="text" class="form-control" name="time" value="<{$syllabus_info['time']}>" id="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="bmd-label-floating">授课地点</label>
+                        <input type="text" class="form-control" name="location" value="<{$syllabus_info['location']}>" id="location" required>
+                    </div>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-default" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
+                <button type="submit" class="btn btn-outline-primary" onclick="update()">更新信息</button>
             </div>
         </card>
-        <{/foreach}>
     </div>
 </div>
+
+<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modeal_title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modeal_desc"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function update(){        
+        $.post("<{$ATSAST_DOMAIN}>/ajax/updateSyllabusInfo",{
+            cid:<{$cid}>,
+            syid:<{$syid}>,
+            title:$("#title").val(),
+            desc:$("#desc").val(),
+            location:$("#location").val(),
+            time:$("#time").val()
+        },function(result){
+            result=JSON.parse(result);
+            alert(result.desc);
+        });
+
+    }
+
+    function alert(desc) {
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
+        $('#modeal_desc').html(desc);
+        $('#modeal_title').html(title);
+        $('#modal').modal();
+    }
+</script>

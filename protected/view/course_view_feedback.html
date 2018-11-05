@@ -251,7 +251,6 @@
             left: calc(50vw - 5rem);
         }
     }
-
     card {
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
@@ -292,6 +291,11 @@
     h5{
         margin-bottom:1rem;
     }
+    .emoticon-happy,.emoticon-sad{
+        display: inline-block;
+        transform: scale(2);
+        padding-right: 0.5rem;
+    }
     .atsast-title-h5{
         color: #7a8e97;
         padding:0.5rem 1rem;
@@ -328,21 +332,23 @@
             <button type="submit" class="btn btn-outline-primary" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
         </div>
     </card>
-    <h5 class="atsast-title-h5">作业提交</h5>
+    <h5 class="atsast-title-h5">课程反馈</h5>
     <div id="accordion" class="mb-5">
-        <{foreach $homework_submit as $h }>
+        <{foreach $feedback_submit as $h }>
         <card class="p-0">
             <div class="card-header" id="heading<{$h['uid']}>">
                 <h5 class="mb-0">
                     <button class="btn wemd-transparent" data-toggle="collapse" data-target="#collapse<{$h['uid']}>" aria-expanded="false" aria-controls="collapse<{$h['uid']}>">
-                        <{$h['real_name']}> <{$h['SID']}>
+                        <i class="MDI <{$h['rank']?'emoticon-happy':'emoticon-sad'}> <{$h['rank']?'wemd-green-text':'wemd-red-text'}>"></i> <{$h['real_name']}> <{$h['SID']}>
                     </button>
                 </h5>
             </div>
     
             <div id="collapse<{$h['uid']}>" class="collapse" aria-labelledby="heading<{$h['uid']}>" data-parent="#accordion">
                 <div class="card-body">
-                    <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/view_homework/<{$syid}>/details/<{$h['uid']}>"><button type="button" class="btn btn-outline-primary">查看作业</button></a>
+                        <p><strong>满意程度：</strong><{$h['rank']?"满意":"不满意"}></p>
+                        <p><strong>反馈时间：</strong><{$h['feedback_time']}></p>
+                        <p><strong>反馈详情：</strong><{$h['desc']}></p>
                 </div>
             </div>
         </card>

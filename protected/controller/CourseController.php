@@ -673,6 +673,141 @@ class CourseController extends BaseController
         }
     }
 
+    public function actionEdit_Video()
+    {
+        $this->url="course/edit_video";
+        $this->title="设置视频";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
+    public function actionEdit_Info()
+    {
+        $this->url="course/edit_info";
+        $this->title="编辑课时信息";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
+    public function actionEdit()
+    {
+        $this->url="course/edit";
+        $this->title="编辑课程信息";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            if (is_numeric($cid)) {
+                $this->cid=$cid;
+                $organization=new Model("organization");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                if (empty($result)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
     public function actionEdit_Script()
     {
         $this->url="course/edit_script";
@@ -723,6 +858,104 @@ class CourseController extends BaseController
                 $syllabus_script['script_slashed'] = str_replace(">", "\>", $syllabus_script['script_slashed']);
 
                 $this->syllabus_script=$syllabus_script;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
+    public function actionEdit_FeedBack()
+    {
+        $this->url="course/edit_feedback";
+        $this->title="设置反馈";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
+    public function actionView_FeedBack()
+    {
+        $this->url="course/edit_feedback";
+        $this->title="设置反馈";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $feedback=new Model("syllabus_feedback");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
+                $feedback_submit=$feedback->query("select * from syllabus_feedback s left join users u on s.uid = u.uid where s.cid=:cid and s.syid=:syid order by s.feedback_time asc", array(":cid"=>$cid,":syid"=>$syid));
+                $this->feedback_submit=$feedback_submit;
 
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");

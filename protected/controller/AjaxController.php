@@ -249,6 +249,113 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionUpdateVideoSettings()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("syid")) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $video_status=intval(arg("video_status"));
+                $video=arg("video");
+
+                if($video_status!=1 && $video_status!=0) ERR::Catcher(1004);
+
+                if($video_status){
+                    if (filter_var($video,FILTER_VALIDATE_URL)==false) {
+                        ERR::Catcher(1004);
+                    }
+                    $syllabus=new Model("syllabus");
+                    $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('video'=>$video));
+                    SUCCESS::Catcher("提交成功");
+                }else{
+                    $syllabus=new Model("syllabus");
+                    $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('video'=>0));
+                    SUCCESS::Catcher("提交成功");
+                }
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionUpdateSyllabusInfo()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("syid") && arg("title") && arg("desc") && arg("location") && arg("time")) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $title=arg("title");
+                $desc=arg("desc");
+                $location=arg("location");
+                $time=arg("time");
+
+                $syllabus=new Model("syllabus");
+                $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('title'=>$title,'desc'=>$desc,'location'=>$location,'time'=>$time));
+                SUCCESS::Catcher("修改成功");
+
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionUpdateFeedBackSettings()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("syid")) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $feedback_status=intval(arg("feedback_status"));
+
+                if($feedback_status!=1 && $feedback_status!=0) ERR::Catcher(1004);
+
+                $syllabus=new Model("syllabus");
+                $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('feedback'=>$feedback_status));
+                SUCCESS::Catcher("提交成功");
+
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
     public function actionUpdateScript()
     {
         if (!($this->islogin)) {
