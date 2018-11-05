@@ -193,7 +193,7 @@
         opacity: 0;
     }
 
-    file-info{
+    user-card{
         display: flex;
         align-items: center;
         max-width: 100%;
@@ -207,15 +207,15 @@
         border: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-    file-info a:hover{
+    user-card a:hover{
         text-decoration: none;
     }
 
-    file-info:hover {
+    user-card:hover {
         box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
     }
 
-    file-info > div:first-of-type{
+    user-card > div:first-of-type{
         display: flex;
         align-items: center;
         padding-right:1rem;
@@ -225,17 +225,17 @@
         flex-grow: 0;
     }
 
-    file-info img{
+    user-card img{
         display: block;
         width:100%;
     }
 
-    file-info > div:last-of-type{
+    user-card > div:last-of-type{
         flex-shrink: 1;
         flex-grow: 1;
     }
 
-    file-info p{
+    user-card p{
         margin:0;
     }
 
@@ -274,7 +274,7 @@
         <h2><{$syllabus_info['title']}> - 作业详情</h2>
     </section>
     <section>
-        <file-info class="mb-3">
+        <user-card class="mb-3">
             <div>
                 <img src="<{$user_details['avatar']}>" style="border-radius:200px;" onerror="this.src=unknown_svg;">
             </div>
@@ -282,7 +282,7 @@
                 <h5 class="mundb-text-truncate-1 text-info"><{$user_details['real_name']}> <{$user_details['SID']}></h5>
                 <p class=""><{$user_details['email']}></p>
             </div>
-        </file-info>        
+        </user-card>        
     </section>
     <{foreach $homework as $h}>
     <section class="mb-5">
@@ -313,7 +313,7 @@
                 <form id="file_uploade_form_<{$h['hid']}>" class="d-none">
                     <input type="file" name="file" class="custom-file-input" id="file_uploade_input_<{$h['hid']}>" data-hid="<{$h['hid']}>" onchange='SubmitFile(this)'>
                 </form>
-                <file-info>
+                <user-card>
                     <div>
                         <img id="file_uploade_extension_<{$h['hid']}>" src="<{$ATSAST_CDN}>/img/files/unknown.svg" onerror="this.src=unknown_svg;">
                     </div>
@@ -321,7 +321,7 @@
                         <h5 class="mundb-text-truncate-1" id="file_uploade_name_<{$h['hid']}>">尚未提交文件</h5>
                         <p><a class="text-info d-none" id="file_uploade_link_<{$h['hid']}>" href="#">下载</a></p>
                     </div>
-                </file-info>
+                </user-card>
             </div>
             <div class="atsast-action"><p>截止日期 <{$h['due_submit']}></p></div>
             <div class="atsast-action">
