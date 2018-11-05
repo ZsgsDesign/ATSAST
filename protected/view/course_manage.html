@@ -273,12 +273,16 @@
             
             <h3><{ $r['title'] }></h3>
             <p><{ $r['desc'] }></p>
-
-            <a href="view_sign/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI account-circle"></i> 查看签到情况</action></button></a>
-            <a href="view_homework/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI pen"></i> 查看作业提交</action></button></a>
-            <a href="edit_sign/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI account-circle"></i> 设置签到码</action></button></a>
-            <a href="edit_script/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI script"></i> 编辑授课笔记</action></button></a>
-            <a href="edit_homework/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI pen"></i> 编辑作业</action></button></a>
+            <div>
+                <a href="view_sign/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI account-circle"></i> 查看签到情况</action></button></a>
+                <a href="view_homework/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI pen"></i> 查看作业提交</action></button></a>
+                <a href="view_feedback/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI comment-text-outline"></i> 查看课堂反馈</action></button></a>
+                <a href="edit_sign/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI account-circle"></i> 设置签到</action></button></a>
+                <a href="edit_script/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI script"></i> 设置授课笔记</action></button></a>
+                <a href="edit_homework/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI pen"></i> 设置作业</action></button></a>
+                <a href="edit_feedback/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI comment-text-outline"></i> 设置课堂反馈</action></button></a>
+                <a href="edit_video/<{ $r['syid'] }>"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI video"></i> 设置视频</action></button></a>
+            </div>
         </syllabus>
         <hr class="atsast-line">
         <{/foreach}>

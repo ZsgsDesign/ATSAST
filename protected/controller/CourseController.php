@@ -624,4 +624,111 @@ class CourseController extends BaseController
             $this->jump("{$this->ATSAST_DOMAIN}/courses");
         }
     }
+
+    public function actionEdit_Sign()
+    {
+        $this->url="course/edit_sign";
+        $this->title="设置签到";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $sign=new Model("syllabus_sign");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
+    public function actionEdit_Script()
+    {
+        $this->url="course/edit_script";
+        $this->title="编辑授课笔记";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid") && arg("syid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $this->cid=$cid;
+                $this->syid=$syid;
+                $organization=new Model("organization");
+                $syllabus=new Model("syllabus");
+                $script=new Model("syllabus_script");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                if (empty($result) || empty($syllabus_info)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $this->result=$result;
+                $this->syllabus_info=$syllabus_info;
+
+                $syllabus_script=$script->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+
+                $syllabus_script['script_slashed'] = str_replace('\\', '\\\\', $syllabus_script['content']);
+                $syllabus_script['script_slashed'] = str_replace("\r\n", "\\n", $syllabus_script['script_slashed']);
+                $syllabus_script['script_slashed'] = str_replace("\n", "\\n", $syllabus_script['script_slashed']);
+                $syllabus_script['script_slashed'] = str_replace("\"", "\\\"", $syllabus_script['script_slashed']);
+                $syllabus_script['script_slashed'] = str_replace("<", "\<", $syllabus_script['script_slashed']);
+                $syllabus_script['script_slashed'] = str_replace(">", "\>", $syllabus_script['script_slashed']);
+
+                $this->syllabus_script=$syllabus_script;
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
 }

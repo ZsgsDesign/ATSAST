@@ -206,6 +206,88 @@ class AjaxController extends BaseController
             ERR::Catcher(1003);
         }
     }
+
+    public function actionUpdateSignSettings()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("syid")) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $sign_status=intval(arg("sign_status"));
+                $signed=arg("signed");
+
+                if($sign_status!=1 && $sign_status!=0) ERR::Catcher(1004);
+
+                if($sign_status){
+                    $pattern="/^(\w){6}$/";
+                    if (!preg_match($pattern, $signed)) {
+                        ERR::Catcher(1004);
+                    }
+                    $syllabus=new Model("syllabus");
+                    $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('signed'=>$signed));
+                    SUCCESS::Catcher("提交成功");
+                }else{
+                    $syllabus=new Model("syllabus");
+                    $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('signed'=>0));
+                    SUCCESS::Catcher("提交成功");
+                }
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionUpdateScript()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("syid")) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $script_status=intval(arg("script_status"));
+                $code=arg("script");
+
+                if($script_status!=1 && $script_status!=0) ERR::Catcher(1004);
+
+                $syllabus=new Model("syllabus");
+                $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('script'=>$script_status));
+
+                $script=new Model("syllabus_script");
+                $script_exist=$script->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                if($script_exist){
+                    $script->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('content'=>$code));
+                }else{
+                    $script->create(array("cid"=>$cid,"syid"=>$syid,'content'=>$code));
+                }
+                SUCCESS::Catcher("提交成功");
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
     
     public function actionUploadAvatar()
     {
