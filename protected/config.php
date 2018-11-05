@@ -16,6 +16,7 @@ $config = array(
         'contest/<contest_id>/<a>'                           => 'contest/<a>',
         'contest/<contest_id>/'                              => 'contest/index',
         'contest/<contest_id>'                               => 'contest/index',
+        'course/<cid>/view_sign/<syid>'                      => 'course/view_sign',
         'course/<cid>/view_homework/<syid>/details/<uid>'    => 'course/view_homework_details',
         'course/<cid>/view_homework/<syid>'                  => 'course/view_homework',
         'course/<cid>/sign/<syid>'                           => 'course/sign',
