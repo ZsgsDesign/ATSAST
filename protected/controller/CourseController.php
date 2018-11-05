@@ -30,16 +30,16 @@ class CourseController extends BaseController
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
-                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid)," syid ASC ");
+                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid));
                 $instructor_info=$instructor->query("select * from instructor as i left join users u on i.uid = u.uid where i.cid=:cid order by i.iid asc", array(":cid"=>$cid));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
                 $this->result=$result;
                 $this->detail=$details;
                 if ($this->islogin) {
-                    $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+                    $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid order by syid ASC", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
                 } else {
-                    $syllabus_info=$syllabus->findAll(array("cid=:cid",":cid"=>$cid));
+                    $syllabus_info=$syllabus->findAll(array("cid=:cid",":cid"=>$cid)," syid ASC ");
                 }
                 if ($this->islogin) {
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
@@ -85,13 +85,13 @@ class CourseController extends BaseController
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
-                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid)," syid ASC ");
+                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid));
                 $instructor_info=$instructor->query("select * from instructor as i left join users u on i.uid = u.uid where i.cid=:cid order by i.iid asc", array(":cid"=>$cid));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
                 $this->result=$result;
                 $this->detail=$details;
-                $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+                $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid order by syid ASC", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
                 // 关联查询sign的原因：历史遗留
                 $this->instructor=$instructor_info;
                 $this->syllabus=$syllabus_info;
