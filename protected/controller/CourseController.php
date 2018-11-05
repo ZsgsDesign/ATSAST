@@ -30,7 +30,7 @@ class CourseController extends BaseController
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
-                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid),"syid ASC");
+                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid)," syid ASC ");
                 $instructor_info=$instructor->query("select * from instructor as i left join users u on i.uid = u.uid where i.cid=:cid order by i.iid asc", array(":cid"=>$cid));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
@@ -85,7 +85,7 @@ class CourseController extends BaseController
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
-                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid),"syid ASC");
+                $details=$course_details->findAll(array("cid=:cid",":cid"=>$cid)," syid ASC ");
                 $instructor_info=$instructor->query("select * from instructor as i left join users u on i.uid = u.uid where i.cid=:cid order by i.iid asc", array(":cid"=>$cid));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
