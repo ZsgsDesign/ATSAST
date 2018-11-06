@@ -157,6 +157,24 @@
     <h1 class="mb-3"><i class="MDI view-dashboard"></i> 仪表盘</h1>
     <hr class="atsast-line mb-5">
     <card class="mb-5">
+        <h5><i class="MDI settings"></i> 系统工具</h5>
+        <div class="row <{if empty($system_tool_result)}>atsast-empty<{/if}>">
+            <{if empty($system_tool_result)}>
+                <badge>这里将会展示所有我有权使用的系统工具</badge>
+            <{else}>
+            <{foreach $system_tool_result as $s}>
+            <div class="col-lg-2 col-md-4 col-6">
+                <card class="text-center mb-0" style="cursor: pointer;" onclick="location.href='tool/<{$s['url']}>'">
+                    <h2 class="MDI <{$s['icon']}>"></h2>
+                    <hr class="atsast-line">
+                    <p class="mb-0"><{$s['name']}></p>
+                </card>
+            </div>
+            <{/foreach}>
+            <{/if}>
+        </div>
+    </card>
+    <card class="mb-5">
         <h5><i class="MDI account-circle"></i> 我管理的课程</h5>
         <div class="row">
             <{foreach $result as $r}>

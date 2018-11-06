@@ -5,8 +5,9 @@ require_once('model/CONFIG.php');
 
 $config = array(
     'rewrite' => array(
-        'admin/'                                             => 'admin/index',
+        'admin/tool/<a>'                                     => 'tool/<a>',
         'admin/<a>'                                          => 'admin/<a>',
+        'admin/'                                             => 'admin/index',
         'system/<a>'                                         => 'system/<a>',
         'account/register'                                   => 'account/index',
         'account/login'                                      => 'account/index',

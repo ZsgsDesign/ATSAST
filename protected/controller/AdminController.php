@@ -24,6 +24,9 @@ class AdminController extends BaseController
             return $this->jump("{$this->ATSAST_DOMAIN}/");
         }
 
+        $system_tool_result=$privilege->query("select * from privilege as p left join system_tool s on p.type_value = s.stid where p.type='system' and p.uid=:uid order by s.stid asc", array(":uid"=>$detail['uid']));
+        $this->system_tool_result=$system_tool_result;
+
         $courses=new Model("courses");
         $result=$courses->query("select * from privilege as p left join courses c on p.type_value = c.cid where p.type='cid' and p.clearance<>0 and p.uid=:uid order by c.cid asc", array(":uid"=>$detail['uid']));
         $this->result=$result;
