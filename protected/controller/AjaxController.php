@@ -290,6 +290,51 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionAddSyllabusInfo()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("title") && arg("desc") && arg("location") && arg("time")) {
+            $cid=arg("cid");
+            if (is_numeric($cid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $title=arg("title");
+                $desc=arg("desc");
+                $location=arg("location");
+                $time=arg("time");
+                $signed=substr(md5(uniqid(microtime(true),true)),0,6);
+
+                $syllabus=new Model("syllabus");
+                $syllabus->create(array(
+                        'cid'=>$cid,
+                        'title'=>$title,
+                        'desc'=>$desc,
+                        'location'=>$location,
+                        'time'=>$time,
+                        'signed'=>$signed,
+                        'script'=>0,
+                        'homework'=>0,
+                        'feedback'=>0,
+                        'video'=>0
+                    )
+                );
+                SUCCESS::Catcher("新建成功");
+
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
     public function actionUpdateSyllabusInfo()
     {
         if (!($this->islogin)) {

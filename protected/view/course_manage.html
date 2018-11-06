@@ -199,6 +199,17 @@
     th{
         white-space: nowrap;
     }
+
+    .atsast-important-button{
+        box-shadow: rgba(255, 87, 34, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        position: relative;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
 </style>
 <div class="atsast-course-header">
     <img src="https://1cf.co/searchEngine/img/bg.jpg" class="atsast-focus-img">
@@ -299,5 +310,8 @@
         </>
         <hr class="atsast-line">
         <{/foreach}>
+        <div class="text-center">
+            <button type="button" class="btn btn-outline-warning atsast-important-button" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/add_syllabus'"><action class="d-block d-lg-inline-block text-warning"><i class="MDI plus"></i> 新增课时</action></button>
+        </div>
     </section>
 </div>
