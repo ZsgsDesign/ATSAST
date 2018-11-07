@@ -330,7 +330,6 @@ class CourseController extends BaseController
                 $organization=new Model("organization");
                 $syllabus=new Model("syllabus");
                 $result=$db->find(array("cid=:cid",":cid"=>$cid));
-                $this->site=$syllabus_info["title"];
                 $course_register=new Model("course_register");
                 if ($this->islogin) {
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
@@ -352,6 +351,7 @@ class CourseController extends BaseController
                     return $this->sign_status=-1;
                 }
                 $this->sign_status=$sign_status;
+                $this->site=$syllabus_info["title"];
                 $this->syllabus=$syllabus_info;
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
