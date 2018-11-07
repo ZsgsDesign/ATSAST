@@ -10,12 +10,13 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
-            "version"=>"0.7.4 Beta",
-            "subversion"=>"20181107100357",
+            "version"=>"0.8.0 Beta",
+            "subversion"=>"20181107154107",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
         $this->bg="";
+        $this->site="SAST教学辅助平台";
 
         // For the convenience of proxy
         $this->ATSAST_DOMAIN=CONFIG::GET("ATSAST_DOMAIN");

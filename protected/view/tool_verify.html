@@ -1,0 +1,131 @@
+<style>
+    card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+    }
+    card.img-card{
+        padding:0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    card.img-card > img{
+        width:100%;
+        height:10rem;
+        object-fit: cover;
+    }
+    card.img-card > div{
+        text-align: center;
+        padding: 1rem;
+    }
+
+    card.album-selected {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 40px!important;
+        transform: scale(1.02);
+    }
+    card:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+    h5{
+        margin-bottom:1rem;
+    }
+    .form-control:disabled, .form-control[disabled]{
+        background-color: transparent;
+    }
+    .atsast-img-container{
+        width: 100%;
+        padding:2rem;
+    }
+    .atsast-img-container > img{
+        width: 100%;
+    }
+    .atsast-upload{
+        display: none;
+    }
+
+    #avatar{
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+    }
+    .atsast-toast {
+        margin-bottom:5rem;
+    }
+    .snackbar-container{
+        pointer-events: none;
+    }
+
+    .snackbar-container *{
+        pointer-events: all;
+    }
+</style>
+
+<div class="container mundb-standard-container">
+    <h1 class="mb-3"><i class="MDI account-card-details"></i> 身份验证</h1>
+    <hr class="atsast-line mb-5">
+    <card class="mb-5">
+        <h5><i class="MDI verified"></i> 新增验证</h5>
+        <div>
+            <div class="form-group">
+                <label for="add_verify_email" class="bmd-label-floating">邮箱</label>
+                <input type="email" class="form-control" name="add_verify_email" id="add_verify_email">
+            </div>
+            <div class="form-group">
+                <label for="add_verify_role" class="bmd-label-floating">身份</label>
+                <input type="text" class="form-control" name="add_verify_role" value="校科协软件研发中心 部员" id="add_verify_role">
+            </div>
+        </div>
+        <div class="text-right">
+            <button class="btn btn-default" onclick="location.reload()">放弃更改</button>
+            <button type="submit" class="btn btn-outline-warning" onclick="addVerify()"><i class="MDI verified"></i> 认证</button>
+        </div>
+    </card>
+
+</div>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modeal_title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modeal_desc"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.addEventListener("load",function() {
+        ;
+    }, false);
+
+    function addVerify(){
+        $.post("<{$ATSAST_DOMAIN}>/ajax/identity_verify",{
+            email:$("#add_verify_email").val(),
+            role:$("#add_verify_role").val(),
+        },function(result){
+            result=JSON.parse(result);
+            $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
+        });
+    }
+
+    function alert(desc) {
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
+        $('#modeal_desc').html(desc);
+        $('#modeal_title').html(title);
+        $('#modal').modal();
+    }
+</script>

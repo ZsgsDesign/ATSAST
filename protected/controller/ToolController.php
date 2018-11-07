@@ -62,4 +62,28 @@ class ToolController extends BaseController
         $this->zend_version=Zend_Version();
         $this->php_sapi=php_sapi_name();
     }
+
+    public function actionVerify()
+    {
+        $this->title="身份验证";
+        $this->url="admin/tool/verify";
+        $this->bg=null;
+
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+        
+        $detail=getuserinfo($OPENID);
+
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=2",":uid"=>$detail['uid']));
+
+        if ($access_right) {
+            ;
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+    }
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><{if @$title}><{$title}> | <{/if}> SAST教学辅助平台</title>
+    <title><{if @$title}><{$title}> | <{/if}> <{$site}></title>
     <!-- Copyright Information -->
     <meta name="author" content="<{$version_info['author']}>">
     <meta name="organization" content="<{$version_info['organization']}>">
@@ -127,6 +127,7 @@
     <{include file="footer.html" }>
     <script src="<{$ATSAST_CDN}>/js/jquery-3.2.1.min.js"></script>
     <script src="<{$ATSAST_CDN}>/js/popper.min.js"></script>
+    <script src="<{$ATSAST_CDN}>/js/snackbar.min.js"></script>
     <script src="<{$ATSAST_CDN}>/js/bootstrap-material-design.js"></script>
     <script>
         $(document).ready(function () { $('body').bootstrapMaterialDesign(); });

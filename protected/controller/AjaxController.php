@@ -501,6 +501,150 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionIdentity_verify()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (!is_null(arg("email")) && !is_null(arg("role")) ) {
+            $email=arg("email");
+            $role=arg("role");
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=2",":uid"=>$this->userinfo['uid']));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $users=new Model("users");
+                $email_user=$users->find(array("email=:email",":email"=>$email));
+                if(empty($email_user)){
+                    ERR::Catcher(2002);
+                }
+
+                $users->update(array("uid=:uid",":uid"=>$email_user['uid']), array('title'=>$role));
+                SUCCESS::Catcher("认证成功");
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionUpdateHomeworkSettings()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("homework_status")) ) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            $homework_status=arg("homework_status");
+            if (is_numeric($cid) && is_numeric($syid) && is_numeric($homework_status)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $syllabus=new Model("syllabus");
+                $syllabus->update(array("syid=:syid and cid=:cid",":cid"=>$cid,":syid"=>$syid), array('homework'=>$homework_status));
+                SUCCESS::Catcher("修改成功");
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionaddHomework()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("type")) && !is_null(arg("support_lang")) && !is_null(arg("due_submit")) && !is_null(arg("homework_content")) ) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            if (is_numeric($cid) && is_numeric($syid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $type=intval(arg("type"));
+                if($type<0 || $type>3) ERR::Catcher(1004);
+                $support_lang=arg("support_lang");
+                $due_submit=arg("due_submit");
+                $homework_content=arg("homework_content");
+
+                $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
+
+                if(!preg_match($preg, $due_submit)){
+                    ERR::Catcher(1004);
+                }
+
+                $homework=new Model("homework");
+                $modify_status=$homework->create(array("cid"=>$cid,"syid"=>$syid,'type'=>$type,'support_lang'=>$support_lang,'due_submit'=>$due_submit,'homework_content'=>$homework_content));
+                SUCCESS::Catcher("新建成功");
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionUpdateHomework()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("hid")) && !is_null(arg("type")) && !is_null(arg("support_lang")) && !is_null(arg("due_submit")) && !is_null(arg("homework_content")) ) {
+            $cid=arg("cid");
+            $syid=arg("syid");
+            $hid=arg("hid");
+            if (is_numeric($cid) && is_numeric($syid)&& is_numeric($hid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    ERR::Catcher(2003);
+                }
+
+                $type=intval(arg("type"));
+                if($type<0 || $type>3) ERR::Catcher(1004);
+                $support_lang=arg("support_lang");
+                $due_submit=arg("due_submit");
+                $homework_content=arg("homework_content");
+
+                $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
+
+                if(!preg_match($preg, $due_submit)){
+                    ERR::Catcher(1004);
+                }
+
+                $homework=new Model("homework");
+                $modify_status=$homework->update(array("hid=:hid and cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid,":hid"=>$hid), array('type'=>$type,'support_lang'=>$support_lang,'due_submit'=>$due_submit,'homework_content'=>$homework_content));
+                if ($modify_status) {
+                    SUCCESS::Catcher("修改成功");
+                } else {
+                    SUCCESS::Catcher("没有任何字段被修改");
+                }
+
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
     public function actionUpdateFeedBackSettings()
     {
         if (!($this->islogin)) {
