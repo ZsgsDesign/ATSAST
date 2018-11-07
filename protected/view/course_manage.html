@@ -285,7 +285,7 @@
                 <instructor>
                     <img src="<{ $r['avatar'] }>">
                     <div>
-                        <p><strong><{ $r['course_title'] }>：</strong><{ $r['real_name']?$r['real_name']:$r['SID'] }></p>
+                        <p><strong><{ $r['course_title'] }>：</strong><{if $r["real_name"]}><{$r["real_name"]}><{else}><{$r["SID"]}><{/if}></p>
                         <small><{ $r['title'] }></small>
                         <{ if $access_right["clearance"]==4 }><p><small style="cursor: pointer;" class="wemd-red-text" data-iid="<{ $r['iid'] }>" onclick="deleteInstructor(this)">删除</small></p><{/if}>
                     </div>

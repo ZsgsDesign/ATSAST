@@ -243,7 +243,7 @@
                 <instructor>
                     <img src="<{ $r['avatar'] }>">
                     <div>
-                        <p><strong><{ $r['course_title'] }>：</strong><{ $r['real_name']?$r['real_name']:$r['SID'] }></p>
+                        <p><strong><{ $r['course_title'] }>：</strong><{if $r["real_name"]}><{$r["real_name"]}><{else}><{$r["SID"]}><{/if}></p>
                         <small><{ $r['title'] }></small>
                     </div>
                 </instructor>

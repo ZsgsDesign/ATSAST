@@ -533,6 +533,100 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionAddCourse()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (!is_null(arg("name")) && !is_null(arg("organization")) && !is_null(arg("major")) && !is_null(arg("desc")) && !is_null(arg("color")) && !is_null(arg("suitable")) && !is_null(arg("type")) && !is_null(arg("email")) ) {
+            $name=arg("name");
+            $organization_name=arg("organization");
+            $major=arg("major");
+            $desc=arg("desc");
+            $suitable=arg("suitable");
+            $color=arg("color");
+            $type=intval(arg("type"));
+            $email=arg("email");
+            if (!strlen($name) || !strlen($organization_name) || !strlen($major) || !strlen($desc) || !strlen($suitable) || !strlen($color) || !strlen($email)) {
+                ERR::Catcher(1003);
+            }
+
+            if ($type!==1 && $type!==2) {
+                ERR::Catcher(1004);
+            }
+
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)==false) {
+                ERR::Catcher(1004);
+            }
+
+            $privilege=new Model("privilege");
+            $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=4",":uid"=>$this->userinfo['uid']));
+            if (empty($access_right)) {
+                ERR::Catcher(2003);
+            }
+
+            $users=new Model("users");
+            $email_user=$users->find((array("email=:email",":email"=>$email)));
+            $email_uid=$email_user["uid"];
+            if (empty($email_user)){
+                ERR::Catcher(2002);
+            }
+
+            $organization=new Model("organization");
+            $org_info=$organization->find(array("name=:name",":name"=>$organization_name));
+            if (empty($org_info)) {
+                ERR::Catcher(5001);
+            }
+            $oid=$org_info["oid"];
+
+            $courses=new Model("courses");
+            $cid=$courses->create(array(
+                "course_name"=>$name,
+                "course_creator"=>$oid,
+                "course_logo"=>$major,
+                "course_desc"=>$desc,
+                "course_type"=>$type,
+                "course_color"=>$color,
+                "course_suitable"=>$suitable
+            ));
+
+            $instructor=new Model("instructor");
+
+            $email_user_access=$privilege->find(array("uid=:uid and type='access' and type_value=1",":uid"=>$email_uid));
+
+            $instructor->create(
+                array(
+                    'uid'=>$email_uid,
+                    'cid'=>$cid,
+                    'course_title'=>"讲师"
+                )
+            );                
+
+            $privilege->create(
+                array(
+                    'uid'=>$email_uid,
+                    'type_value'=>$cid,
+                    'type'=>"cid",
+                    'clearance'=>4,
+                )
+            );
+
+            if(empty($email_user_access)){
+                $privilege->create(
+                    array(
+                        'uid'=>$email_uid,
+                        'type_value'=>1,
+                        'type'=>"access"
+                    )
+                );
+            }          
+
+            SUCCESS::Catcher("新建成功",array("cid"=>$cid));
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
     public function actionUpdateHomeworkSettings()
     {
         if (!($this->islogin)) {

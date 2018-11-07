@@ -86,4 +86,53 @@ class ToolController extends BaseController
             return $this->jump("{$this->ATSAST_DOMAIN}/");
         }
     }
+
+    public function actionColor()
+    {
+        $this->title="调色板";
+        $this->url="admin/tool/color";
+        $this->bg=null;
+
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+        
+        $detail=getuserinfo($OPENID);
+
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=3",":uid"=>$detail['uid']));
+
+        if ($access_right) {
+            ;
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+    }
+
+    
+    public function actionAdd_Course()
+    {
+        $this->title="新建课程";
+        $this->url="admin/tool/add_course";
+        $this->bg=null;
+
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+        
+        $detail=getuserinfo($OPENID);
+
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=4",":uid"=>$detail['uid']));
+
+        if ($access_right) {
+            ;
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+    }
 }

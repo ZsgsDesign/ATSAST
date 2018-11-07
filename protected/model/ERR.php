@@ -61,6 +61,10 @@ class ERR {
             '4004' => "请填写所有应填项",
             '4005' => "数字格式不正确",
             '4006' => "邮箱格式不正确",
+
+            '5000' => "Organization-Related Error",
+
+            '5001' => "未找到该组织",
         );
         return isset($ERR_DESC[$ERR_CODE])?$ERR_DESC[$ERR_CODE]:$ERR_DESC['1000'];
     }
