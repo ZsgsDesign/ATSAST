@@ -97,6 +97,7 @@ class CourseController extends BaseController
                 $this->syllabus=$syllabus_info;
                 // var_dump($syllabus_info);
                 $this->cid=$cid;
+                $this->access_right=$access_right;
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }

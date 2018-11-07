@@ -87,6 +87,28 @@
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
     }
 
+    instructor>icon.btn {
+        display: flex;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 2000px;
+        border: 1px dashed rgba(0, 0, 0, 0.25);
+        flex-shrink: 0;
+        flex-grow: 0;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        color: #7a8e97;
+        font-size: 2.5rem;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: .2s ease-out .0s;
+    }
+
+    instructor>icon.btn:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 40px;
+        font-size: 3rem;
+    }
+
     instructor>div {
         padding-left: 1rem;
         flex-shrink: 1;
@@ -210,6 +232,10 @@
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
+
+    .form-control:disabled, .form-control[disabled]{
+        background-color: transparent;
+    }
 </style>
 <div class="atsast-course-header">
     <img src="https://1cf.co/searchEngine/img/bg.jpg" class="atsast-focus-img">
@@ -259,12 +285,26 @@
                 <instructor>
                     <img src="<{ $r['avatar'] }>">
                     <div>
-                        <p><strong><{ $r['course_title'] }>：</strong><{ $r['real_name'] }></p>
+                        <p><strong><{ $r['course_title'] }>：</strong><{ $r['real_name']?$r['real_name']:$r['SID'] }></p>
                         <small><{ $r['title'] }></small>
+                        <{ if $access_right["clearance"]==4 }><p><small style="cursor: pointer;" class="wemd-red-text" data-iid="<{ $r['iid'] }>" onclick="deleteInstructor(this)">删除</small></p><{/if}>
                     </div>
                 </instructor>
             </div>
             <{/foreach}>
+            <{ if $access_right["clearance"]==4 }>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <instructor>
+                    <icon class="btn" onclick="add_instructor()">
+                        <i class="MDI plus"></i>
+                    </icon>
+                    <div>
+                        <p><strong>新增讲师</strong></p>
+                        <small>输入邮箱新增讲师到这里</small>
+                    </div>
+                </instructor>
+            </div>
+            <{/if}>
             <{/if}>
         </div>
         <small>课程信息</small>
@@ -315,3 +355,91 @@
         </div>
     </section>
 </div>
+
+<div id="add_instructor" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="add_instructor_title">添加讲师</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="add_instructor_email" class="bmd-label-floating">邮箱</label>
+                <input type="email" class="form-control" name="add_instructor_email" id="add_instructor_email">
+            </div>
+            <div class="form-group">
+                <label for="add_instructor_role" class="bmd-label-floating">课程角色</label>
+                <input type="text" class="form-control" name="add_instructor_role" value="讲师" id="add_instructor_role" disabled>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="addInstructor()" data-dismiss="modal">添加讲师</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modeal_title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modeal_desc"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var canAdd=false;
+
+    function add_instructor(){
+        $('#add_instructor').modal();
+        canAdd=true;
+    }
+
+    function addInstructor(){
+        if(canAdd) canAdd=false;
+        else return;
+        var email=$("#add_instructor_email").val();
+        $("#add_instructor_email").val("");
+        $("#add_instructor_role").val("讲师");
+        $.post("<{$ATSAST_DOMAIN}>/ajax/addInstructor",{
+            cid:<{$cid}>,
+            email:email
+        },function(result){
+            result=JSON.parse(result);
+            alert(result.desc);
+        });
+    }
+
+    function deleteInstructor(ele){
+        var iid=$(ele).attr("data-iid");
+        $.post("<{$ATSAST_DOMAIN}>/ajax/removeInstructor",{
+            cid:<{$cid}>,
+            iid:iid
+        },function(result){
+            result=JSON.parse(result);
+            alert(result.desc);
+        });
+    }
+
+    function alert(desc) {
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
+        $('#modeal_desc').html(desc);
+        $('#modeal_title').html(title);
+        $('#modal').modal();
+    }
+</script>

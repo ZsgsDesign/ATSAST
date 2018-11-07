@@ -176,7 +176,10 @@
     </card>
     <card class="mb-5">
         <h5><i class="MDI account-circle"></i> 我管理的课程</h5>
-        <div class="row">
+        <div class="row <{if empty($result)}>atsast-empty<{/if}>">
+            <{if empty($result)}>
+                <badge>这里将会展示所有我管理的课程</badge>
+            <{else}>
             <{foreach $result as $r}>
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <a class="attsast-course" href="<{$ATSAST_DOMAIN}>/course/<{$r['cid']}>/manage">
@@ -190,6 +193,8 @@
                 </a>
             </div>
             <{/foreach}>
+            <{/if}>
+            <{ if 0 }>
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <a class="attsast-course" href="<{$ATSAST_DOMAIN}>/admin/add_course">
                     <div class="btn card bg-light mb-3 text-center">
@@ -201,6 +206,7 @@
                     </div>
                 </a>
             </div>
+            <{/if}>
         </div>
     </card>
     <card class="mb-5">

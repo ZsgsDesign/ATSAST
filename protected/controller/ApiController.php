@@ -26,7 +26,7 @@ class ApiController extends BaseController
         $db=new Model("users");
         $result=$db->find(array("OPENID=:OPENID",":OPENID"=>$OPENID));
         if (empty($result)) {
-            ERR::Catcher(2002);
+            ERR::Catcher(2004);
         } else {
             SUCCESS::Catcher("登录成功", array(
                 "details"=>$result,

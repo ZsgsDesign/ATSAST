@@ -335,6 +335,139 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionaddInstructor()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("email")) {
+            $cid=arg("cid");
+            $email=arg("email");
+            if (is_numeric($cid) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right) || $access_right["clearance"]<4){
+                    ERR::Catcher(2003);
+                }
+
+                $users=new Model("users");
+
+                $email_user=$users->find((array("email=:email",":email"=>$email)));
+                $email_uid=$email_user["uid"];
+
+                if (empty($email_user)){
+                    ERR::Catcher(2002);
+                }
+
+                $instructor=new Model("instructor");
+
+                $email_user_instructor=$instructor->find(array("uid=:uid and cid=:cid",":uid"=>$email_uid,":cid"=>$cid));
+                $email_user_access_course=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid",":uid"=>$email_uid,":cid"=>$cid));
+                $email_user_access=$privilege->find(array("uid=:uid and type='access' and type_value=1",":uid"=>$email_uid));
+                if($email_user_instructor) ERR::Catcher(2005);
+                $instructor->create(
+                    array(
+                        'uid'=>$email_uid,
+                        'cid'=>$cid,
+                        'course_title'=>"讲师"
+                    )
+                );                
+                if (empty($email_user_access_course)) {
+                    $privilege->create(
+                        array(
+                            'uid'=>$email_uid,
+                            'type_value'=>$cid,
+                            'type'=>"cid",
+                            'clearance'=>1,
+                        )
+                    );
+                    if(empty($email_user_access)){
+                        $privilege->create(
+                            array(
+                                'uid'=>$email_uid,
+                                'type_value'=>1,
+                                'type'=>"access"
+                            )
+                        );
+                    }
+                    SUCCESS::Catcher("添加讲师成功");
+                } else if($email_user_access_course["clearance"]==0) {
+                    $privilege->update(
+                        array(
+                            "uid=:uid and type='cid' and type_value=:cid",
+                            ":uid"=>$email_uid,
+                            ":cid"=>$cid
+                        ),
+                        array(
+                            'clearance'=>1,
+                        )
+                    );
+                    if(empty($email_user_access)){
+                        $privilege->create(
+                            array(
+                                'uid'=>$email_uid,
+                                'type_value'=>1,
+                                'type'=>"access"
+                            )
+                        );
+                    }
+                    SUCCESS::Catcher("讲师权限提升成功");
+                } else {
+                    ERR::Catcher(2005);
+                }
+
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
+    public function actionremoveInstructor()
+    {
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        if (arg("cid") && arg("iid")) {
+            $cid=arg("cid");
+            $iid=arg("iid");
+            if (is_numeric($cid) && is_numeric($iid)) {
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right) || $access_right["clearance"]<4){
+                    ERR::Catcher(2003);
+                }
+
+                $instructor=new Model("instructor");
+                $instructor_info=$instructor->find(array("iid=:iid",":iid"=>$iid));
+
+                if($instructor_info["cid"]!=$cid){
+                    ERR::Catcher(2003);
+                }
+
+                if(empty($instructor_info) ){
+                    ERR::Catcher(2002);
+                }
+
+                if($instructor_info["uid"]==$this->userinfo['uid']){
+                    ERR::Catcher(2006);
+                }
+
+                @$instructor->delete(array("iid=:iid",":iid"=>$iid));
+                @$privilege->delete(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$instructor_info["uid"],":cid"=>$cid));
+                SUCCESS::Catcher("讲师权限撤销成功");
+
+            } else {
+                ERR::Catcher(1004);
+            }
+        } else {
+            ERR::Catcher(1003);
+        }
+    }
+
     public function actionUpdateSyllabusInfo()
     {
         if (!($this->islogin)) {
