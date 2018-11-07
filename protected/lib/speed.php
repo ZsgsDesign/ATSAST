@@ -12,16 +12,20 @@ if($GLOBALS['debug']){
 	ini_set("log_errors", "On");
 }
 
+if((!empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == "https") || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") || (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)){
+	$GLOBALS['http_scheme'] = 'https://';
+}else{
+	$GLOBALS['http_scheme'] = 'http://';
+}
+
 if(!empty($GLOBALS['rewrite'])){
-	if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false )
-		parse_str( substr( $_SERVER['REQUEST_URI'], $pos + 1 ), $_GET );
 	foreach($GLOBALS['rewrite'] as $rule => $mapper){
-		if('/' == $rule)$rule = '';
-		if(0!==stripos($rule, 'http://'))
-			$rule = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$rule;
-		$rule = '/'.str_ireplace(array('\\\\', 'http://', '/', '<', '>',  '.'), 
-			array('', '', '\/', '(?P<', '>\w+)', '\.'), $rule).'/i';
-		if(preg_match($rule, 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs)){
+		if('/' == $rule)$rule = '/$';
+		if(0!==stripos($rule, $GLOBALS['http_scheme']))
+			$rule = $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$rule;
+		$rule = '/'.str_ireplace(array('\\\\', $GLOBALS['http_scheme'], '/', '<', '>',  '.'), 
+			array('', '', '\/', '(?P<', '>[-\w]+)', '\.'), $rule).'/i';
+		if(preg_match($rule, $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs)){
 			$route = explode("/", $mapper);
 			
 			if(isset($route[2])){
@@ -37,7 +41,7 @@ if(!empty($GLOBALS['rewrite'])){
 	}
 }
 
-$_REQUEST = array_merge($_POST, $_GET);
+$_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
 $__module     = isset($_REQUEST['m']) ? strtolower($_REQUEST['m']) : '';
 $__controller = isset($_REQUEST['c']) ? strtolower($_REQUEST['c']) : 'main';
 $__action     = isset($_REQUEST['a']) ? strtolower($_REQUEST['a']) : 'index';
@@ -87,7 +91,12 @@ if($controller_obj->_auto_display){
 function url($c = 'main', $a = 'index', $param = array()){
 	if(is_array($c)){
 		$param = $c;
-		$c = $param['c']; unset($param['c']);
+		if(isset($param['m'])) {
+                    $c = $param['m'] . '/' . $param['c'];
+                    unset($param['m'], $param['c']);
+                } else {
+                    $c = $param['c']; unset($param['c']);
+                }
 		$a = $param['a']; unset($param['a']);
 	}
 	$params = empty($param) ? '' : '&'.http_build_query($param);
@@ -102,37 +111,40 @@ function url($c = 'main', $a = 'index', $param = array()){
 	}
 
 	if(!empty($GLOBALS['rewrite'])){
-		static $urlArray=array();
-		if(!isset($urlArray[$url])){
+		if(!isset($GLOBALS['url_array_instances'][$url])){
 			foreach($GLOBALS['rewrite'] as $rule => $mapper){
-				$mapper = '/'.str_ireplace(array('/', '<a>', '<c>', '<m>'), 
-					array('\/', '(?P<a>\w+)', '(?P<c>\w+)', '(?P<m>\w+)'), $mapper).'/i';
-				
+				$mapper = '/^'.str_ireplace(array('/', '<a>', '<c>', '<m>'), array('\/', '(?P<a>\w+)', '(?P<c>\w+)', '(?P<m>\w+)'), $mapper).'/i';
 				if(preg_match($mapper, $route, $matchs)){
-					$urlArray[$url] = str_ireplace(array('<a>', '<c>', '<m>'), array($a, $c, $m), $rule);
-					if(!empty($param)){
-						$_args = array();
-						foreach($param as $argkey => $arg){
-							$count = 0;
-							$urlArray[$url] = str_ireplace('<'.$argkey.'>', $arg, $urlArray[$url], $count);
-							if(!$count)$_args[$argkey] = $arg;
+					$rule = str_ireplace(array('<a>', '<c>', '<m>'), array($a, $c, $m), $rule);
+					$match_param_count = 0;
+					$param_in_rule = substr_count($rule, '<');
+					if(!empty($param) && $param_in_rule > 0){
+						foreach($param as $param_key => $param_v){
+							if(false !== stripos($rule, '<'.$param_key.'>'))$match_param_count++;
 						}
-						$urlArray[$url] = preg_replace('/<\w+>/', '', $urlArray[$url]).
-							(!empty($_args) ? '?'.http_build_query($_args) : '');
 					}
-					
-					if(0!==stripos($urlArray[$url], 'http://')) 
-						$urlArray[$url] = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$urlArray[$url];
-					$rule = str_ireplace(array('<m>', '<c>', '<a>'), '', $rule);
-					if(count($param) == preg_match_all('/<\w+>/is', $rule, $_match)){
-						return $urlArray[$url];
+					if($param_in_rule == $match_param_count){
+						$GLOBALS['url_array_instances'][$url] = $rule;
+						if(!empty($param)){
+							$_args = array();
+							foreach($param as $arg_key => $arg){
+								$count = 0;
+								$GLOBALS['url_array_instances'][$url] = str_ireplace('<'.$arg_key.'>', $arg, $GLOBALS['url_array_instances'][$url], $count);
+								if(!$count)$_args[$arg_key] = $arg;
+							}
+							$GLOBALS['url_array_instances'][$url] = preg_replace('/<\w+>/', '', $GLOBALS['url_array_instances'][$url]). (!empty($_args) ? '?'.http_build_query($_args) : '');
+						}
+						
+						if(0!==stripos($GLOBALS['url_array_instances'][$url], $GLOBALS['http_scheme'])){
+							$GLOBALS['url_array_instances'][$url] = $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$GLOBALS['url_array_instances'][$url];
+						}
+						return $GLOBALS['url_array_instances'][$url];
 					}
-					break;
 				}
 			}
-			return isset($urlArray[$url]) ? $urlArray[$url] : $url;
+			return isset($GLOBALS['url_array_instances'][$url]) ? $GLOBALS['url_array_instances'][$url] : $url;
 		}
-		return $urlArray[$url];
+		return $GLOBALS['url_array_instances'][$url];
 	}
 	return $url;
 }
@@ -162,12 +174,12 @@ function arg($name = null, $default = null, $trim = false) {
 class Controller{
 	public $layout;
 	public $_auto_display = true;
-	private $_v;
+	protected $_v;
 	private $_data = array();
 
 	public function init(){}
 	public function __construct(){$this->init();}
-	public function __get($name){return $this->_data[$name];}
+	public function &__get($name){return $this->_data[$name];}
 	public function __set($name, $value){$this->_data[$name] = $value;}
 	
 	public function display($tpl_name, $return = false){
@@ -205,7 +217,7 @@ class Model{
 		$sql = ' FROM '.$this->table_name.$conditions["_where"];
 		if(is_array($limit)){
 			$total = $this->query('SELECT COUNT(*) as M_COUNTER '.$sql, $conditions["_bindParams"]);
-			if(!isset($total[0]['M_COUNTER']) || $total[0]['M_COUNTER'] == 0)return false;
+			if(!isset($total[0]['M_COUNTER']) || $total[0]['M_COUNTER'] == 0)return array();
 			
 			$limit = $limit + array(1, 10, 10);
 			$limit = $this->pager($limit[0], $limit[1], $limit[2], $total[0]['M_COUNTER']);
@@ -263,7 +275,7 @@ class Model{
 		$this->page = null;
 		if($total > $pageSize){
 			$total_page = ceil($total / $pageSize);
-			$page = min(intval(max($page, 1)), $total);
+			$page = min(intval(max($page, 1)), $total_page);
 			$this->page = array(
 				'total_count' => $total, 
 				'page_size'   => $pageSize,
@@ -326,6 +338,9 @@ class Model{
 	public function dbInstance($db_config, $db_config_key, $force_replace = false){
 		if($force_replace || empty($GLOBALS['mysql_instances'][$db_config_key])){
 			try {
+				if(!class_exists("PDO") || !in_array("mysql",PDO::getAvailableDrivers(), true)){
+					err('Database Err: PDO or PDO_MYSQL doesn\'t exist!');
+				}
 				$GLOBALS['mysql_instances'][$db_config_key] = new PDO('mysql:dbname='.$db_config['MYSQL_DB'].';host='.$db_config['MYSQL_HOST'].';port='.$db_config['MYSQL_PORT'], $db_config['MYSQL_USER'], $db_config['MYSQL_PASS'], array(PDO::MYSQL_ATTR_INIT_COMMAND=>'SET NAMES \''.$db_config['MYSQL_CHARSET'].'\''));
 			}catch(PDOException $e){err('Database Err: '.$e->getMessage());}
 		}
@@ -412,24 +427,25 @@ class View{
 	}
 
 	private function _compile_struct($template_data){
-		$foreach_inner_before = '<?php $_foreach_$3_counter = 0; $_foreach_$3_total = count($1);?>';
+		$foreach_inner_before = '<?php if(!empty($1)){ $_foreach_$3_counter = 0; $_foreach_$3_total = count($1);?>';
 		$foreach_inner_after  = '<?php $_foreach_$3_index = $_foreach_$3_counter;$_foreach_$3_iteration = $_foreach_$3_counter + 1;$_foreach_$3_first = ($_foreach_$3_counter == 0);$_foreach_$3_last = ($_foreach_$3_counter == $_foreach_$3_total - 1);$_foreach_$3_counter++;?>';
 		$pattern_map = array(
 			'<{\*([\s\S]+?)\*}>'      => '<?php /* $1*/?>',
-			'(<{((?!}>).)*?)(\$[\w\_\"\'\[\]]+?)\.(\w+)(.*?}>)' => '$1$3[\'$4\']$5',
+			'<{#(.*?)}>'              => '<?php echo $1; ?>',
+			'(<{((?!}>).)*?)(\$[\w\"\'\[\]]+?)\.(\w+)(.*?}>)' => '$1$3[\'$4\']$5',
 			'(<{.*?)(\$(\w+)@(index|iteration|first|last|total))+(.*?}>)' => '$1$_foreach_$3_$4$5',
-			'<{(\$[\S]+?)\snofilter\s*}>'          => '<?php echo $1; ?>',
-			'<{(\$[\w\_\"\'\[\]]+?)\s*=(.*?)\s*}>'           => '<?php $1 =$2; ?>',
-			'<{(\$[\S]+?)\s*}>'          => '<?php echo htmlspecialchars($1, ENT_QUOTES, "UTF-8"); ?>',
+			'<{(\$[\$\w\.\"\'\[\]]+?)\snofilter\s*}>'          => '<?php echo $1; ?>',
+			'<{(\$[\$\w\"\'\[\]]+?)\s*=(.*?)\s*}>'           => '<?php $1 =$2; ?>',
+			'<{(\$[\$\w\.\"\'\[\]]+?)\s*}>'          => '<?php echo htmlspecialchars($1, ENT_QUOTES, "UTF-8"); ?>',
 			'<{if\s*(.+?)}>'          => '<?php if ($1) : ?>',
 			'<{else\s*if\s*(.+?)}>'   => '<?php elseif ($1) : ?>',
 			'<{else}>'                => '<?php else : ?>',
 			'<{break}>'               => '<?php break; ?>',
 			'<{continue}>'            => '<?php continue; ?>',
 			'<{\/if}>'                => '<?php endif; ?>',
-			'<{foreach\s*(\$[\w\.\_\"\'\[\]]+?)\s*as(\s*)\$([\w\_\"\'\[\]]+?)}>' => $foreach_inner_before.'<?php foreach( $1 as $$3 ) : ?>'.$foreach_inner_after,
-			'<{foreach\s*(\$[\w\.\_\"\'\[\]]+?)\s*as\s*(\$[\w\_\"\'\[\]]+?)\s*=>\s*\$([\w\_\"\'\[\]]+?)}>'  => $foreach_inner_before.'<?php foreach( $1 as $2 => $$3 ) : ?>'.$foreach_inner_after,
-			'<{\/foreach}>'           => '<?php endforeach; ?>',
+			'<{foreach\s*(\$[\$\w\.\"\'\[\]]+?)\s*as(\s*)\$([\w\"\'\[\]]+?)}>' => $foreach_inner_before.'<?php foreach( $1 as $$3 ) : ?>'.$foreach_inner_after,
+			'<{foreach\s*(\$[\$\w\.\"\'\[\]]+?)\s*as\s*(\$[\w\"\'\[\]]+?)\s*=>\s*\$([\w\"\'\[\]]+?)}>'  => $foreach_inner_before.'<?php foreach( $1 as $2 => $$3 ) : ?>'.$foreach_inner_after,
+			'<{\/foreach}>'           => '<?php endforeach; }?>',
 			'<{include\s*file=(.+?)}>'=> '<?php include $_view_obj->compile($1); ?>',
 		);
 		$pattern = $replacement = array();
@@ -444,7 +460,7 @@ class View{
 	}
 	
 	private function _compile_function($template_data){
-		$pattern = '/'.$this->left_delimiter.'([\w_]+)\s*(.*?)'.$this->right_delimiter.'/';
+		$pattern = '/'.$this->left_delimiter.'(\w+)\s*(.*?)'.$this->right_delimiter.'/';
 		return preg_replace_callback($pattern, array($this, '_compile_function_callback'), $template_data);
 	}
 	
@@ -453,7 +469,7 @@ class View{
 		$sysfunc = preg_replace('/\((.*)\)\s*$/', '<?php echo '.$matches[1].'($1);?>', $matches[2], -1, $count);
 		if($count)return $sysfunc;
 		
-		$pattern_inner = '/\b([\w_]+?)\s*=\s*(\$[\w"\'\]\[\-_>\$]+|"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"|\'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\')\s*?/'; 
+		$pattern_inner = '/\b([-\w]+?)\s*=\s*(\$[\w"\'\]\[\-_>\$]+|"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"|\'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\'|([->\w]+))\s*?/'; 
 		$params = "";
 		if(preg_match_all($pattern_inner, $matches[2], $matches_inner, PREG_SET_ORDER)){
 			$params = "array(";
@@ -486,7 +502,7 @@ function _err_router($msg){
 	}
 }
 function _err_handle($errno, $errstr, $errfile, $errline){
-	if(0 === error_reporting())return false;
+	if(0 === error_reporting() || 30711 === error_reporting())return false;
 	$msg = "ERROR";
 	if($errno == E_WARNING)$msg = "WARNING";
 	if($errno == E_NOTICE)$msg = "NOTICE";
@@ -497,17 +513,15 @@ function _err_handle($errno, $errstr, $errfile, $errline){
 function err($msg){
 	$msg = htmlspecialchars($msg);
 	$traces = debug_backtrace();
-	if(!$GLOBALS['debug']){
-		header('HTTP/1.1 500 Internal Server Error');
-		if(!empty($GLOBALS['err_handler'])){
-			call_user_func($GLOBALS['err_handler'], $msg, $traces);
-		}else{
-			error_log($msg);
-		}
+	if(!empty($GLOBALS['err_handler'])){
+		call_user_func($GLOBALS['err_handler'], $msg, $traces);
 	}else{
-		if (ob_get_contents()) ob_end_clean();
+		if(!$GLOBALS['debug']){
+			error_log($msg);
+		}else{
+			if (ob_get_contents()) ob_end_clean();
 function _err_highlight_code($code){if(preg_match('/\<\?(php)?[^[:graph:]]/i', $code)){return highlight_string($code, TRUE);}else{return preg_replace('/(&lt;\?php&nbsp;)+/i', "", highlight_string("<?php ".$code, TRUE));}}
 function _err_getsource($file, $line){if(!(file_exists($file) && is_file($file))) {return '';}$data = file($file);$count = count($data) - 1;$start = $line - 5;if ($start < 1) {$start = 1;}$end = $line + 5;if ($end > $count) {$end = $count + 1;}$returns = array();for($i = $start; $i <= $end; $i++) {if($i == $line){$returns[] = "<div id='current'>".$i.".&nbsp;"._err_highlight_code($data[$i - 1], TRUE)."</div>";}else{$returns[] = $i.".&nbsp;"._err_highlight_code($data[$i - 1], TRUE);}}return $returns;
 }?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta name="robots" content="noindex, nofollow, noarchive" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title><?php echo $msg;?></title><style>body{padding:0;margin:0;word-wrap:break-word;word-break:break-all;font-family:Courier,Arial,sans-serif;background:#EBF8FF;color:#5E5E5E;}div,h2,p,span{margin:0; padding:0;}ul{margin:0; padding:0; list-style-type:none;font-size:0;line-height:0;}#body{width:918px;margin:0 auto;}#main{width:918px;margin:13px auto 0 auto;padding:0 0 35px 0;}#contents{width:918px;float:left;margin:13px auto 0 auto;background:#FFF;padding:8px 0 0 9px;}#contents h2{display:block;background:#CFF0F3;font:bold 20px;padding:12px 0 12px 30px;margin:0 10px 22px 1px;}#contents ul{padding:0 0 0 18px;font-size:0;line-height:0;}#contents ul li{display:block;padding:0;color:#8F8F8F;background-color:inherit;font:normal 14px Arial, Helvetica, sans-serif;margin:0;}#contents ul li span{display:block;color:#408BAA;background-color:inherit;font:bold 14px Arial, Helvetica, sans-serif;padding:0 0 10px 0;margin:0;}#oneborder{width:800px;font:normal 14px Arial, Helvetica, sans-serif;border:#EBF3F5 solid 4px;margin:0 30px 20px 30px;padding:10px 20px;line-height:23px;}#oneborder span{padding:0;margin:0;}#oneborder #current{background:#CFF0F3;}</style></head><body><div id="main"><div id="contents"><h2><?php echo $msg?></h2><?php foreach($traces as $trace){if(is_array($trace)&&!empty($trace["file"])){$souceline = _err_getsource($trace["file"], $trace["line"]);if($souceline){?><ul><li><span><?php echo $trace["file"];?> on line <?php echo $trace["line"];?> </span></li></ul><div id="oneborder"><?php foreach($souceline as $singleline)echo $singleline;?></div><?php }}}?></div></div><div style="clear:both;padding-bottom:50px;" /></body></html><?php }
-	exit;
-}
+exit;
+}}
