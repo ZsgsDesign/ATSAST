@@ -61,7 +61,8 @@
         line-height: 1.2;
         color: #fff;
     }
-    .atsast-course-header button.btn.btn-lg {
+    .atsast-course-header button.btn.btn-lg,
+    .atsast-course-header .dropdown {
         padding:.5rem 1.5rem;
         font-weight: 100;
         position: absolute;
@@ -245,7 +246,16 @@
         </div>
         <p class="d-none d-lg-block"><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
         <h1 class="d-none d-lg-block"><{$result['course_name']}></h1>
-        <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-lg btn-raised d-none d-lg-inline-block"><i class="MDI check-circle-outline"></i> 编辑</button></a>
+        <div class="dropdown d-none d-lg-inline-block">
+            <button class="btn btn-outline-light btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                操作
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item text-secondary" href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><i class="MDI pencil"></i> 编辑</a>
+                <a class="dropdown-item text-secondary" href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/view_register"><i class="MDI check-circle-outline"></i> 查看报名情况</a>
+            </div>
+        </div>
+        <!-- <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"></a><button type="button" class="btn btn-info btn-lg btn-raised d-none d-lg-inline-block"><i class="MDI check-circle-outline"></i> 编辑</button></a> -->
     </div>
 </div>
 </div>
@@ -253,7 +263,16 @@
     <div class="d-block d-lg-none atsast-title">
         <h1><{$result['course_name']}></h1>
         <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
-        <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-raised d-inline-block d-lg-none"><i class="MDI check-circle-outline"></i> 编辑</button></a>
+        <!-- <a href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><button type="button" class="btn btn-info btn-raised d-inline-block d-lg-none"><i class="MDI check-circle-outline"></i> 编辑</button></a> -->
+        <div class="dropdown d-inline-block d-lg-none">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                操作
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item text-secondary" href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/edit"><i class="MDI pencil"></i> 编辑</a>
+                <a class="dropdown-item text-secondary" href="<{$ATSAST_DOMAIN}>/course/<{$cid}>/view_register"><i class="MDI check-circle-outline"></i> 查看报名情况</a>
+            </div>
+        </div>
     </div>
     <section class="mb-5">
 

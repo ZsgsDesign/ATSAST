@@ -40,6 +40,7 @@ $config = array(
         'api/<a>'                                            => 'api/<a>',
         'ajax/<a>'                                           => 'ajax/<a>',
         'terms/<a>'                                          => 'terms/<a>',
+        'courses/<page>'                                     => 'main/courses',
         '<a>'                                                => 'main/<a>',
         '/'                                                  => 'main/index',
     ),

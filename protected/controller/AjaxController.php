@@ -619,7 +619,84 @@ class AjaxController extends BaseController
                         'type'=>"access"
                     )
                 );
-            }          
+            }
+
+            $course_details=new Model("course_details");
+            if($type==2){
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"clock",
+                        'item_name'=>"授课时间",
+                        'item_value'=>"正常为每周晚 点~点 ， 如有变动另行通知"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"near-me",
+                        'item_name'=>"授课地点",
+                        'item_value'=>"大学生活动中心 会议室"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"lightbulb-on-outline",
+                        'item_name'=>"主修",
+                        'item_value'=>"undefined"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"star-outline",
+                        'item_name'=>"课程评价",
+                        'item_value'=>"暂无"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"note-text",
+                        'item_name'=>"课程作业",
+                        'item_value'=>"有"
+                    )
+                );
+            }else{
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"lightbulb-on-outline",
+                        'item_name'=>"主修",
+                        'item_value'=>"undefined"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"star-outline",
+                        'item_name'=>"课程评价",
+                        'item_value'=>"暂无"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"note-text",
+                        'item_name'=>"课程作业",
+                        'item_value'=>"无"
+                    )
+                );
+                $course_details->create(
+                    array(
+                        'cid'=>$cid,
+                        'icon'=>"television",
+                        'item_name'=>"视频教学",
+                        'item_value'=>"有"
+                    )
+                );
+            }
 
             SUCCESS::Catcher("新建成功",array("cid"=>$cid));
         } else {

@@ -634,6 +634,47 @@ class CourseController extends BaseController
         }
     }
 
+    public function actionView_Register()
+    {
+        $this->url="course/view_register";
+        $this->title="查看报名情况";
+        $this->bg="";
+        if (!($this->islogin)) {
+            return $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+
+        if (arg("cid")) {
+            $db=new Model("courses");
+            $cid=arg("cid");
+            if (is_numeric($cid)) {
+                $this->cid=$cid;
+                $course_register=new Model("course_register");
+                $organization=new Model("organization");
+                $result=$db->find(array("cid=:cid",":cid"=>$cid));
+                $privilege=new Model("privilege");
+                $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
+
+                if (empty($access_right)) {
+                    return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/");
+                }
+
+                $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
+                $result['creator_name']=$creator['name'];
+                $result['creator_logo']=$creator['logo'];
+                
+                $course_regisrter_details=$course_register->query("select * from course_register as c left join users u on c.uid = u.uid where c.cid=:cid order by c.rid asc", array(":cid"=>$cid));
+                $this->regisrter_details=$course_regisrter_details;
+                $this->result=$result;
+                $this->site=$result["course_name"];
+
+            } else {
+                $this->jump("{$this->ATSAST_DOMAIN}/courses");
+            }
+        } else {
+            $this->jump("{$this->ATSAST_DOMAIN}/courses");
+        }
+    }
+
     public function actionAdd_Syllabus()
     {
         $this->url="course/add_syllabus";

@@ -1,3 +1,18 @@
+<style>
+    .page-link {
+        color: #ee6e73;
+    }
+    .page-link.active{
+        background-color: #ee6e73;
+        color: white!important;
+    }
+    .page-link:hover {
+        color: #ee6e73;
+    }
+    .page-link:focus {
+        box-shadow: 0 0 0 0.2rem rgba(238, 110, 115,.25);
+    }
+</style>
 <div class="container mundb-standard-container">
     <section class="mb-5">
         <h1>课程</h1>
@@ -16,19 +31,50 @@
                 </a>
             </div>
             <{/foreach}>
-            <{ if 0 }>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <a class="attsast-course" href="<{$ATSAST_DOMAIN}>/course/add">
-                    <div class="btn card bg-light mb-3 text-center">
-                        <div class="card-body">
-                            <i class="MDI plus"></i>
-                            <h5 class="card-title mundb-text-truncate-1">新建课程</h5>
-                            <p class="card-text mundb-text-truncate-1">点击这里新建课程哦</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <{/if}>
         </div>
+        <nav aria-label="Page navigation" class="mt-5">
+            <ul class="pagination justify-content-center">
+                
+                <{ if $pager['prev_page'] == $pager['current_page'] }>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true"><i class="MDI chevron-left"></i></span>
+                        <span class="sr-only">前一页</span>
+                    </a>
+                </li>
+                <{ else }>
+                <li class="page-item">
+                    <a class="page-link" href="<{$ATSAST_DOMAIN}>/courses/<{$pager['prev_page']}>" aria-label="Previous">
+                        <span aria-hidden="true"><i class="MDI chevron-left"></i></span>
+                        <span class="sr-only">前一页</span>
+                    </a>
+                </li>
+                <{ /if }>
+
+                <{foreach $pager['all_pages'] as $p}>
+                    <{ if $p == $pager['current_page'] }>
+                        <li class="page-item"><a class="page-link active" href="#"><{$p}></a></li>
+                    <{ else }>
+                        <li class="page-item"><a class="page-link" href="<{$ATSAST_DOMAIN}>/courses/<{$p}>"><{$p}></a></li>
+                    <{ /if }>
+                <{/foreach}>
+                
+                <{ if $pager['next_page'] == $pager['current_page'] }>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true"><i class="MDI chevron-right"></i></span>
+                            <span class="sr-only">后一页</span>
+                        </a>
+                    </li>
+                <{ else }>
+                    <li class="page-item">
+                        <a class="page-link" href="<{$ATSAST_DOMAIN}>/courses/<{$pager['next_page']}>" aria-label="Next">
+                            <span aria-hidden="true"><i class="MDI chevron-right"></i></span>
+                            <span class="sr-only">后一页</span>
+                        </a>
+                    </li>
+                <{ /if }>
+            </ul>
+        </nav>
     </section>
 </div>
