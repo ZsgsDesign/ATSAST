@@ -87,7 +87,31 @@
             <button type="submit" class="btn btn-outline-warning" onclick="addVerify()"><i class="MDI verified"></i> 认证</button>
         </div>
     </card>
-
+    <card class="mb-5">
+        <h5><i class="MDI marker-check"></i> 已经颁发的验证</h5>
+        <div>
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">UID</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">学号</th>
+                        <th scope="col">身份验证</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <{foreach $verify_entry as $v}>
+                    <tr>
+                        <th scope="row"><{$v["uid"]}></th>
+                        <td><{$v["real_name"]}></td>
+                        <td><{$v["SID"]}></td>
+                        <td><{$v["title"]}></td>
+                    </tr>
+                    <{/foreach}>
+                </tbody>
+            </table>
+        </div>
+    </card>
 </div>
 <div id="modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

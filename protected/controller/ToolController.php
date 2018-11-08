@@ -85,6 +85,9 @@ class ToolController extends BaseController
         } else {
             return $this->jump("{$this->ATSAST_DOMAIN}/");
         }
+
+        $users=new Model("users");
+        $this->verify_entry=$users->findAll(["title<>''","uid ASC"]);
     }
 
     public function actionColor()
