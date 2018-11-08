@@ -15,7 +15,13 @@
     nav.atsast-pagination{
         box-shadow: none;
     }
+    canvas#atsast-background-canvas{
+        position: fixed;
+        z-index: -1;
+        top:0;
+    }
 </style>
+<canvas id="atsast-background-canvas"></canvas>
 <div class="container mundb-standard-container">
     <section class="mb-5">
         <h1>课程</h1>
@@ -81,3 +87,4 @@
         </nav>
     </section>
 </div>
+<script src="<{$ATSAST_CDN}>/js/atsast.canvas.background.js"></script>
