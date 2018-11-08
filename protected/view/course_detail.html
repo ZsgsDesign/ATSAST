@@ -78,13 +78,16 @@
         margin-bottom: 1rem;
     }
 
-    instructor>img {
+    instructor img {
         width: 5rem;
         height: 5rem;
         border-radius: 2000px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+    }
+
+    instructor > a{
         flex-shrink: 0;
         flex-grow: 0;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
     }
 
     instructor>div {
@@ -266,7 +269,7 @@
             <{foreach $instructor as $r}>
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <instructor>
-                    <img src="<{ $r['avatar'] }>">
+                    <a href="<{$ATSAST_DOMAIN}>/user/<{$r['uid']}>"><img src="<{ $r['avatar'] }>"></a>
                     <div>
                         <p><strong><{ $r['course_title'] }>：</strong><{if $r["real_name"]}><{$r["real_name"]}><{else}><{$r["SID"]}><{/if}></p>
                         <small><{ $r['title'] }></small>

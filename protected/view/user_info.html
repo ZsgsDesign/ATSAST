@@ -1,70 +1,144 @@
-<div class="am-g am-container" style="max-width:500px!important;">
-  <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><{$newuserinfo['name']}>的资料卡</strong> / <small>Profile</small></div>
-  </div>
-  <div class="am-u-sm-12 am-u-md-12">
-    <div class="am-panel am-panel-default">
-      <div class="am-panel-bd am-cf">
-        <div class="am-u-sm-6 am-u-sm-centered">
-          <img style="width:256px;" src="<{$ATSAST_CDN}>/img/avatar/<{$newuserinfo['avatar']}>" class="am-img-responsive am-img-thumbnail am-circle" />
+<style>
+    card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+    }
+    card.img-card{
+        padding:0;
+        overflow: hidden;
+    }
+
+    card.img-card > img{
+        width:100%;
+        height:25rem;
+        object-fit: cover;
+    }
+
+    card.img-card avatar{
+        display: block;
+        position: relative;
+        text-align: center;
+        height: 5rem;
+    }
+
+    card.img-card avatar > img{
+        display: block;
+        width:10rem;
+        height:10rem;
+        border-radius: 2000px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        top:-100%;
+        left:0;
+        right:0;
+        position: absolute;
+        margin: 0 auto;
+    }
+
+    card.img-card > div{
+        text-align: center;
+        padding: 1rem;
+    }
+
+    card:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+
+    .atsast-verify-text{
+        color:#8a6219;
+        font-weight: 100;
+    }
+
+    statistic{
+        display: block;
+    }
+
+    hr.atsast-line{
+        width: auto;
+        margin-left:1rem;
+        margin-right: 1rem;
+    }
+
+    badge{
+        display: inline-block;
+        padding: 0.25rem 0.75em;
+        font-weight: 700;
+        line-height: 1.5;
+        text-align: center;
+        vertical-align: baseline;
+        border-radius: 0.125rem;
+        background-color: #f5f5f5;
+        margin: 1rem;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .atsast-empty{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height: 10rem;
+    }
+
+    @media (max-width: 991px) {
+        card.img-card > img{
+            height:15rem;
+        }
+    }
+</style>
+<div class="container mundb-standard-container">
+    <card class="img-card">
+        <img src="<{$imgurl}>">
+        <avatar>
+            <img src="<{$user_info['avatar']}>">
+        </avatar>
+        <div>
+            <h3><{$user_info['name']}></h3>
+            <p style="margin-bottom: .5rem;"><small class="atsast-verify-text"><{$user_info['title']}></small></p>
+            <p><{$user_info['email']}></p>
         </div>
-        <div class="am-u-sm-12" style="margin-top:2rem;">
-        <center>
-		  <h1>
-            <{$newuserinfo['name']}>
-          </h1>
-          <div>注册时间：
-            <{$newuserinfo['rtime']}>
-          </div>
-          <div>性别 :
-            <{if $newuserinfo['sex']==1}>男
-              <{else if $newuserinfo['sex']==2}>女
-                <{else}>保密
-                  <{/if}>
-          </div>
-          <div>
-            <{if $newuserinfo['intro']!=''}>自我介绍 :<{$newuserinfo['intro']}>
-			<{/if}>
-          </div>
-		</center>
+        <hr class="atsast-line">
+        <div>
+            <div class="row">
+                <div class="col-lg-4 col-12">
+                    <statistic>
+                        <h1><{$user_info["instructor"]}></h1>
+                        <p><{$user_info["gender_word"]}>讲授的课程</p>
+                    </statistic>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <statistic>
+                        <h1><{$user_info["course_register"]}></h1>
+                        <p><{$user_info["gender_word"]}>参与的课程</p>
+                    </statistic>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <statistic>
+                        <h1><{$user_info["contest_register"]}></h1>
+                        <p><{$user_info["gender_word"]}>参与的活动</p>
+                    </statistic>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="am-u-sm-12 am-u-md-12">
-    <div class="am-panel am-panel-default">
-      <div class="am-panel-bd am-cf">
-        <div class="am-u-sm-6 am-text-center">
-          <div class="am-text-xl">
-            <{$newuserinfo['ans']}>
-          </div>
-          <div>回答</div>
+        <hr class="atsast-line">
+        <div>
+            <p class="text-center"><{$user_info["gender_word"]}>的近期活动</p>
+            <div class="atsast-empty">
+                <badge>暂未开放功能</badge>
+            </div>
         </div>
-        <div class="am-u-sm-6 am-text-center">
-          <div class="am-text-xl">
-            <{$newuserinfo['rate']}>%</div>
-          <div>正答</div>
-        </div>
-        <div class="am-u-sm-12">&nbsp;</div>
-        <div class="am-u-sm-4 am-text-center">
-          <div class="am-text-xl">
-            <{$newuserinfo['score']}>
-          </div>
-          <div>积分</div>
-        </div>
-        <div class="am-u-sm-4 am-text-center">
-          <div class="am-text-xl">
-            <{$newuserinfo['credit']}>
-          </div>
-          <div>爱心值</div>
-        </div>
-        <div class="am-u-sm-4 am-text-center">
-          <div class="am-text-xl">
-            <{$donatecount}>
-          </div>
-          <div>捐助项目</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    </card>
 </div>
