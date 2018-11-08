@@ -12,6 +12,9 @@
     .page-link:focus {
         box-shadow: 0 0 0 0.2rem rgba(238, 110, 115,.25);
     }
+    nav.atsast-pagination{
+        box-shadow: none;
+    }
 </style>
 <div class="container mundb-standard-container">
     <section class="mb-5">
@@ -32,7 +35,7 @@
             </div>
             <{/foreach}>
         </div>
-        <nav aria-label="Page navigation" class="mt-5">
+        <nav aria-label="Page navigation" class="atsast-pagination mt-5">
             <ul class="pagination justify-content-center">
                 
                 <{ if $pager['prev_page'] == $pager['current_page'] }>
