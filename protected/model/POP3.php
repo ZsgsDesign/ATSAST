@@ -209,10 +209,10 @@ class POP3 {
 
     //  Connect to the POP3 server
     $this->pop_conn = fsockopen($host,    //  POP3 Host
-                  $port,    //  Port #
-                  $errno,   //  Error Number
-                  $errstr,  //  Error Message
-                  $tval);   //  Timeout (seconds)
+                                $port,    //  Port #
+                                $errno,   //  Error Number
+                                $errstr,  //  Error Message
+                                $tval);   //  Timeout (seconds)
 
     //  Restore the error handler
     restore_error_handler();

@@ -126,10 +126,10 @@ class SMTP {
 
     // connect to the smtp server
     $this->smtp_conn = @fsockopen($host,    // the host of the server
-                                 $port,    // the port to use
-                                 $errno,   // error number if any
-                                 $errstr,  // error message if any
-                                 $tval);   // give up after ? secs
+                                  $port,    // the port to use
+                                  $errno,   // error number if any
+                                  $errstr,  // error message if any
+                                  $tval);   // give up after ? secs
     // verify we connected properly
     if(empty($this->smtp_conn)) {
       $this->error = array("error" => "Failed to connect to server",
