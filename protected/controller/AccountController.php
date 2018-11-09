@@ -122,8 +122,8 @@ class AccountController extends BaseController
                 'gender'=>0
             );
             $uid=$db->create($user);
-            if (!file_exists("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid")) {
-                mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
+            if (!file_exists("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid")) {
+                mkdir("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid", 0777, true);
             }
             $_SESSION['OPENID']=$OPENID;
             @self::sendActivateEmail($email,$OPENID,$this->ATSAST_DOMAIN);
@@ -199,7 +199,7 @@ class AccountController extends BaseController
         $this->contest_result=$contest_result;
 
         $storage=array();
-        $storage["usage"]=getDirSize("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/{$this->userinfo['uid']}");
+        $storage["usage"]=getDirSize("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/{$this->userinfo['uid']}");
         $storage["usage_string"]=sizeConverter($storage["usage"]);
         $storage["tot"]=$detail['cloud_size'];
         $storage["percent"]=$storage["usage"] / ($storage["tot"] * 1024 * 1024) * 100;

@@ -3,6 +3,12 @@ set_error_handler("_err_handle");
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 $GLOBALS = require(APP_DIR.DS.'protected'.DS.'config.php');
 
+// Maintain Mode
+
+if($GLOBALS['maintain']){
+	exit(file_get_contents(APP_DIR.DS.'protected'.DS.'view'.DS.'maintain'.DS.'index.html'));
+}
+
 if($GLOBALS['debug']){
 	error_reporting(-1);
 	ini_set("display_errors", "On");

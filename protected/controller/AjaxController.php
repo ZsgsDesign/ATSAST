@@ -929,10 +929,10 @@ class AjaxController extends BaseController
             imageCopyreSampled($dim, $im, 0, 0, $sx, $sy, $yy, $xx, $thumbw, $thumbh);
             imageinterlace($dim, true);
             $stamp=time().rand(0, 9);
-            if (!file_exists("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid")) {
-                mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
+            if (!file_exists("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid")) {
+                mkdir("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid", 0777, true);
             }
-            imagejpeg($dim, "/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid/$stamp.jpg", 100);
+            imagejpeg($dim, "/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid/$stamp.jpg", 100);
             $avatar = "{$this->ATSAST_CDN}/img/atsast/upload/$uid/$stamp.jpg";
             $users = new Model("users");
             $result = $users -> find(array("uid = :uid", ':uid' => $uid));
@@ -992,10 +992,10 @@ class AjaxController extends BaseController
                         $filestream = file_get_contents($file);
                         
                         $stamp=time().rand(0, 9);
-                        if (!file_exists("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid")) {
-                            mkdir("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid", 0777, true);
+                        if (!file_exists("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid")) {
+                            mkdir("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid", 0777, true);
                         }
-                        file_put_contents("/home/wwwroot/1cf/domain/1cf.co/web/i/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'], $filestream);
+                        file_put_contents("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'], $filestream);
                         $link="{$this->ATSAST_CDN}/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'];
                     } else {
                         ERR::Catcher(1005);

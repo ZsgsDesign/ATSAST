@@ -49,6 +49,7 @@ $config = array(
 $domain = array(
     "127.0.0.1" => array( // 调试配置
         'debug' => 1,
+        'maintain' => 0,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_DEBUG_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_DEBUG_MYSQL_PORT'),
@@ -60,6 +61,7 @@ $domain = array(
     ),
     "atsast.com" => array( //本地域名映射配置
         'debug' => 1,
+        'maintain' => 0,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_DEBUG_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_DEBUG_MYSQL_PORT'),
@@ -71,6 +73,7 @@ $domain = array(
     ),
     "www.atsast.com" => array( //本地域名映射配置
         'debug' => 1,
+        'maintain' => 0,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_DEBUG_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_DEBUG_MYSQL_PORT'),
@@ -82,6 +85,7 @@ $domain = array(
     ),
     "mundb.xyz" => array( //生产环境配置
         'debug' => 0,
+        'maintain' => 1,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_MYSQL_PORT'),
@@ -93,6 +97,7 @@ $domain = array(
     ),
     "www.mundb.xyz" => array( //生产环境配置
         'debug' => 0,
+        'maintain' => 1,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_MYSQL_PORT'),
