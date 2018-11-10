@@ -10,8 +10,8 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
-            "version"=>"0.9.2 PR",
-            "subversion"=>"20181109010601",
+            "version"=>"0.9.3 PR",
+            "subversion"=>"20181111022641",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
@@ -55,6 +55,10 @@ class BaseController extends Controller
             $this->greeting="晚上好";
         } else {
             $this->greeting="深夜了";
+        }
+        
+        if($this->userinfo['insecure']){
+            if(!preg_match("/account\/insecure/",$_SERVER['REQUEST_URI'])) $this->jump("{$this->ATSAST_DOMAIN}/account/insecure");
         }
     }
 

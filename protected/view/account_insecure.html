@@ -1,33 +1,33 @@
 <style>
-		.atsast-middle-container{
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-shrink: 0;
-			flex-grow: 1;
-		}
-		.card-img-top{
-			height:15rem;
-			width:100%;
-			font-size:6rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			color:rgba(255,255,255,0.75);
-		}
-		.card{
-			margin-bottom:30px;
-		}
-		label{
-			left: 0;
-		}
-		form{
-			margin-bottom: 0;
-		}
-		button{
-			margin-top:1rem;
-		}
-	</style>
+	.atsast-middle-container{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-shrink: 0;
+		flex-grow: 1;
+	}
+	.card-img-top{
+		height:15rem;
+		width:100%;
+		font-size:6rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color:rgba(255,255,255,0.75);
+	}
+	.card{
+		margin-bottom:30px;
+	}
+	label{
+		left: 0;
+	}
+	form{
+		margin-bottom: 0;
+	}
+	button{
+		margin-top:1rem;
+	}
+</style>
 <div class="container mundb-standard-container atsast-middle-container">
 	<div class="container mt-5">
 		<div class="row atsast-middle-container">
@@ -39,18 +39,7 @@
 					<div class="card-body text-center">
 						<h5 class="card-title"><{$status}></h5>
 						<p class="card-text"><{$msg}></p>
-						<{if $color == "info"}>
-							<{if $step==0 }>
-								<div class="form-group text-left">
-									<label for="password" class="bmd-label-floating">注册使用的邮箱</label>
-									<input type="email" name="email" class="form-control" id="email" required>
-								</div>
-								<input name="id" type="hidden" value="<{$id}>">
-								<input name="ret" type="hidden" value="<{$ret}>">
-								<div class="text-right">
-									<button onclick="sendRet()" class="btn btn-danger" id="actionRet">找回密码</button>
-								</div>							
-							<{ else }>
+						<{if $color == "warning"}>
 							<form action="#" method="POST">
 								<div class="form-group text-left">
 									<label for="password" class="bmd-label-floating">新的密码</label>
@@ -61,13 +50,11 @@
 									<small class="text-muted">* 密码必须在6到20位之间</small>
 									<{/if}>
 								</div>
-								<input name="id" type="hidden" value="<{$id}>">
-								<input name="ret" type="hidden" value="<{$ret}>">
+								<input name="action" type="hidden" value="update">
 								<div class="text-right">
 									<button type="submit" class="btn btn-danger">更新密码</button>
 								</div>
 							</form>
-							<{/if}>
 						<{elseif $color=="success"}>
 						<a href="<{$ATSAST_DOMAIN}>/account/" class="btn btn-outline-<{$color}>">用户中心</a>
 						<{/if}>
@@ -110,27 +97,5 @@
         $('#modeal_title').html(title);
         $('#modal').modal();
     }
-	function sendRet(){
-		$("#actionRet").attr("disabled",true);
-		$.post({
-            url: "<{$ATSAST_DOMAIN}>/ajax/RetrievePassword",
-            data: {
-				email: $("#email").val()
-			},
-            success: function (result) {
-                result = JSON.parse(result);
-                alert(result.desc);
-                if (result.ret == 200) {
-                    setInterval(function(){
-						location.href="<{$ATSAST_DOMAIN}>/account/";
-					});
-                }
-            },
-            error: function (data) {
-                alert("发送邮件失败");
-				$("#actionRet").attr("disabled",false);
-            }
-        });
-	}
 </script>
 <{/if}>

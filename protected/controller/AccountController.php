@@ -118,7 +118,7 @@ class AccountController extends BaseController
                 'album'=>"bing",
                 'cloud_size'=>5,
                 'OPENID'=>$OPENID,
-                'avatar'=>"{$this->ATSAST_CDN}/img/avatar/default.png",
+                'avatar'=>"https://static.1cf.co/img/avatar/default.png",
                 'gender'=>0
             );
             $uid=$db->create($user);
@@ -367,6 +367,48 @@ class AccountController extends BaseController
 					$this->color="danger";
 					$this->icon="alert-circle-outline";					
 				}		
+			}
+		}else{
+            $this->step=0;
+		}
+    }
+    
+    function actionInsecure() {
+        $this->url="account/insecure";
+        $this->title="修改密码";
+        $this->bg="";
+
+        if(!$this->islogin){
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+
+		$password=arg("password");
+		$this->step=1;
+		$this->status="修改密码";
+		$this->msg="请设置一个新的面密码";
+		$this->color="warning";
+		$this->icon="account-alert";
+		$this->err=false;
+		if(strlen($password)>=6 && strlen($password)<=20){
+			$this->step=2;
+		}else if(strlen($password)>0){
+			$this->err="请设置一个长度在6到20之间的密码！";
+		}
+		if (arg("action")) {
+			if($this->step==2){
+				$uid=$this->userinfo['uid'];
+				$db=new Model("users");
+                
+                $OPENID=sha1(strtolower($this->userinfo['email'])."@SAST+1s".md5($password));
+                $result=$db->update(array("uid=:uid",":uid"=>$uid),array("OPENID"=>$OPENID,"insecure"=>0));
+                
+                if($result){
+                    $this->status="修改密码成功";
+                    $this->msg="恭喜，您的密码已经在ATSAST修改成功。";
+                    $this->color="success";
+                    $this->icon="check-circle-outline";
+                }
+	
 			}
 		}else{
             $this->step=0;

@@ -933,7 +933,7 @@ class AjaxController extends BaseController
                 mkdir("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid", 0777, true);
             }
             imagejpeg($dim, "/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid/$stamp.jpg", 100);
-            $avatar = "{$this->ATSAST_CDN}/img/atsast/upload/$uid/$stamp.jpg";
+            $avatar = "https://static.1cf.co/img/atsast/upload/$uid/$stamp.jpg";
             $users = new Model("users");
             $result = $users -> find(array("uid = :uid", ':uid' => $uid));
             if ($result) {
@@ -996,7 +996,7 @@ class AjaxController extends BaseController
                             mkdir("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid", 0777, true);
                         }
                         file_put_contents("/home/wwwroot/main/domain/static.1cf.co/web/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'], $filestream);
-                        $link="{$this->ATSAST_CDN}/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'];
+                        $link="https://static.1cf.co/img/atsast/upload/$uid/[$stamp]".$_FILES['file']['name'];
                     } else {
                         ERR::Catcher(1005);
                     }

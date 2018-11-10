@@ -85,7 +85,7 @@ $domain = array(
     ),
     "mundb.xyz" => array( //生产环境配置
         'debug' => 0,
-        'maintain' => 1,
+        'maintain' => 0,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_MYSQL_PORT'),
@@ -97,7 +97,7 @@ $domain = array(
     ),
     "www.mundb.xyz" => array( //生产环境配置
         'debug' => 0,
-        'maintain' => 1,
+        'maintain' => 0,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('ATSAST_MYSQL_HOST'),
             'MYSQL_PORT' => CONFIG::GET('ATSAST_MYSQL_PORT'),
