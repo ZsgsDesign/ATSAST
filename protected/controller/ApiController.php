@@ -58,8 +58,8 @@ class ApiController extends BaseController
                         "SID"=>$temp['SID'],
                         "real_name"=>$userinfo['real_name'],
                         "phone"=>$temp['phone'],
-                        "qq"=>$temp['qq'],
                         "contact_email"=>$temp['contact_email'],
+                        "qq"=>$temp['qq'],
                     )
                 );
 
