@@ -354,7 +354,7 @@ class AccountController extends BaseController
 				$result=$db->find(array("uid=:uid",":uid"=>$uid));	
 				if($result && sha1($result['OPENID'].$uid)==$ret){
 					$OPENID=sha1(strtolower($result['email'])."@SAST+1s".md5($password));
-					$result=$db->update(array("uid=:uid",":uid"=>$uid),array("OPENID"=>$OPENID));
+					$result=$db->update(array("uid=:uid",":uid"=>$uid),array("OPENID"=>$OPENID,"insecure"=>0));
 					if($result){
 						$this->status="重置密码成功";
 						$this->msg="恭喜，您的密码已经在ATSAST重置成功。";
