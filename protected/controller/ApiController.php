@@ -36,7 +36,7 @@ class ApiController extends BaseController
     }
 
     public function actionBatchRegister(){
-        // exit("Forbidden");
+        exit("Forbidden");
 
         $tmp=new Model("temp");
         $tmp_all=$tmp->findAll();
