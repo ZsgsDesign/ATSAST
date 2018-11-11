@@ -11,7 +11,7 @@ class BaseController extends Controller
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
             "version"=>"0.9.3 PR",
-            "subversion"=>"20181111022641",
+            "subversion"=>"20181111123717",
         );
         $this->title="";
         // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
@@ -58,7 +58,7 @@ class BaseController extends Controller
         }
         
         if($this->userinfo['insecure']){
-            if(!preg_match("/account\/insecure/",$_SERVER['REQUEST_URI'])) $this->jump("{$this->ATSAST_DOMAIN}/account/insecure");
+            if(!preg_match("/account\/insecure/",$_SERVER['REQUEST_URI']) || !preg_match("/account\/logout/",$_SERVER['REQUEST_URI'])) $this->jump("{$this->ATSAST_DOMAIN}/account/insecure");
         }
     }
 

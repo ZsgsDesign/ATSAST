@@ -36,7 +36,7 @@ class ApiController extends BaseController
     }
 
     public function actionBatchRegister(){
-        exit("Forbidden");
+        // exit("Forbidden");
 
         $tmp=new Model("temp");
         $tmp_all=$tmp->findAll();
@@ -58,8 +58,8 @@ class ApiController extends BaseController
                         "SID"=>$temp['SID'],
                         "real_name"=>$userinfo['real_name'],
                         "phone"=>$temp['phone'],
+                        "qq"=>$temp['qq'],
                         "contact_email"=>$temp['contact_email'],
-                        "qq"=>"暂无"
                     )
                 );
 
