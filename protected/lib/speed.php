@@ -393,7 +393,26 @@ class View{
 		$_view_obj = & $this;
 		include $complied_file;
 		
-		return ob_get_clean();
+		$output=ob_get_clean();
+
+		// ATSAST PROXY 
+		
+        $ATSAST_DOMAIN=CONFIG::GET("ATSAST_DOMAIN");
+        $ATSAST_CDN=CONFIG::GET("ATSAST_CDN");
+        if(isset($_SERVER["HTTP_ATSAST_DOMAIN"])) $ATSAST_DOMAIN=$_SERVER["HTTP_ATSAST_DOMAIN"];
+        if(isset($_SERVER["HTTP_ATSAST_STATIC"])) $ATSAST_CDN=$_SERVER["HTTP_ATSAST_STATIC"];
+
+		$pattern_map = array(
+			'https:\/\/static.1cf.co'=> $ATSAST_CDN,
+			'https:\/\/mundb.xyz'=> $ATSAST_DOMAIN,
+			'https:\/\/www.mundb.xyz'=> $ATSAST_DOMAIN,
+		);
+		$pattern = $replacement = array();
+		foreach($pattern_map as $p => $r){
+			$pattern = "/$p/i";
+			$output = preg_replace($pattern, $r, $output);
+		}
+		return $output;
 	} 
 	
 	public function assign($mixed, $val = ''){
