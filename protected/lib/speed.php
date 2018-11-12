@@ -436,6 +436,11 @@ class View{
 		$foreach_inner_before = '<?php if(!empty($1)){ $_foreach_$3_counter = 0; $_foreach_$3_total = count($1);?>';
 		$foreach_inner_after  = '<?php $_foreach_$3_index = $_foreach_$3_counter;$_foreach_$3_iteration = $_foreach_$3_counter + 1;$_foreach_$3_first = ($_foreach_$3_counter == 0);$_foreach_$3_last = ($_foreach_$3_counter == $_foreach_$3_total - 1);$_foreach_$3_counter++;?>';
 		$pattern_map = array(
+			// ATSAST PROXY RULES
+			'https:\/\/static.1cf.co'=> '<{ $ATSAST_CDN }>',
+			'https:\/\/mundb.xyz'=> '<{ $ATSAST_DOMAIN }>',
+			'https:\/\/www.mundb.xyz'=> '<{ $ATSAST_DOMAIN }>',
+			// NORMAL RULES
 			'<{\*([\s\S]+?)\*}>'      => '<?php /* $1*/?>',
 			'<{#(.*?)}>'              => '<?php echo $1; ?>',
 			'(<{((?!}>).)*?)(\$[\w\"\'\[\]]+?)\.(\w+)(.*?}>)' => '$1$3[\'$4\']$5',

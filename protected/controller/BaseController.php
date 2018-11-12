@@ -10,11 +10,11 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
-            "version"=>"0.9.3 PR",
-            "subversion"=>"20181111142836",
+            "version"=>"0.9.4 PR",
+            "subversion"=>"20181112134908",
         );
         $this->title="";
-        // $this->bg="https://1cf.co/searchEngine/img/bg.jpg";
+        // $this->bg="https://static.1cf.co/img/atsast/bg.jpg";
         $this->bg="";
         $this->site="SAST教学辅助平台";
 
