@@ -50,8 +50,7 @@ class AccountController extends BaseController
 		$mail->Subject  = "【SAST辅助教学平台】找回密码";
 		$mail->Body = $msg_content;
 		$mail->AltBody    = "找回地址为：".$ATSAST_DOMAIN."/account/retrieve?id='.$uid.'&ret=".$OPENID."，请使用一个支持HTML视图的邮箱服务来查看本激活邮件！"; //当邮件不支持html时备用显示，可以省略
-        $mail->WordWrap   = 80; // 设置每行字符串的长度
-        $mail->SMTPDebug = 1;
+		$mail->WordWrap   = 80; // 设置每行字符串的长度
 		//$mail->AddAttachment("f:/test.png");  //可以添加附件
 		$mail->IsHTML(true);
 		$mail->Send();
