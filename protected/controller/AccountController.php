@@ -41,7 +41,7 @@ class AccountController extends BaseController
         $mail->Port       = 465;
 		$mail->Host       = "mail.njupt.edu.cn";
 		$mail->Username   = "sast@njupt.edu.cn";
-		$mail->Password   = "iLOVEsast2018";
+        $mail->Password   = "iLOVEsast2018";
 		//$mail->IsSendmail(); //如果没有sendmail组件就注释掉，否则出现“Could  not execute: /var/qmail/bin/sendmail ”的错误提示
 		$mail->AddReplyTo("sast@njupt.edu.cn","南京邮电大学大学生科学技术协会");//回复地址
 		$mail->From       = "sast@njupt.edu.cn";
@@ -51,12 +51,13 @@ class AccountController extends BaseController
 		$mail->Subject  = "【SAST辅助教学平台】找回密码";
 		$mail->Body = $msg_content;
 		$mail->AltBody    = "找回地址为：".$ATSAST_DOMAIN."/account/retrieve?id='.$uid.'&ret=".$OPENID."，请使用一个支持HTML视图的邮箱服务来查看本激活邮件！"; //当邮件不支持html时备用显示，可以省略
-		$mail->WordWrap   = 80; // 设置每行字符串的长度
+        $mail->WordWrap   = 80; // 设置每行字符串的长度
+        $mail->SMTPDebug   = true; // 设置每行字符串的长度
 		//$mail->AddAttachment("f:/test.png");  //可以添加附件
 		$mail->IsHTML(true);
 		$mail->Send();
 		return true;
-	}
+    }
 
     private function account_err_report($msg, $current=1)
     {

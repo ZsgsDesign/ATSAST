@@ -121,9 +121,9 @@
                 result = JSON.parse(result);
                 alert(result.desc);
                 if (result.ret == 200) {
-                    setInterval(function(){
+                    setTimeout(function(){
 						location.href="<{$ATSAST_DOMAIN}>/account/";
-					});
+					},1000);
                 }
             },
             error: function (data) {
