@@ -137,7 +137,6 @@ class SMTP {
                            "errstr" => $errstr);
       if($this->do_debug >= 1) {
         echo "SMTP -> ERROR: " . $this->error["error"] . ": $errstr ($errno)" . $this->CRLF . '<br />';
-        echo $host."<br>".$port."<br>";
       }
       return false;
     }
