@@ -138,4 +138,22 @@ class ToolController extends BaseController
             return $this->jump("{$this->ATSAST_DOMAIN}/");
         }
     }
+
+    public function actionSast_schedule(){
+        $this->title="SAST课程表工具";
+        $this->url="admin/tool/sast_schedule";
+        $this->bg=null;
+
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+        
+        $detail=getuserinfo($OPENID);
+
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=5",":uid"=>$detail['uid']));
+
+    }
 }

@@ -38,10 +38,10 @@ class AjaxController extends BaseController
                 $homework_submit_status=$homework_submit->find(array("hid=:hid and cid=:cid and syid=:syid and uid=:uid",":hid"=>$hid,":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
 
                 if (arg("action")=="submit") {
-                    $due_time=date("Y-m-d H:i:s",strtotime($homework_details['due_submit']));
+                    $due_time=date("Y-m-d H:i:s", strtotime($homework_details['due_submit']));
                     $submit_time=date("Y-m-d H:i:s");
 
-                    if(strtotime($submit_time) > strtotime($due_time)){
+                    if (strtotime($submit_time) > strtotime($due_time)) {
                         ERR::Catcher(3006);
                     }
 
@@ -116,12 +116,12 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if ( !is_null(arg("rank")) && !is_null(arg("cid")) && !is_null(arg("syid")) ) {
+        if (!is_null(arg("rank")) && !is_null(arg("cid")) && !is_null(arg("syid"))) {
             $rank=intval(arg("rank"));
             $desc=arg("desc");
             $cid=arg("cid");
             $syid=arg("syid");
-            if ( $rank===0 || $rank===1 ) {
+            if ($rank===0 || $rank===1) {
                 $feedback=new Model("syllabus_feedback");
                 $syllabus=new Model("syllabus");
                 $course_register=new Model("course_register");
@@ -226,9 +226,11 @@ class AjaxController extends BaseController
                 $sign_status=intval(arg("sign_status"));
                 $signed=arg("signed");
 
-                if($sign_status!=1 && $sign_status!=0) ERR::Catcher(1004);
+                if ($sign_status!=1 && $sign_status!=0) {
+                    ERR::Catcher(1004);
+                }
 
-                if($sign_status){
+                if ($sign_status) {
                     $pattern="/^(\w){6}$/";
                     if (!preg_match($pattern, $signed)) {
                         ERR::Catcher(1004);
@@ -236,7 +238,7 @@ class AjaxController extends BaseController
                     $syllabus=new Model("syllabus");
                     $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('signed'=>$signed));
                     SUCCESS::Catcher("提交成功");
-                }else{
+                } else {
                     $syllabus=new Model("syllabus");
                     $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('signed'=>0));
                     SUCCESS::Catcher("提交成功");
@@ -268,16 +270,18 @@ class AjaxController extends BaseController
                 $video_status=intval(arg("video_status"));
                 $video=arg("video");
 
-                if($video_status!=1 && $video_status!=0) ERR::Catcher(1004);
+                if ($video_status!=1 && $video_status!=0) {
+                    ERR::Catcher(1004);
+                }
 
-                if($video_status){
-                    if (filter_var($video,FILTER_VALIDATE_URL)==false) {
+                if ($video_status) {
+                    if (filter_var($video, FILTER_VALIDATE_URL)==false) {
                         ERR::Catcher(1004);
                     }
                     $syllabus=new Model("syllabus");
                     $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('video'=>$video));
                     SUCCESS::Catcher("提交成功");
-                }else{
+                } else {
                     $syllabus=new Model("syllabus");
                     $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('video'=>0));
                     SUCCESS::Catcher("提交成功");
@@ -309,10 +313,11 @@ class AjaxController extends BaseController
                 $desc=arg("desc");
                 $location=arg("location");
                 $time=arg("time");
-                $signed=substr(md5(uniqid(microtime(true),true)),0,6);
+                $signed=substr(md5(uniqid(microtime(true), true)), 0, 6);
 
                 $syllabus=new Model("syllabus");
-                $syllabus->create(array(
+                $syllabus->create(
+                    array(
                         'cid'=>$cid,
                         'title'=>$title,
                         'desc'=>$desc,
@@ -326,7 +331,6 @@ class AjaxController extends BaseController
                     )
                 );
                 SUCCESS::Catcher("新建成功");
-
             } else {
                 ERR::Catcher(1004);
             }
@@ -347,7 +351,7 @@ class AjaxController extends BaseController
                 $privilege=new Model("privilege");
                 $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
 
-                if (empty($access_right) || $access_right["clearance"]<4){
+                if (empty($access_right) || $access_right["clearance"]<4) {
                     ERR::Catcher(2003);
                 }
 
@@ -356,7 +360,7 @@ class AjaxController extends BaseController
                 $email_user=$users->find((array("email=:email",":email"=>$email)));
                 $email_uid=$email_user["uid"];
 
-                if (empty($email_user)){
+                if (empty($email_user)) {
                     ERR::Catcher(2002);
                 }
 
@@ -365,14 +369,16 @@ class AjaxController extends BaseController
                 $email_user_instructor=$instructor->find(array("uid=:uid and cid=:cid",":uid"=>$email_uid,":cid"=>$cid));
                 $email_user_access_course=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid",":uid"=>$email_uid,":cid"=>$cid));
                 $email_user_access=$privilege->find(array("uid=:uid and type='access' and type_value=1",":uid"=>$email_uid));
-                if($email_user_instructor) ERR::Catcher(2005);
+                if ($email_user_instructor) {
+                    ERR::Catcher(2005);
+                }
                 $instructor->create(
                     array(
                         'uid'=>$email_uid,
                         'cid'=>$cid,
                         'course_title'=>"讲师"
                     )
-                );                
+                );
                 if (empty($email_user_access_course)) {
                     $privilege->create(
                         array(
@@ -382,7 +388,7 @@ class AjaxController extends BaseController
                             'clearance'=>1,
                         )
                     );
-                    if(empty($email_user_access)){
+                    if (empty($email_user_access)) {
                         $privilege->create(
                             array(
                                 'uid'=>$email_uid,
@@ -392,7 +398,7 @@ class AjaxController extends BaseController
                         );
                     }
                     SUCCESS::Catcher("添加讲师成功");
-                } else if($email_user_access_course["clearance"]==0) {
+                } elseif ($email_user_access_course["clearance"]==0) {
                     $privilege->update(
                         array(
                             "uid=:uid and type='cid' and type_value=:cid",
@@ -403,7 +409,7 @@ class AjaxController extends BaseController
                             'clearance'=>1,
                         )
                     );
-                    if(empty($email_user_access)){
+                    if (empty($email_user_access)) {
                         $privilege->create(
                             array(
                                 'uid'=>$email_uid,
@@ -416,7 +422,6 @@ class AjaxController extends BaseController
                 } else {
                     ERR::Catcher(2005);
                 }
-
             } else {
                 ERR::Catcher(1004);
             }
@@ -437,29 +442,28 @@ class AjaxController extends BaseController
                 $privilege=new Model("privilege");
                 $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
 
-                if (empty($access_right) || $access_right["clearance"]<4){
+                if (empty($access_right) || $access_right["clearance"]<4) {
                     ERR::Catcher(2003);
                 }
 
                 $instructor=new Model("instructor");
                 $instructor_info=$instructor->find(array("iid=:iid",":iid"=>$iid));
 
-                if($instructor_info["cid"]!=$cid){
+                if ($instructor_info["cid"]!=$cid) {
                     ERR::Catcher(2003);
                 }
 
-                if(empty($instructor_info) ){
+                if (empty($instructor_info)) {
                     ERR::Catcher(2002);
                 }
 
-                if($instructor_info["uid"]==$this->userinfo['uid']){
+                if ($instructor_info["uid"]==$this->userinfo['uid']) {
                     ERR::Catcher(2006);
                 }
 
                 @$instructor->delete(array("iid=:iid",":iid"=>$iid));
                 @$privilege->delete(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$instructor_info["uid"],":cid"=>$cid));
                 SUCCESS::Catcher("讲师权限撤销成功");
-
             } else {
                 ERR::Catcher(1004);
             }
@@ -492,7 +496,6 @@ class AjaxController extends BaseController
                 $syllabus=new Model("syllabus");
                 $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('title'=>$title,'desc'=>$desc,'location'=>$location,'time'=>$time));
                 SUCCESS::Catcher("修改成功");
-
             } else {
                 ERR::Catcher(1004);
             }
@@ -506,7 +509,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!is_null(arg("email")) && !is_null(arg("role")) ) {
+        if (!is_null(arg("email")) && !is_null(arg("role"))) {
             $email=arg("email");
             $role=arg("role");
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -519,7 +522,7 @@ class AjaxController extends BaseController
 
                 $users=new Model("users");
                 $email_user=$users->find(array("email=:email",":email"=>$email));
-                if(empty($email_user)){
+                if (empty($email_user)) {
                     ERR::Catcher(2002);
                 }
 
@@ -538,7 +541,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!is_null(arg("name")) && !is_null(arg("organization")) && !is_null(arg("major")) && !is_null(arg("desc")) && !is_null(arg("color")) && !is_null(arg("suitable")) && !is_null(arg("type")) && !is_null(arg("email")) ) {
+        if (!is_null(arg("name")) && !is_null(arg("organization")) && !is_null(arg("major")) && !is_null(arg("desc")) && !is_null(arg("color")) && !is_null(arg("suitable")) && !is_null(arg("type")) && !is_null(arg("email"))) {
             $name=arg("name");
             $organization_name=arg("organization");
             $major=arg("major");
@@ -568,7 +571,7 @@ class AjaxController extends BaseController
             $users=new Model("users");
             $email_user=$users->find((array("email=:email",":email"=>$email)));
             $email_uid=$email_user["uid"];
-            if (empty($email_user)){
+            if (empty($email_user)) {
                 ERR::Catcher(2002);
             }
 
@@ -600,7 +603,7 @@ class AjaxController extends BaseController
                     'cid'=>$cid,
                     'course_title'=>"讲师"
                 )
-            );                
+            );
 
             $privilege->create(
                 array(
@@ -611,7 +614,7 @@ class AjaxController extends BaseController
                 )
             );
 
-            if(empty($email_user_access)){
+            if (empty($email_user_access)) {
                 $privilege->create(
                     array(
                         'uid'=>$email_uid,
@@ -622,7 +625,7 @@ class AjaxController extends BaseController
             }
 
             $course_details=new Model("course_details");
-            if($type==2){
+            if ($type==2) {
                 $course_details->create(
                     array(
                         'cid'=>$cid,
@@ -663,7 +666,7 @@ class AjaxController extends BaseController
                         'item_value'=>"有"
                     )
                 );
-            }else{
+            } else {
                 $course_details->create(
                     array(
                         'cid'=>$cid,
@@ -698,7 +701,7 @@ class AjaxController extends BaseController
                 );
             }
 
-            SUCCESS::Catcher("新建成功",array("cid"=>$cid));
+            SUCCESS::Catcher("新建成功", array("cid"=>$cid));
         } else {
             ERR::Catcher(1003);
         }
@@ -709,7 +712,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("homework_status")) ) {
+        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("homework_status"))) {
             $cid=arg("cid");
             $syid=arg("syid");
             $homework_status=arg("homework_status");
@@ -737,7 +740,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("type")) && !is_null(arg("support_lang")) && !is_null(arg("due_submit")) && !is_null(arg("homework_content")) ) {
+        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("type")) && !is_null(arg("support_lang")) && !is_null(arg("due_submit")) && !is_null(arg("homework_content"))) {
             $cid=arg("cid");
             $syid=arg("syid");
             if (is_numeric($cid) && is_numeric($syid)) {
@@ -749,14 +752,16 @@ class AjaxController extends BaseController
                 }
 
                 $type=intval(arg("type"));
-                if($type<0 || $type>3) ERR::Catcher(1004);
+                if ($type<0 || $type>3) {
+                    ERR::Catcher(1004);
+                }
                 $support_lang=arg("support_lang");
                 $due_submit=arg("due_submit");
                 $homework_content=arg("homework_content");
 
                 $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
 
-                if(!preg_match($preg, $due_submit)){
+                if (!preg_match($preg, $due_submit)) {
                     ERR::Catcher(1004);
                 }
 
@@ -776,7 +781,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("hid")) && !is_null(arg("type")) && !is_null(arg("support_lang")) && !is_null(arg("due_submit")) && !is_null(arg("homework_content")) ) {
+        if (!is_null(arg("cid")) && !is_null(arg("syid")) && !is_null(arg("hid")) && !is_null(arg("type")) && !is_null(arg("support_lang")) && !is_null(arg("due_submit")) && !is_null(arg("homework_content"))) {
             $cid=arg("cid");
             $syid=arg("syid");
             $hid=arg("hid");
@@ -789,14 +794,16 @@ class AjaxController extends BaseController
                 }
 
                 $type=intval(arg("type"));
-                if($type<0 || $type>3) ERR::Catcher(1004);
+                if ($type<0 || $type>3) {
+                    ERR::Catcher(1004);
+                }
                 $support_lang=arg("support_lang");
                 $due_submit=arg("due_submit");
                 $homework_content=arg("homework_content");
 
                 $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
 
-                if(!preg_match($preg, $due_submit)){
+                if (!preg_match($preg, $due_submit)) {
                     ERR::Catcher(1004);
                 }
 
@@ -807,7 +814,6 @@ class AjaxController extends BaseController
                 } else {
                     SUCCESS::Catcher("没有任何字段被修改");
                 }
-
             } else {
                 ERR::Catcher(1004);
             }
@@ -825,7 +831,6 @@ class AjaxController extends BaseController
             $cid=arg("cid");
             $syid=arg("syid");
             if (is_numeric($cid) && is_numeric($syid)) {
-
                 $privilege=new Model("privilege");
                 $access_right=$privilege->find(array("uid=:uid and type='cid' and type_value=:cid and clearance>0",":uid"=>$this->userinfo['uid'],":cid"=>$cid));
 
@@ -835,12 +840,13 @@ class AjaxController extends BaseController
 
                 $feedback_status=intval(arg("feedback_status"));
 
-                if($feedback_status!=1 && $feedback_status!=0) ERR::Catcher(1004);
+                if ($feedback_status!=1 && $feedback_status!=0) {
+                    ERR::Catcher(1004);
+                }
 
                 $syllabus=new Model("syllabus");
                 $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('feedback'=>$feedback_status));
                 SUCCESS::Catcher("提交成功");
-
             } else {
                 ERR::Catcher(1004);
             }
@@ -868,16 +874,18 @@ class AjaxController extends BaseController
                 $script_status=intval(arg("script_status"));
                 $code=arg("script");
 
-                if($script_status!=1 && $script_status!=0) ERR::Catcher(1004);
+                if ($script_status!=1 && $script_status!=0) {
+                    ERR::Catcher(1004);
+                }
 
                 $syllabus=new Model("syllabus");
                 $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('script'=>$script_status));
 
                 $script=new Model("syllabus_script");
                 $script_exist=$script->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
-                if($script_exist){
+                if ($script_exist) {
                     $script->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('content'=>$code));
-                }else{
+                } else {
                     $script->create(array("cid"=>$cid,"syid"=>$syid,'content'=>$code));
                 }
                 SUCCESS::Catcher("提交成功");
@@ -1041,9 +1049,15 @@ class AjaxController extends BaseController
 
     public function actionRegisterContest()
     {
-        if (!arg("contest_id")) ERR::Catcher(1003);
-        if (!is_numeric(arg("contest_id"))) ERR::Catcher(1004);
-        if (!$this->islogin) ERR::Catcher(2001);
+        if (!arg("contest_id")) {
+            ERR::Catcher(1003);
+        }
+        if (!is_numeric(arg("contest_id"))) {
+            ERR::Catcher(1004);
+        }
+        if (!$this->islogin) {
+            ERR::Catcher(2001);
+        }
         $uid=$this->userinfo['uid'];
         $coid=arg("contest_id");
         $datas=array();
@@ -1054,81 +1068,113 @@ class AjaxController extends BaseController
         $result=$typedb->findAll();
         $types=array("contest_id"=>"number");
         $contest=$contest->find(array("contest_id=:coid", ":coid"=>$coid));
-        if (empty($contest)) ERR::Catcher(1004);
+        if (empty($contest)) {
+            ERR::Catcher(1004);
+        }
         $fields=array();
         $requires=array();
         $defaultStatus=$contest['default_register_status'];
-        foreach(explode(',',$contest['require_register']) as $require) {
+        foreach (explode(',', $contest['require_register']) as $require) {
             if (substr($require, 0, 1) == '*') {
-                $foo=substr($require,1);
+                $foo=substr($require, 1);
                 array_push($fields, $foo);
                 array_push($requires, $foo);
             } else {
                 array_push($fields, $require);
             }
         }
-        foreach($result as $type) {
+        foreach ($result as $type) {
             $types[$type['name']]=$type['type'];
         }
         $minp=$contest['min_participants'];
         $maxp=$contest['max_participants'];
         if ($maxp>1) {
-            if (empty(arg('group_name'))) ERR::Catcher(4004);
+            if (empty(arg('group_name'))) {
+                ERR::Catcher(4004);
+            }
             $result=$registerdb->find(array('contest_id=:coid and info like :info and uid<>:uid', ":coid"=>$coid, ":info"=>'%"team_name":"'.arg('group_name').'"%', ":uid"=>$uid));
-            if (!empty($result)) ERR::Catcher(4002);
+            if (!empty($result)) {
+                ERR::Catcher(4002);
+            }
         }
         $inserts=array();
-        for($i=0; $i<$maxp; ++$i) {
+        for ($i=0; $i<$maxp; ++$i) {
             if ($i>=$minp) {
                 $empty=true;
-                if (!isset($_POST[$i])) continue;
-                foreach($fields as $field) if (!empty($_POST[$i][$field])) {
-                    $empty=false;
-                    break;
+                if (!isset($_POST[$i])) {
+                    continue;
                 }
-                if ($empty) continue;
+                foreach ($fields as $field) {
+                    if (!empty($_POST[$i][$field])) {
+                        $empty=false;
+                        break;
+                    }
+                }
+                if ($empty) {
+                    continue;
+                }
             }
-            foreach($requires as $field) if (empty($_POST[$i][$field])) ERR::Catcher(4004);
+            foreach ($requires as $field) {
+                if (empty($_POST[$i][$field])) {
+                    ERR::Catcher(4004);
+                }
+            }
             $foo=array();
-            foreach($fields as $field) if (!empty($_POST[$i][$field])) {
-                $foo[$field]=$_POST[$i][$field];
-                if ($types[$field]=='number') {
-                    if (!preg_match('/^\d+$/', $foo[$field])) ERR::Catcher(4005);
-                } elseif ($types[$field]=='email') {
-                    if (!preg_match('/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/', $foo[$field])) ERR::Catcher(4006);
+            foreach ($fields as $field) {
+                if (!empty($_POST[$i][$field])) {
+                    $foo[$field]=$_POST[$i][$field];
+                    if ($types[$field]=='number') {
+                        if (!preg_match('/^\d+$/', $foo[$field])) {
+                            ERR::Catcher(4005);
+                        }
+                    } elseif ($types[$field]=='email') {
+                        if (!preg_match('/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/', $foo[$field])) {
+                            ERR::Catcher(4006);
+                        }
+                    }
                 }
             }
             if ($i==0) {
                 $users = new Model("users");
                 $result=$users->find(array("uid=:uid",":uid"=>$uid));
                 $foo['SID']=$result['SID'];
-                foreach($fields as $field) if (!empty($foo[$field])) {
-                    $result=$tmpdb->find(array("uid=:uid and `key`=:key", ":uid"=>$uid, ":key"=>$field));
-                    if (empty($result)) {
-                        $tmpdb->create(array(
+                foreach ($fields as $field) {
+                    if (!empty($foo[$field])) {
+                        $result=$tmpdb->find(array("uid=:uid and `key`=:key", ":uid"=>$uid, ":key"=>$field));
+                        if (empty($result)) {
+                            $tmpdb->create(array(
                             "uid"=>$uid,
                             "key"=>$field,
                             "value"=>$foo[$field],
                         ));
-                    } else {
-                        $tmpdb->update(array(
+                        } else {
+                            $tmpdb->update(array(
                             "uid=:uid and `key`=:key",
                             ":uid"=>$uid,
                             ":key"=>$field,
                         ), array(
                             "value"=>$foo[$field],
                         ));
+                        }
                     }
                 }
-            } else foreach($inserts as $insert) {
-                if ($foo['SID']==$insert['SID']) ERR::Catcher(4003);
+            } else {
+                foreach ($inserts as $insert) {
+                    if ($foo['SID']==$insert['SID']) {
+                        ERR::Catcher(4003);
+                    }
+                }
             }
             $result=$registerdb->find(array('contest_id=:coid and info like :info and uid<>:uid', ":coid"=>$coid, ":info"=>'%"SID":"'.$foo['SID'].'"%', ":uid"=>$uid));
-            if (!empty($result)) ERR::Catcher(4003);
+            if (!empty($result)) {
+                ERR::Catcher(4003);
+            }
             array_push($inserts, $foo);
         }
         $datas=array();
-        if ($maxp>1) $datas['team_name']=arg('group_name');
+        if ($maxp>1) {
+            $datas['team_name']=arg('group_name');
+        }
         $datas['members']=$inserts;
         $result=$registerdb->find(array("uid=:uid and contest_id=:coid", ":uid"=>$uid, ":coid"=>$coid));
         if (empty($result)) {
@@ -1139,7 +1185,9 @@ class AjaxController extends BaseController
                 "status"=>$defaultStatus,
                 "register_time"=>date("Y-m-d H:i:s"),
             ));
-            if (!$result) ERR::Catcher(1002);
+            if (!$result) {
+                ERR::Catcher(1002);
+            }
             SUCCESS::Catcher("报名成功", "{$this->ATSAST_DOMAIN}/account/contests");
         }
         $result=$registerdb->update(array(
@@ -1154,23 +1202,38 @@ class AjaxController extends BaseController
         SUCCESS::Catcher("修改成功", "{$this->ATSAST_DOMAIN}/account/contests");
     }
 
-    public function actionRetrievePassword(){
-        if(!arg("email")) ERR::Catcher(1003);
+    public function actionRetrievePassword()
+    {
+        if (!arg("email")) {
+            ERR::Catcher(1003);
+        }
         $email=arg("email");
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) ERR::Catcher(1004);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            ERR::Catcher(1004);
+        }
         $users=new Model("users");
         $user_info=$users->find(array("email=:email",":email"=>$email));
-        if(empty($user_info)) ERR::Catcher(2002);
+        if (empty($user_info)) {
+            ERR::Catcher(2002);
+        }
         $uid=$user_info['uid'];
         $OPENID=$user_info['OPENID'];
-        @$result=AccountController::sendRetrievePasswordEmail($email,$uid,$OPENID,$this->ATSAST_DOMAIN);
-        if($result) SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
-        else ERR::Catcher(1002);
+        @$result=AccountController::sendRetrievePasswordEmail($email, $uid, $OPENID, $this->ATSAST_DOMAIN);
+        if ($result) {
+            SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
+        } else {
+            ERR::Catcher(1002);
+        }
     }
 
-    public function actionExportContestRegisterInfo() {
-        if (!arg('contest_id')) ERR::Catcher(1003);
-        if(!$this->islogin) ERR::Catcher(2001);
+    public function actionExportContestRegisterInfo()
+    {
+        if (!arg('contest_id')) {
+            ERR::Catcher(1003);
+        }
+        if (!$this->islogin) {
+            ERR::Catcher(2001);
+        }
         $privilege=new Model("privilege");
         $access_right=$privilege->find(array("uid=:uid and type='contest_id' and type_value=:contest_id and clearance>0",":uid"=>$this->userinfo['uid'],":contest_id"=>arg('contest_id')));
         if (empty($access_right)) {
@@ -1178,7 +1241,9 @@ class AjaxController extends BaseController
         }
         $contest=new Model('contest');
         $result=$contest->find(['contest_id=:contest_id', ':contest_id'=>arg('contest_id')]);
-        if (empty($result)) ERR::Catcher(1004);
+        if (empty($result)) {
+            ERR::Catcher(1004);
+        }
         $contest_name=$result['name'];
         header('Content-Type: text/comma-separated-values; charset=GBK');
         header(iconv('utf-8', 'GBK', "Content-Disposition: attachment; filename=\"${contest_name}报名信息.csv\""));
@@ -1188,35 +1253,49 @@ class AjaxController extends BaseController
         $grouped=$max>1;
         $requirens=array();
         $result=(new Model('contest_require_info'))->findAll();
-        foreach($result as $type) {
+        foreach ($result as $type) {
             $requirens[$type['name']]=$type['placeholder'];
         }
-        foreach($requires as $i=>$require) {
-            if (substr($require, 0, 1) == '*') $require=$requires[$i]=substr($require, 1);
-            if (!$grouped) $response.=$requirens[$require].',';
+        foreach ($requires as $i=>$require) {
+            if (substr($require, 0, 1) == '*') {
+                $require=$requires[$i]=substr($require, 1);
+            }
+            if (!$grouped) {
+                $response.=$requirens[$require].',';
+            }
         }
         if ($grouped) {
             $response.='团队名,状态';
-            for($i=0; $i<$max; ++$i) {
-                foreach($requires as $require) {
+            for ($i=0; $i<$max; ++$i) {
+                foreach ($requires as $require) {
                     $response.=','.$requirens[$require];
                 }
             }
-        } else $response.='状态';
+        } else {
+            $response.='状态';
+        }
         $response.="\r\n";
         $registers=(new Model('contest_register'))->findAll(['contest_id=:contest_id', ':contest_id'=>arg('contest_id')]);
         $status=['1'=>'已通过','-1'=>'已拒绝','0'=>'未通过'];
-        foreach($registers as $register) {
+        foreach ($registers as $register) {
             $info=json_decode($register['info'], true);
-            if (!$grouped && !isset($info['members'])) $info=['members'=>[$info]];
-            if ($grouped) $response.=$info['team_name'].','.$status[$register['status']].',';
-            foreach($info['members'] as $member) {
-                foreach($requires as $require) {
-                    if (!isset($member[$require])) $member[$require]='';
+            if (!$grouped && !isset($info['members'])) {
+                $info=['members'=>[$info]];
+            }
+            if ($grouped) {
+                $response.=$info['team_name'].','.$status[$register['status']].',';
+            }
+            foreach ($info['members'] as $member) {
+                foreach ($requires as $require) {
+                    if (!isset($member[$require])) {
+                        $member[$require]='';
+                    }
                     $response.=$member[$require].',';
                 }
             }
-            if (!$grouped) $response.=$status[$register['status']];
+            if (!$grouped) {
+                $response.=$status[$register['status']];
+            }
             $response.="\r\n";
         }
         echo iconv('utf-8', 'GBK', $response);

@@ -35,6 +35,18 @@ class ApiController extends BaseController
         }
     }
 
+    public function actionTime(){
+        SUCCESS::Catcher("获取时间成功", array(
+            "Y"=>date('Y'),
+            "m"=>date('m'),
+            "d"=>date('d'),
+            "h"=>date('h'),
+            "i"=>date('i'),
+            "s"=>date('s'),
+            "timestamp"=>time()
+        ));
+    }
+
     public function actionBatchRegister(){
         exit("Forbidden");
 
