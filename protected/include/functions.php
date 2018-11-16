@@ -125,8 +125,7 @@ function getusersettings($loginid)
 function sizeConverter($bit)
 {
     $type = array('Bytes','KB','MB','GB','TB');
-    for($i = 0; $bit >= 1024; $i++)
-    {
+    for ($i = 0; $bit >= 1024; $i++) {
         $bit/=1024;
     }
     return (floor($bit*100)/100)." ".$type[$i];
@@ -149,4 +148,3 @@ function getDirSize($dir)
     closedir($handle);
     return $size;
 }
-

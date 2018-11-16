@@ -155,5 +155,13 @@ class ToolController extends BaseController
         $privilege=new Model("privilege");
         $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=5",":uid"=>$detail['uid']));
 
+        if ($access_right) {
+            ;
+        } else {
+            return $this->jump("{$this->ATSAST_DOMAIN}/");
+        }
+        $this->time=date("Y-m-d");
+        // $this->schedule=$privilege->query("select * from syllabus as s left join courses c on s.cid = c.cid");
+
     }
 }
