@@ -36,8 +36,9 @@ class AccountController extends BaseController
 		$mail->IsSMTP();
 		$mail->CharSet='UTF-8'; //设置邮件的字符编码，这很重要，不然中文乱码
 		$mail->SMTPAuth   = true;                  //开启认证
-		// $mail->SMTPSecure = "ssl";
-		$mail->Port       = 25;
+		$mail->SMTPSecure = "ssl";
+        // $mail->Port       = 25;
+        $mail->Port       = 465;
 		$mail->Host       = "mail.njupt.edu.cn";
 		$mail->Username   = "sast@njupt.edu.cn";
 		$mail->Password   = "iLOVEsast2018";
