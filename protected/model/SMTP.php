@@ -130,6 +130,15 @@ class SMTP {
                                   $errno,   // error number if any
                                   $errstr,  // error message if any
                                   $tval);   // give up after ? secs
+
+    $context = stream_context_create([
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false
+        ]
+    ]);
+    $hostname = $host.":".$port;
+    $this->smtp_conn = @$socket = stream_socket_client($hostname, $errno, $errstr, ini_get("default_socket_timeout"), STREAM_CLIENT_CONNECT, $context);
     // verify we connected properly
     if(empty($this->smtp_conn)) {
       $this->error = array("error" => "Failed to connect to server",
