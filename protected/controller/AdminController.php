@@ -32,7 +32,7 @@ class AdminController extends BaseController
         $this->result=$result;
 
         $contest=new Model("contest");
-        $contest_result=$contest->query("select c.contest_id,c.name,creator,`desc`,c.type,start_date,end_date,due_register,image,o.`name` creator_name from privilege as p left join contest c on p.type_value=c.contest_id left join organization o on c.creator = o.oid where p.type='contest_id' and p.clearance<>0 and p.uid=:uid and c.status=1 order by c.contest_id asc",array(":uid"=>$this->userinfo['uid']));
+        $contest_result=$contest->query("select c.contest_id,c.name,creator,`desc`,c.type,start_date,end_date,due_register,image,o.`name` creator_name from privilege as p left join contest c on p.type_value=c.contest_id left join organization o on c.creator = o.oid where p.type='contest_id' and p.clearance<>0 and p.uid=:uid and c.status=1 order by c.contest_id asc", array(":uid"=>$this->userinfo['uid']));
         foreach ($contest_result as &$r) {
             if ($r["start_date"]==$r["end_date"]) {
                 $r["parse_date"]=$r["start_date"];

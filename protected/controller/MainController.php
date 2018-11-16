@@ -23,9 +23,12 @@ class MainController extends BaseController
         $this->url="courses";
         $this->title="课程";
         $db=new Model("courses");
-        if(!is_null(arg("page"))) $page=intval(arg("page"));
-        else $page=1;
-        $result=$db->findAll(null, "cid asc",'*',array($page, 9, 5));
+        if (!is_null(arg("page"))) {
+            $page=intval(arg("page"));
+        } else {
+            $page=1;
+        }
+        $result=$db->findAll(null, "cid asc", '*', array($page, 9, 5));
         $this->pager = $db->page;
         $this->result=$result;
     }

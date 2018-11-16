@@ -40,7 +40,7 @@ class CourseController extends BaseController
                 if ($this->islogin) {
                     $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid order by CONVERT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(time, '年', '-'), '月', '-'), '日', ''), '：', ':'), '开始', ':00'), datetime) ASC", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
                 } else {
-                    $syllabus_info=$syllabus->findAll(array("cid=:cid",":cid"=>$cid)," CONVERT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(time, '年', '-'), '月', '-'), '日', ''), '：', ':'), '开始', ':00'), datetime) ASC ");
+                    $syllabus_info=$syllabus->findAll(array("cid=:cid",":cid"=>$cid), " CONVERT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(time, '年', '-'), '月', '-'), '日', ''), '：', ':'), '开始', ':00'), datetime) ASC ");
                 }
                 if ($this->islogin) {
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
@@ -190,7 +190,7 @@ class CourseController extends BaseController
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
-                if($syllabus_info["script"]==0){
+                if ($syllabus_info["script"]==0) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
@@ -253,7 +253,7 @@ class CourseController extends BaseController
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
-                if($syllabus_info["homework"]==0){
+                if ($syllabus_info["homework"]==0) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
@@ -341,7 +341,7 @@ class CourseController extends BaseController
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
-                if($syllabus_info["signed"]==="0"){
+                if ($syllabus_info["signed"]==="0") {
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $sign_status=$sign->find(array("cid=:cid and syid=:syid and uid=:uid",":cid"=>$cid,":syid"=>$syid,":uid"=>$this->userinfo['uid']));
@@ -431,7 +431,7 @@ class CourseController extends BaseController
                     $h['homework_content_slashed'] = str_replace(">", "\>", $h['homework_content_slashed']);
                 }
                 
-                $homework_submit_users=$homework_submit->query("SELECT DISTINCT(h.uid),u.SID,u.avatar,u.real_name from homework_submit as h left join users u on h.uid = u.uid where h.cid=:cid and h.syid=:syid",array(":cid"=>$cid,":syid"=>$syid));
+                $homework_submit_users=$homework_submit->query("SELECT DISTINCT(h.uid),u.SID,u.avatar,u.real_name from homework_submit as h left join users u on h.uid = u.uid where h.cid=:cid and h.syid=:syid", array(":cid"=>$cid,":syid"=>$syid));
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
@@ -561,7 +561,7 @@ class CourseController extends BaseController
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
-                if($syllabus_info["feedback"]==0){
+                if ($syllabus_info["feedback"]==0) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
@@ -572,7 +572,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -625,7 +624,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -666,7 +664,6 @@ class CourseController extends BaseController
                 $this->regisrter_details=$course_regisrter_details;
                 $this->result=$result;
                 $this->site=$result["course_name"];
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -710,7 +707,6 @@ class CourseController extends BaseController
                 
                 $this->result=$result;
                 $this->site=$result["course_name"];
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -759,7 +755,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -807,7 +802,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -855,7 +849,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -897,7 +890,6 @@ class CourseController extends BaseController
                 
                 $this->result=$result;
                 $this->site=$result["course_name"];
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -957,7 +949,6 @@ class CourseController extends BaseController
                 $syllabus_script['script_slashed'] = str_replace(">", "\>", $syllabus_script['script_slashed']);
 
                 $this->syllabus_script=$syllabus_script;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -1005,7 +996,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -1053,7 +1043,6 @@ class CourseController extends BaseController
                 $this->result=$result;
                 $this->site=$syllabus_info["title"];
                 $this->syllabus_info=$syllabus_info;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -1115,7 +1104,6 @@ class CourseController extends BaseController
                 }
 
                 $this->homework=$homework_details;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }
@@ -1167,7 +1155,6 @@ class CourseController extends BaseController
 
                 $feedback_submit=$feedback->query("select * from syllabus_feedback s left join users u on s.uid = u.uid where s.cid=:cid and s.syid=:syid order by s.feedback_time asc", array(":cid"=>$cid,":syid"=>$syid));
                 $this->feedback_submit=$feedback_submit;
-
             } else {
                 $this->jump("{$this->ATSAST_DOMAIN}/courses");
             }

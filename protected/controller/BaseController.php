@@ -11,7 +11,7 @@ class BaseController extends Controller
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang",
             "version"=>"0.9.4 PR",
-            "subversion"=>"20181112134908",
+            "subversion"=>"20181117024039",
         );
         $this->title="";
         // $this->bg="https://static.1cf.co/img/atsast/bg.jpg";
@@ -21,10 +21,16 @@ class BaseController extends Controller
         // For the convenience of proxy
         $this->ATSAST_DOMAIN=CONFIG::GET("ATSAST_DOMAIN");
         $this->ATSAST_CDN=CONFIG::GET("ATSAST_CDN");
-        if(isset($_SERVER["HTTP_ATSAST_DOMAIN"])) $this->ATSAST_DOMAIN=$_SERVER["HTTP_ATSAST_DOMAIN"];
-        if(isset($_SERVER["HTTP_ATSAST_STATIC"])) $this->ATSAST_CDN=$_SERVER["HTTP_ATSAST_STATIC"];
+        if (isset($_SERVER["HTTP_ATSAST_DOMAIN"])) {
+            $this->ATSAST_DOMAIN=$_SERVER["HTTP_ATSAST_DOMAIN"];
+        }
+        if (isset($_SERVER["HTTP_ATSAST_STATIC"])) {
+            $this->ATSAST_CDN=$_SERVER["HTTP_ATSAST_STATIC"];
+        }
         
-        if (!session_id()) session_start();
+        if (!session_id()) {
+            session_start();
+        }
         // error_reporting(0);
         header("Content-type: text/html; charset=utf-8");
         require(APP_DIR.'/protected/include/functions.php');
@@ -57,8 +63,10 @@ class BaseController extends Controller
             $this->greeting="深夜了";
         }
         
-        if($this->userinfo['insecure']){
-            if(!preg_match("/account\/insecure/",$_SERVER['REQUEST_URI']) && !preg_match("/account\/logout/",$_SERVER['REQUEST_URI'])) $this->jump("{$this->ATSAST_DOMAIN}/account/insecure");
+        if ($this->userinfo['insecure']) {
+            if (!preg_match("/account\/insecure/", $_SERVER['REQUEST_URI']) && !preg_match("/account\/logout/", $_SERVER['REQUEST_URI'])) {
+                $this->jump("{$this->ATSAST_DOMAIN}/account/insecure");
+            }
         }
     }
 

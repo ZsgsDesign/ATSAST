@@ -35,7 +35,8 @@ class ApiController extends BaseController
         }
     }
 
-    public function actionTime(){
+    public function actionTime()
+    {
         SUCCESS::Catcher("获取时间成功", array(
             "Y"=>date('Y'),
             "m"=>date('m'),
@@ -47,7 +48,8 @@ class ApiController extends BaseController
         ));
     }
 
-    public function actionBatchRegister(){
+    public function actionBatchRegister()
+    {
         exit("Forbidden");
 
         $tmp=new Model("temp");
@@ -64,7 +66,6 @@ class ApiController extends BaseController
             $registerdb=new Model("contest_register");
             $result=$registerdb->find(array('contest_id=:coid and info like :info and uid<>:uid', ":coid"=>$coid, ":info"=>'%"SID":"'.$temp['SID'].'"%', ":uid"=>$uid));
             if (empty($result)) {
-
                 $inserts=array(
                     array(
                         "SID"=>$temp['SID'],
