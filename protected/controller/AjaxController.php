@@ -1301,4 +1301,45 @@ class AjaxController extends BaseController
         echo iconv('utf-8', 'GBK', $response);
         exit;
     }
+
+    public function actionGetSast_schedule()
+    {
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            ERR::Catcher(2001);
+        }
+        
+        $detail=getuserinfo($OPENID);
+
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=5",":uid"=>$detail['uid']));
+        if (empty($access_right)) {
+            ERR::Catcher(2003);
+        }
+
+        if (!($time = strtotime(arg('time')))) {
+            $time = $_SERVER['REQUEST_TIME'];
+        }
+        $day = date('w', $time);
+        if ($day == 0) $day = 7;
+        $time -= ($day - 1) * 24 * 3600;
+        $from = date('Y-m-d', $time);
+        $to = date('Y-m-d', $time + 7 * 24 * 3600);
+
+        $cids = [1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 13];
+
+        $syllabus = new Model('syllabus');
+        $acs = join(', ', $cids);
+        $ss = $syllabus->query("select courses.course_name as cname, syllabus.* from syllabus left join courses on syllabus.cid=courses.cid where syllabus.time >= '$from' and syllabus.time < '$to' and syllabus.cid in ($acs) order by time");
+
+        $result = [];
+        foreach ($ss as $i) {
+            $cname = $i['cname'];
+            if (substr($cname, -9) == '2018-2019') $cname = substr($cname, 0, -9);
+            $time = date('Y年m月d日 H时i分s秒', strtotime($i['time']));
+            array_push($result, ['cname'=>$cname, 'title'=>$i['title'], 'time'=>$time, 'location'=>$i['location'], 'desc'=>$i['desc']]);
+        }
+        SUCCESS::Catcher('success', $result);
+    }
 }
