@@ -42,6 +42,9 @@ class CourseController extends BaseController
                 } else {
                     $syllabus_info=$syllabus->findAll(array("cid=:cid",":cid"=>$cid), " CONVERT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(time, '年', '-'), '月', '-'), '日', ''), '：', ':'), '开始', ':00'), datetime) ASC ");
                 }
+                foreach ($syllabus_info as &$s) {
+                    $s["time"] = date('Y年m月d日 H时i分 开始', strtotime($s['time']));
+                }
                 if ($this->islogin) {
                     $register_status=$course_register->find(array("cid=:cid and uid=:uid",":cid"=>$cid,":uid"=>$this->userinfo['uid']));
                 }
@@ -95,6 +98,9 @@ class CourseController extends BaseController
                 $this->detail=$details;
                 $syllabus_info=$syllabus->query("select s.syid,s.cid,title,time,location,`desc`,signed,signid,script,homework,feedback,video from syllabus as s left join syllabus_sign u on s.syid = u.syid and u.uid=:uid where s.cid=:cid ORDER BY CONVERT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(time, '年', '-'), '月', '-'), '日', ''), '：', ':'), '开始', ':00'), datetime) ASC", array(":uid"=>$this->userinfo['uid'],":cid"=>$cid));
                 // 关联查询sign的原因：历史遗留
+                foreach ($syllabus_info as &$s) {
+                    $s["time"] = date('Y年m月d日 H时i分 开始', strtotime($s['time']));
+                }
                 $this->instructor=$instructor_info;
                 $this->syllabus=$syllabus_info;
                 // var_dump($syllabus_info);
@@ -193,6 +199,7 @@ class CourseController extends BaseController
                 if ($syllabus_info["script"]==0) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
@@ -256,6 +263,7 @@ class CourseController extends BaseController
                 if ($syllabus_info["homework"]==0) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
                 $creator=$organization->find(array("oid=:oid",":oid"=>$result['course_creator']));
                 $result['creator_name']=$creator['name'];
                 $result['creator_logo']=$creator['logo'];
@@ -338,6 +346,7 @@ class CourseController extends BaseController
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
@@ -408,6 +417,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -483,6 +493,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -558,6 +569,7 @@ class CourseController extends BaseController
                     return $this->jump("{$this->ATSAST_DOMAIN}/course/$cid/detail");
                 }
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
                 }
@@ -610,6 +622,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -743,6 +756,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -790,6 +804,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -837,6 +852,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -926,6 +942,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -984,6 +1001,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -1031,6 +1049,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -1078,6 +1097,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
@@ -1140,6 +1160,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
+                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");

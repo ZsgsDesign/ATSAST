@@ -1337,7 +1337,7 @@ class AjaxController extends BaseController
         foreach ($ss as $i) {
             $cname = $i['cname'];
             if (substr($cname, -9) == '2018-2019') $cname = substr($cname, 0, -9);
-            $time = date('Y年m月d日 H时i分s秒', strtotime($i['time']));
+            $time = date('Y年m月d日 H时i分', strtotime($i['time']));
             array_push($result, ['cname'=>$cname, 'title'=>$i['title'], 'time'=>$time, 'location'=>$i['location'], 'desc'=>$i['desc']]);
         }
         SUCCESS::Catcher('获取成功', $result);
