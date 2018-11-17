@@ -1340,6 +1340,6 @@ class AjaxController extends BaseController
             $time = date('Y年m月d日 H时i分s秒', strtotime($i['time']));
             array_push($result, ['cname'=>$cname, 'title'=>$i['title'], 'time'=>$time, 'location'=>$i['location'], 'desc'=>$i['desc']]);
         }
-        SUCCESS::Catcher('success', $result);
+        SUCCESS::Catcher('获取成功', $result);
     }
 }

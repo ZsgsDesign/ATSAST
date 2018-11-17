@@ -65,21 +65,32 @@
     #snackbar-container *{
         pointer-events: all;
     }
+    th,
+    td{
+        white-space: nowrap;
+    }
+    .card-flex-title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 </style>
 
 <div class="container mundb-standard-container">
     <h1 class="mb-3"><i class="MDI format-list-bulleted-type"></i> SAST课程表工具</h1>
     <hr class="atsast-line mb-5">
     <card class="mb-5">
-        <h5><i class="MDI glasses"></i> 本周安排+1s</h5>
-        <div class="btn-group">
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="current_week">
-                  Action
+        <div class="card-flex-title">
+            <h5><i class="MDI glasses"></i> 本周安排+1s</h5>
+            <div class="btn-group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="current_week">
+                    loading……
                 </button>
                 <div class="dropdown-menu" id="available_week">
-                  
+                    
                 </div>
-              </div>
+            </div>
+        </div>
         <div>
             <table class="table table-borderless table-hover">
                 <thead>
@@ -91,14 +102,8 @@
                         <th scope="col">地点</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row"></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                <tbody id="detail_container">
+
                 </tbody>
             </table>
         </div>
@@ -176,6 +181,27 @@
 
     function selectWeek(date){
         $("#current_week").html($('[data-date|="'+date+'"]').html());
+        $.post("<{$ATSAST_DOMAIN}>/ajax/getSast_schedule",{
+            time: date
+        },function(result){
+            result=JSON.parse(result);
+            $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
+            $("#detail_container").html("");
+            if(result.ret==200){  
+                result.data.forEach(data => {
+                    var pre_content="<tr>";
+                    pre_content+='<th scope="row">'+data.cname+'</th>';
+                    pre_content+='<td>'+data.title+'</td>';
+                    pre_content+='<td style="white-space: normal;">'+data.desc+'</td>';
+                    pre_content+='<td>'+data.time.replace(" ","<br>")+'</td>';
+                    pre_content+='<td>'+data.location.replace(" ","<br>")+'</td>';
+                    pre_content+='</tr>';
+                    $("#detail_container").append(pre_content);
+                });
+            }else{
+                ;
+            }
+        });
     }
 
     window.addEventListener("load",function() {
@@ -196,15 +222,7 @@
 
         $('[data-date]').click(function(){
             // console.log($(this).attr("data-date"));
-            $.post("<{$ATSAST_DOMAIN}>/ajax/getSast_schedule",{
-                time: $(this).attr("data-date")
-            },function(result){
-                result=JSON.parse(result);
-                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-                if(result.ret==200){
-                    
-                }
-            });
+            selectWeek($(this).attr("data-date"));
         });
 
     }, false);

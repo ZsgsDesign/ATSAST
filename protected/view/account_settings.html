@@ -55,11 +55,106 @@
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
         border-radius: 4px;
     }
+
+    notify{
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    notify > .atsast-img-container{
+        overflow: hidden;
+        width:35rem;
+        position: absolute;
+        top:-2.5rem;
+        right:-2.5rem;
+        bottom: -2.5rem;
+        z-index: -1;
+    }
+
+    notify > .atsast-img-container-small{
+        width:100%;
+        height:15rem;
+    }
+
+    notify > .atsast-img-container-small > img{
+        height:100%;
+        width:100%;
+        object-fit: cover;
+    }
+
+
+    notify > .atsast-img-container::after{
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 1;
+        top:-2.5rem;
+        left:-2.5rem;
+        bottom:-2.5rem;
+        right:-1px;
+        background:linear-gradient(to right,rgba(255,255,255,1) 15%,rgba(255,255,255,0) 100%);
+    }
+
+    notify > .atsast-content-container{
+        /* display: flex;
+        align-items: center; */
+        height:100%;
+        flex-shrink: 1;
+        flex-grow: 1;
+        padding:1rem;
+        z-index: 1;
+    }
+
+    notify > .atsast-img-container > img{
+        height:100%;
+        width:100%;
+        object-fit: cover;
+        user-select: none;
+    }
+
+    notify:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+
+    @media (min-width: 992px){
+        notify > .atsast-content-container {
+            width: calc(100% - 35rem);
+        }
+    }
+
 </style>
 
 <div class="container mundb-standard-container">
     <h1 class="mb-3"><i class="MDI settings"></i> 设置</h1>
     <hr class="atsast-line mb-5">
+    <notify>
+        <div class="d-block d-lg-none atsast-img-container-small">
+            <img src="https://static.1cf.co/img/atsast/encryption.jpg">
+        </div>
+        <div class="d-none d-lg-block atsast-img-container">
+            <img src="https://static.1cf.co/img/atsast/encryption.jpg">
+        </div>
+        <div class="atsast-content-container">
+            <h5><i class="MDI email-secure"></i> 激活邮箱</h5>
+            <{ if $detail['verify_status'] }>
+            <p class="notify-text">您的邮箱 <{$detail['email']}> 已经被确认，在您的账号出现安全问题时您的邮箱将会提供额外支持。</p>
+            <p class="mundb-text-truncate-1 wemd-green-text"><i class="MDI lock"></i> 已确认邮箱</p>
+            <{ else }>
+            <p class="notify-text">一封激活邮件已经发送到了您的邮箱 <{$detail['email']}> ，请尽快确认，这对您的账号安全至关重要。</p>
+            <p class="mundb-text-truncate-1 wemd-red-text"><i class="MDI lock-open"></i> 尚未确认邮箱</p>
+            <a href="<{$ATSAST_DOMAIN}>/Ajax/sendActivateEmail"><button class="btn btn-outline-primary">再次发送</button></a>
+            <{ /if }>
+        </div>
+    </notify>
     <card class="mb-5" id="user-info">
         <h5><i class="MDI account-circle"></i> 用户信息</h5>
         <div class="row">
