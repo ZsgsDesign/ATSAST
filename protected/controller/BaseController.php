@@ -9,9 +9,9 @@ class BaseController extends Controller
         $this->version_info=array(
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
-            "developer"=>"John Zhang",
+            "developer"=>"John Zhang, David Diao",
             "version"=>"0.9.6 PR",
-            "subversion"=>"20181117045314",
+            "subversion"=>"20181117162035",
         );
         $this->title="";
         // $this->bg="https://static.1cf.co/img/atsast/bg.jpg";
