@@ -1357,6 +1357,11 @@ class AjaxController extends BaseController
         if (!$old_password || !$new_password) {
             ERR::Catcher(2008);
         }
+
+        $pattern="/^(\w){6,20}$/";
+        if (!preg_match($pattern, $new_password)) {
+            ERR::Catcher(2010);
+        }
         
         $user_info=getuserinfo($OPENID);
         $email=$user_info['email'];
@@ -1373,7 +1378,7 @@ class AjaxController extends BaseController
         SUCCESS::Catcher('密码修改成功');
     }
 
-    public function actionEmailActive()
+    public function actionSendActivateEmail()
     {
         if ($this->islogin) {
             $OPENID=$_SESSION['OPENID'];

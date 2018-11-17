@@ -10,8 +10,8 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang, David Diao",
-            "version"=>"0.9.6 PR",
-            "subversion"=>"20181117162035",
+            "version"=>"0.9.7 PR",
+            "subversion"=>"20181117192434",
         );
         $this->title="";
         // $this->bg="https://static.1cf.co/img/atsast/bg.jpg";

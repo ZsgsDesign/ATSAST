@@ -80,7 +80,7 @@ class AccountController extends BaseController
             $db=new Model("users");
             $password=arg("password");
             $email=arg("email");
-            $pattern="/^(\w){6,100}$/";
+            $pattern="/^(\w){6,20}$/";
             if (empty($password) || empty($email)) {
                 return self::account_err_report("请不要皮这个系统");
             }
@@ -355,7 +355,8 @@ class AccountController extends BaseController
         $this->id=arg("id");
         $this->ret=arg("ret");
         $this->err=false;
-        if (strlen($password)>=6 && strlen($password)<=20) {
+        $pattern="/^(\w){6,20}$/";
+        if (preg_match($pattern, $password)) {
             $this->step=2;
         } elseif (strlen($password)>0) {
             $this->err="请设置一个长度在6到20之间的密码！";
