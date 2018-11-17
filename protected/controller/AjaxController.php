@@ -1342,4 +1342,65 @@ class AjaxController extends BaseController
         }
         SUCCESS::Catcher('获取成功', $result);
     }
+
+    public function actionChangePassword()
+    {
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            ERR::Catcher(2001);
+        }
+
+        $old_password = arg('old_password');
+        $new_password = arg('new_password');
+
+        if (!$old_password || !$new_password) {
+            ERR::Catcher(2008);
+        }
+        
+        $user_info=getuserinfo($OPENID);
+        $email=$user_info['email'];
+        $uid=$user_info['uid'];
+        $OPENID=$user_info['OPENID'];
+
+        if (sha1(strtolower($email)."@SAST+1s".md5($old_password)) != $OPENID) {
+            ERR::Catcher(2009);
+        }
+        $new_OPENID=sha1(strtolower($email)."@SAST+1s".md5($new_password));
+        $users = new Model('users');
+        $users->update(['OPENID=:OPENID', ':OPENID'=>$OPENID], ['OPENID'=>$new_OPENID]);
+        $_SESSION['OPENID']=$new_OPENID;
+        SUCCESS::Catcher('密码修改成功');
+    }
+
+    public function actionEmailActive()
+    {
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            ERR::Catcher(2001);
+        }
+
+        $user_info=getuserinfo($OPENID);
+        if ($user_info['verify_status']) {
+            ERR::Catcher(2005);
+        }
+
+        if (isset($_SESSION['lastSentActiveEmail'])) {
+            if (time() - $_SESSION['lastSentActiveEmail'] < 300) {
+                ERR::Catcher(2007);
+            }
+        }
+        $_SESSION['lastSentActiveEmail'] = time();
+
+        $email=$user_info['email'];
+        $OPENID=$user_info['OPENID'];
+        @$result=AccountController::sendActivateEmail($email, $OPENID, $this->ATSAST_DOMAIN);
+        if ($result) {
+            SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
+        } else {
+            unset($_SESSION['lastSentActiveEmail']);
+            ERR::Catcher(1002);
+        }
+    }
 }
