@@ -852,7 +852,7 @@ class CourseController extends BaseController
                 }
 
                 $syllabus_info=$syllabus->find(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid));
-                $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
+                //$syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
 
                 if (empty($result) || empty($syllabus_info)) {
                     return $this->jump("{$this->ATSAST_DOMAIN}/courses");
