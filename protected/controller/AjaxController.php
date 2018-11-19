@@ -315,6 +315,12 @@ class AjaxController extends BaseController
                 $time=arg("time");
                 $signed=substr(md5(uniqid(microtime(true), true)), 0, 6);
 
+                $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
+
+                if (!preg_match($preg, $time)) {
+                    ERR::Catcher(1004);
+                }
+
                 $syllabus=new Model("syllabus");
                 $syllabus->create(
                     array(
@@ -492,6 +498,12 @@ class AjaxController extends BaseController
                 $desc=arg("desc");
                 $location=arg("location");
                 $time=arg("time");
+
+                $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
+
+                if (!preg_match($preg, $time)) {
+                    ERR::Catcher(1004);
+                }
 
                 $syllabus=new Model("syllabus");
                 $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('title'=>$title,'desc'=>$desc,'location'=>$location,'time'=>$time));
