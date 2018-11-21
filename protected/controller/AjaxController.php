@@ -299,7 +299,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (arg("cid") && arg("title") && arg("desc") && arg("location") && arg("time")) {
+        if (arg("cid") && arg("title") && arg("desc") && arg("location") && arg("time") && arg("endtime")) {
             $cid=arg("cid");
             if (is_numeric($cid)) {
                 $privilege=new Model("privilege");
@@ -309,16 +309,46 @@ class AjaxController extends BaseController
                     ERR::Catcher(2003);
                 }
 
+                $result=new Model("courses")->find(["cid=:cid", ":cid"=>$cid]);
+                if (empty($result)) {
+                    ERR::Catcher(3002);
+                }
+                $creator=$result['course_creator'];
+
                 $title=arg("title");
                 $desc=arg("desc");
                 $location=arg("location");
                 $time=arg("time");
+                $endtime=arg("endtime");
+                $period='';
                 $signed=substr(md5(uniqid(microtime(true), true)), 0, 6);
 
                 $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
 
                 if (!preg_match($preg, $time)) {
                     ERR::Catcher(1004);
+                }
+                if (!preg_match($preg, $endtime)) {
+                    ERR::Catcher(1004);
+                }
+
+                if ($creator == 1) {
+                    $locs = ['大活汇客厅', '三牌楼教学楼（57人）', '三牌楼教学楼（105人）', '三牌楼教学楼（153人）', '三牌楼教学楼（200人）', '三牌楼教学楼（250人）', '仙林教学楼（57人）', '仙林教学楼（120人）', '仙林教学楼（172人）', '仙林教学楼（234人）', '会议室', '大活青柚创新汇', '大活208'];
+                    
+                    if (!in_array($location, $locs)) {
+                        ERR::Catcher(1004);
+                    }
+
+                    if (substr($location, -3) == '）') { // 教学楼
+                        if (!arg('period')) {
+                            ERR::Catcher(1003);
+                        }
+                        $period = arg('period');
+                        $periods = ['第一大节', '第二大节', '第三大节', '第四大节', '第五大节', '上午', '下午'];
+                        if (!in_array($period, $periods)) {
+                            ERR::Catcher(1004);
+                        }
+                    }
                 }
 
                 $syllabus=new Model("syllabus");
@@ -329,10 +359,13 @@ class AjaxController extends BaseController
                         'desc'=>$desc,
                         'location'=>$location,
                         'time'=>$time,
+                        'endtime'=>$endtime,
+                        'period'=>$period,
                         'signed'=>$signed,
                         'script'=>0,
                         'homework'=>0,
                         'feedback'=>0,
+                        'confirmed'=>0,
                         'video'=>0
                     )
                 );
@@ -483,7 +516,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (arg("cid") && arg("syid") && arg("title") && arg("desc") && arg("location") && arg("time")) {
+        if (arg("cid") && arg("syid") && arg("title") && arg("desc") && arg("location") && arg("time") && arg('endtime')) {
             $cid=arg("cid");
             $syid=arg("syid");
             if (is_numeric($cid) && is_numeric($syid)) {
@@ -494,19 +527,69 @@ class AjaxController extends BaseController
                     ERR::Catcher(2003);
                 }
 
+                $result=new Model("courses")->find(["cid=:cid", ":cid"=>$cid]);
+                if (empty($result)) {
+                    ERR::Catcher(3002);
+                }
+                $creator=$result['course_creator'];
+
                 $title=arg("title");
                 $desc=arg("desc");
                 $location=arg("location");
                 $time=arg("time");
+                $endtime=arg("endtime");
+                $period='';
 
                 $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
 
                 if (!preg_match($preg, $time)) {
                     ERR::Catcher(1004);
                 }
+                if (!preg_match($preg, $endtime)) {
+                    ERR::Catcher(1004);
+                }
 
                 $syllabus=new Model("syllabus");
-                $syllabus->update(array("cid=:cid and syid=:syid",":cid"=>$cid,":syid"=>$syid), array('title'=>$title,'desc'=>$desc,'location'=>$location,'time'=>$time));
+
+                $result=$syllabus->find(["cid=:cid and syid=:syid", ":cid"=>$cid, ":syid"=>$syid]);
+                if (empty($result)) {
+                    ERR::Catcher(3003);
+                }
+                if ($creator == 1) {
+                    if ($result['verified'] == 0) {
+                        $locs = ['大活汇客厅', '三牌楼教学楼（57人）', '三牌楼教学楼（105人）', '三牌楼教学楼（153人）', '三牌楼教学楼（200人）', '三牌楼教学楼（250人）', '仙林教学楼（57人）', '仙林教学楼（120人）', '仙林教学楼（172人）', '仙林教学楼（234人）', '会议室', '大活青柚创新汇', '大活208'];
+    
+                        if (!in_array($location, $locs)) {
+                            ERR::Catcher(1004);
+                        }
+
+                        if (substr($location, -3) == '）') { // 教学楼
+                            if (!arg('period')) {
+                                ERR::Catcher(1003);
+                            }
+                            $period = arg('period');
+                            $periods = ['第一大节', '第二大节', '第三大节', '第四大节', '第五大节', '上午', '下午'];
+                            if (!in_array($period, $periods)) {
+                                ERR::Catcher(1004);
+                            }
+                        }
+                    } else {
+                        $location = $result['location'];
+                    }
+                }
+
+                $syllabus->update(array(
+                    "cid=:cid and syid=:syid",
+                    ":cid"=>$cid,
+                    ":syid"=>$syid
+                ), array(
+                    'title'=>$title,
+                    'desc'=>$desc,
+                    'location'=>$location,
+                    'time'=>$time,
+                    'endtime'=>$endtime,
+                    'period'=>$period
+                ));
                 SUCCESS::Catcher("修改成功");
             } else {
                 ERR::Catcher(1004);
@@ -1418,6 +1501,32 @@ class AjaxController extends BaseController
         } else {
             unset($_SESSION['lastSentActiveEmail']);
             ERR::Catcher(1002);
+        }
+    }
+
+    public function actionConfirmLocation()
+    {
+        if ($this->islogin) {
+            $OPENID=$_SESSION['OPENID'];
+        } else {
+            ERR::Catcher(2001);
+        }
+        
+        $detail=getuserinfo($OPENID);
+
+        $privilege=new Model("privilege");
+        $access_right=$privilege->find(array("uid=:uid and type='system' and type_value=5",":uid"=>$detail['uid']));
+
+        if (empty($access_right)) {
+            ERR::Catcher(2003);
+        }
+
+        if (arg("syid") && arg("location")) {
+            $syllabus=new Model("syllabus");
+            $syllabus=>update(["syid=:syid", ":syid"=>arg("syid")], ["location"=>arg("location"), "confirmed"=>1]);
+            SUCCESS::Catcher("修改成功");
+        } else {
+            ERR::Catcher(1003);
         }
     }
 }
