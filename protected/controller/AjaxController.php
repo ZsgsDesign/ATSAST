@@ -309,7 +309,8 @@ class AjaxController extends BaseController
                     ERR::Catcher(2003);
                 }
 
-                $result=new Model("courses")->find(["cid=:cid", ":cid"=>$cid]);
+                $courses=new Model("courses");
+                $result=$courses->find(["cid=:cid", ":cid"=>$cid]);
                 if (empty($result)) {
                     ERR::Catcher(3002);
                 }
