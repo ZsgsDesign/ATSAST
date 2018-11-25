@@ -528,7 +528,8 @@ class AjaxController extends BaseController
                     ERR::Catcher(2003);
                 }
 
-                $result=new Model("courses")->find(["cid=:cid", ":cid"=>$cid]);
+                $courses=new Model("courses");
+                $result=$courses->find(["cid=:cid", ":cid"=>$cid]);
                 if (empty($result)) {
                     ERR::Catcher(3002);
                 }
@@ -1524,7 +1525,7 @@ class AjaxController extends BaseController
 
         if (arg("syid") && arg("location")) {
             $syllabus=new Model("syllabus");
-            $syllabus=>update(["syid=:syid", ":syid"=>arg("syid")], ["location"=>arg("location"), "confirmed"=>1]);
+            $syllabus->update(["syid=:syid", ":syid"=>arg("syid")], ["location"=>arg("location"), "confirmed"=>1]);
             SUCCESS::Catcher("修改成功");
         } else {
             ERR::Catcher(1003);
