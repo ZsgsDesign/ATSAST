@@ -148,3 +148,12 @@ function getDirSize($dir)
     closedir($handle);
     return $size;
 }
+
+function generateRandStr($len)
+{
+    $code = '';
+    for ($i = 0; $i < $len; $i++) {
+        $code = $code . substr(str_shuffle('0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), 0, 1);
+    }
+    return $code;
+}

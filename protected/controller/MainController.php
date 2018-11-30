@@ -98,4 +98,30 @@ class MainController extends BaseController
     {
         $this->jump("{$this->ATSAST_DOMAIN}/admin/");
     }
+
+    public function actionPasteBin()
+    {
+        $this->url="PasteBin";
+        $this->title="PasteBin";
+    }
+
+    public function actionPb()
+    {
+        $this->jump("{$this->ATSAST_DOMAIN}/PasteBin/");
+    }
+
+    public function actionViewPB()
+    {
+        $this->url="PasteBin";
+        $this->title="详情";
+        $this->site="PasteBin";
+
+        $pastebin=new Model("pastebin");
+        $code=arg("code");
+        if(is_null($code)){
+            $this->jump("{$this->ATSAST_DOMAIN}/PasteBin/");
+        }
+        $result=$pastebin->find(["code"=>$code]);
+        $this->result=$result;
+    }
 }

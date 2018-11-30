@@ -10,9 +10,14 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang, David Diao",
-            "version"=>"0.9.7 PR",
-            "subversion"=>"20181117192434",
+            "version"=>"1.0.0 Stable",
+            "subversion"=>"20181130170558",
         );
+        $sys_logs=file_get_contents(dirname(__FILE__)."/../view/system_logs.html");
+        $rule = '/<p>(.*?)<\/p>/ies';
+        
+        $res = preg_match_all($rule,$sys_logs,$match);
+        $this->version_info["logs"]=$match[0][0];
         $this->title="";
         // $this->bg="https://static.1cf.co/img/atsast/bg.jpg";
         $this->bg="";

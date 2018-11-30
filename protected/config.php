@@ -37,6 +37,7 @@ $config = array(
         'course/<cid>/'                                      => 'course/index',
         'course/<cid>'                                       => 'course/index',
         'user/<uid>'                                         => 'user/info',
+        'pb/<code>'                                             => 'main/viewPB',
         'api/<a>'                                            => 'api/<a>',
         'ajax/<a>'                                           => 'ajax/<a>',
         'terms/<a>'                                          => 'terms/<a>',
