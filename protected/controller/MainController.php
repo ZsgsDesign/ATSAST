@@ -122,7 +122,7 @@ class MainController extends BaseController
             $this->jump("{$this->ATSAST_DOMAIN}/PasteBin/");
         }
         $result=$pastebin->find(["code"=>$code]);
-        if(empty($result) || strtotime($result["expire"])<strtotime(date("Y-m-d H:i:s"))){
+        if(empty($result) || (!is_null($result["expire"]) && strtotime($result["expire"])<strtotime( date("Y-m-d H:i:s")))) {
             $this->jump("{$this->ATSAST_DOMAIN}/PasteBin/");
         }
         $this->result=$result;
