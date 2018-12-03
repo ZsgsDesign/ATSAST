@@ -1578,7 +1578,7 @@ class AjaxController extends BaseController
                 $pbid=$pastebin->create([
                     "lang"=>$lang,
                     "expire"=>$expire_time,
-                    "uid"=>$userinfo["uid"],
+                    "uid"=>$detail["uid"],
                     "display_author"=>$display_author,
                     "content"=>$content,
                     "code"=>$code
