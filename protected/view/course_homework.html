@@ -239,6 +239,10 @@
         margin:0;
     }
 
+    img{
+        max-width: 100%;
+    }
+
     @media (max-width: 991px) {
         .atsast-course-header>.container {
             max-width: 100%;
@@ -254,6 +258,7 @@
 </style>
 <link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
 <link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/simplemde.min.css">
 <div class="atsast-course-header">
     <img src="https://static.1cf.co/img/atsast/bg.jpg" class="atsast-focus-img">
     <div class="container">
@@ -291,7 +296,7 @@
         </div>
         <{ elseif $h['type']==2 }>
         <div class="mb-5" id="markdwon_submit_section_<{$h['hid']}>">
-            <div id="markdwon_editor_<{$h['hid']}>" style="width:100%;height:30rem;border:1px solid grey"></div>
+            <textarea id="markdwon_editor_<{$h['hid']}>" style="width:100%;height:30rem;border:1px solid grey"></textarea>
             <div class="atsast-action"><p>截止日期 <{$h['due_submit']}></p></div>
             <div class="atsast-action">
                 <small id="info_submit_<{$h['hid']}>" class="text-secondary"><{ if @$homework_submit[$h['hid']] }>已于 <{ $homework_submit[$h['hid']]['submit_time'] }> 提交<{/if}></small>
@@ -341,10 +346,11 @@
             </div>
         </div>
     </div>
+    <script src="<{$ATSAST_CDN}>/js/simplemde.min.js"></script>
     <script>
         var unknown_svg='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 56 56" style="enable-background:new 0 0 56 56" xml:space="preserve"><g><path style="fill:%23e9e9e0" d="M36.985,0H7.963C7.155,0,6.5,0.655,6.5,1.926V55c0,0.345,0.655,1,1.463,1h40.074 c0.808,0,1.463-0.655,1.463-1V12.978c0-0.696-0.093-0.92-0.257-1.085L37.607,0.257C37.442,0.093,37.218,0,36.985,0z"/><polygon style="fill:%23d9d7ca" points="37.5,0.151 37.5,12 49.349,12"/><path style="fill:%23c8bdb8" d="M48.037,56H7.963C7.155,56,6.5,55.345,6.5,54.537V39h43v15.537C49.5,55.345,48.845,56,48.037,56z"/><circle style="fill:%23fff" cx="18.5" cy="47" r="3"/><circle style="fill:%23fff" cx="28.5" cy="47" r="3"/><circle style="fill:%23fff" cx="38.5" cy="47" r="3"/></g></svg>';
         var require = { paths: { 'vs': '<{$ATSAST_CDN}>/vscode/vs' } };
-        var editor=Array,jsCnt=0,jsCnt2=0;
+        var editor=Array,markdownEditor=Array,jsCnt=0,jsCnt2=0;
         function loadJsAsync(url){
             var body = document.getElementsByTagName('body')[0];
             var jsNode = document.createElement('script');
@@ -352,10 +358,12 @@
             jsNode.setAttribute('type', 'text/javascript');
             jsNode.setAttribute('src', url);
             body.appendChild(jsNode);
-
+            //console.log(jsNode);
             jsNode.onload = function() {
                 jsCnt++;
+                //console.log(jsCnt);
                 if(jsCnt==1){
+                    console.log(111);
                     require.config({ paths: { 'vs': '<{$ATSAST_CDN}>/vscode/vs' }});
 
                     // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
@@ -397,7 +405,7 @@
             jsNode.setAttribute('type', 'text/javascript');
             jsNode.setAttribute('src', url);
             body.appendChild(jsNode);
-
+            
             jsNode.onload = function() {
                 jsCnt2++;
                 if(jsCnt2==2){
@@ -421,6 +429,20 @@
                     hljs.initHighlighting();
                     // 链式调用VSCODE
                     loadJsAsync("<{$ATSAST_CDN}>/vscode/vs/loader.js");
+                    
+                    <{foreach $homework as $h}>
+                    <{ if $h['type']==2}>
+                    $("#markdwon_submit_section_<{$h['hid']}>").css("opacity",1);
+                    markdownEditor[<{$h['hid']}>]=new SimpleMDE({
+                        element: $("#markdwon_editor_<{$h['hid']}>")[0],
+                        spellChecker: false,
+                        renderingConfig: {
+                            codeSyntaxHighlighting: true
+                        },
+                        initialValue:"<{ if isset($homework_submit[$h['hid']]['submit_content_slashed'])}><{$homework_submit[$h['hid']]['submit_content_slashed'] nofilter}><{/if}>"
+                    });
+                    <{/if}>
+                    <{/foreach}>
                 }
             }
         }
@@ -466,6 +488,26 @@
                 editor[$(ele).attr("data-hid")].updateOptions({ readOnly: false });
             });
         }
+
+        function submit_markdown(ele){
+            var markdown_val=markdownEditor[$(ele).attr("data-hid")].value();
+            $.post("<{$ATSAST_DOMAIN}>/ajax/SubmitCodes",{
+                content:markdown_val,
+                action:"submit",
+                cid:<{$cid}>,
+                syid:<{$syid}>,
+                hid:$(ele).attr("data-hid"),
+            },function(result){
+                result=JSON.parse(result);
+                console.log(result);
+                alert(result.desc);
+                if(result.ret==200) {
+                    $("#btn_submit_"+$(ele).attr("data-hid")).html("再次提交");
+                    $("#info_submit_"+$(ele).attr("data-hid")).html(`已于 ${result.data.time} 提交`);
+                }
+            });
+        }
+
 
         function SubmitFile(ele) { 
             var hid=$(ele).attr("data-hid");
