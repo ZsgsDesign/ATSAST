@@ -10,8 +10,8 @@ class BaseController extends Controller
             "author"=>"John Zhang",
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang, David Diao",
-            "version"=>"1.0.2 Stable",
-            "subversion"=>"20181204120833",
+            "version"=>"1.1.0 Stable",
+            "subversion"=>"20181205115850",
         );
         $sys_logs=file_get_contents(dirname(__FILE__)."/../view/system_logs.html");
         $rule = '/<p>(.*?)<\/p>/ies';

@@ -212,6 +212,7 @@
         
     </section>
 </div>
+<script src="<{$ATSAST_CDN}>/js/purify.min.js"></script>
 <script>
 var jsCnt=0;
 
@@ -241,7 +242,7 @@ function loadJsAsync(url){
                     }
                 });
                 
-                        $("#markdown_container").html(marked("<{$script['content_slashed'] nofilter}>"));
+                        $("#markdown_container").html(marked(DOMPurify.sanitize("<{$script['content_slashed'] nofilter}>")));
                         hljs.initHighlighting();
                         $("table").addClass("table");
 
