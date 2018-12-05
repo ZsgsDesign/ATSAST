@@ -11,7 +11,7 @@ class BaseController extends Controller
             "organization"=>"SAST of NJUPT",
             "developer"=>"John Zhang, David Diao",
             "version"=>"1.1.0 Stable",
-            "subversion"=>"20181205115850",
+            "subversion"=>"20181205145018",
         );
         $sys_logs=file_get_contents(dirname(__FILE__)."/../view/system_logs.html");
         $rule = '/<p>(.*?)<\/p>/ies';
