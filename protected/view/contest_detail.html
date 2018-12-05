@@ -193,17 +193,23 @@
                     sanitize: false,
                     smartLists: true,
                     smartypants: false,
-                    highlight: function (code,lang) {
-                        return hljs.highlightAuto(code,[lang]).value;
+                    highlight: function (code) {
+                        return hljs.highlightAuto(code).value;
                     }
                 });
                 <{foreach $contest_detail_info as $c}>
                 <{ if $c['type']==0 }>
-                $("#markdown_container_<{ $c['cdid'] }>").html(marked("<{$c['content_slashed'] nofilter}>"));
+                $("#markdown_container_<{ $c['cdid'] }>").html(marked("<{$c['content_slashed'] nofilter}>"),{
+                    sanitize:true,
+                    sanitizer:DOMPurify.sanitize,
+                    highlight: function (code) {
+                        return hljs.highlightAuto(code).value;
+                    }
+                });
                 $("#markdown_container_<{ $c['cdid'] }>").css("opacity","1");
                 <{/if}>
                 <{/foreach}>
-                hljs.initHighlighting();
+                //hljs.initHighlighting();
                 // 链式调用VSCODE
                 // loadJsAsync("<{$ATSAST_CDN}>/vscode/vs/loader.js");
             }

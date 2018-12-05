@@ -254,7 +254,7 @@
         }
     }
 </style>
-<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
+<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/github.min.css">
 <link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
     <img src="https://static.1cf.co/img/atsast/bg.jpg" class="atsast-focus-img">
@@ -422,12 +422,18 @@
                         sanitize: false,
                         smartLists: true,
                         smartypants: false,
-                        highlight: function (code,lang) {
-                            return hljs.highlightAuto(code,[lang]).value;
+                        highlight: function (code) {
+                            return hljs.highlightAuto(code).value;
                         }
                     });
                     <{foreach $homework as $h}>
-                    $("#markdown_container_<{ $h['hid'] }>").html(marked(DOMPurify.sanitize("<{$h['homework_content_slashed'] nofilter}>")));
+                    $("#markdown_container_<{ $h['hid'] }>").html(marked("<{$h['homework_content_slashed'] nofilter}>",{
+                        sanitize:true,
+                        sanitizer:DOMPurify.sanitize,
+                        highlight: function (code) {
+                            return hljs.highlightAuto(code).value;
+                        }
+                    }));
                     $("#markdown_container_<{ $h['hid'] }>").css("opacity","1");
                     <{/foreach}>
                     
@@ -437,11 +443,17 @@
                     <{foreach $homework as $h}>
                     <{ if $h['type']==2}>
                         $("#markdwon_submit_section_<{$h['hid']}>").css("opacity",1);
-                        $("#markdwon_editor_<{$h['hid']}>").html(marked(DOMPurify.sanitize("<{ if isset($homework_submit[$h['hid']]['submit_content_slashed'])}><{$homework_submit[$h['hid']]['submit_content_slashed'] nofilter}><{/if}>")));
+                        $("#markdwon_editor_<{$h['hid']}>").html(marked("<{ if isset($homework_submit[$h['hid']]['submit_content_slashed'])}><{$homework_submit[$h['hid']]['submit_content_slashed'] nofilter}><{/if}>",{
+                            sanitize:true,
+                            sanitizer:DOMPurify.sanitize,
+                            highlight: function (code) {
+                                return hljs.highlightAuto(code).value;
+                            }
+                        }));
                     <{/if}>
                     <{/foreach}>
 
-                    hljs.initHighlighting();
+                    //hljs.initHighlighting();
                 }
             }
         }

@@ -256,7 +256,7 @@
         }
     }
 </style>
-<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
+<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/github.min.css">
 <link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
 <link rel="stylesheet" href="<{$ATSAST_CDN}>/css/simplemde.min.css">
 <div class="atsast-course-header">
@@ -419,15 +419,21 @@
                         sanitize: false,
                         smartLists: true,
                         smartypants: false,
-                        highlight: function (code,lang) {
-                            return hljs.highlightAuto(code,[lang]).value;
+                        highlight: function (code, lang) {
+                            return hljs.highlightAuto(code, [lang]).value;
                         }
                     });
                     <{foreach $homework as $h}>
-                    $("#markdown_container_<{ $h['hid'] }>").html(marked(DOMPurify.sanitize("<{$h['homework_content_slashed'] nofilter}>")));;
+                    $("#markdown_container_<{ $h['hid'] }>").html(marked("<{$h['homework_content_slashed'] nofilter}>",{
+                        sanitize: true,
+                        sanitizer: DOMPurify.sanitize,
+                        highlight: function (code) {
+                            return hljs.highlightAuto(code).value;
+                        }
+                    }));
                     $("#markdown_container_<{ $h['hid'] }>").css("opacity","1");
                     <{/foreach}>
-                    hljs.initHighlighting();
+                    //hljs.initHighlighting();
                     // 链式调用VSCODE
                     loadJsAsync("<{$ATSAST_CDN}>/vscode/vs/loader.js");
                     
@@ -437,6 +443,15 @@
                     markdownEditor[<{$h['hid']}>]=new SimpleMDE({
                         element: $("#markdwon_editor_<{$h['hid']}>")[0],
                         spellChecker: false,
+                        previewRender: function (plainText) {
+                            return marked(plainText, {
+                                sanitize: true,
+                                sanitizer: DOMPurify.sanitize,
+                                highlight: function (code) {
+                                    return hljs.highlightAuto(code).value;
+                                }
+                            });
+                        },
                         renderingConfig: {
                             codeSyntaxHighlighting: true
                         },

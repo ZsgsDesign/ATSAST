@@ -191,7 +191,7 @@
         }
     }
 </style>
-<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/atom-one-dark.min.css">
+<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/github.min.css">
 <div class="atsast-course-header">
     <img src="https://static.1cf.co/img/atsast/bg.jpg" class="atsast-focus-img">
     <div class="container">
@@ -237,13 +237,19 @@ function loadJsAsync(url){
                     sanitize: false,
                     smartLists: true,
                     smartypants: false,
-                    highlight: function (code,lang) {
-                        return hljs.highlightAuto(code,[lang]).value;
+                    highlight: function (code) {
+                        return hljs.highlightAuto(code).value;
                     }
                 });
                 
-                        $("#markdown_container").html(marked(DOMPurify.sanitize("<{$script['content_slashed'] nofilter}>")));
-                        hljs.initHighlighting();
+                        $("#markdown_container").html(marked("<{$script['content_slashed'] nofilter}>",{
+                            sanitize:true,
+                            sanitizer:DOMPurify.sanitize,
+                            highlight: function (code) {
+                                return hljs.highlightAuto(code).value;
+                            }
+                        }));
+                        // hljs.initHighlighting();
                         $("table").addClass("table");
 
             });
