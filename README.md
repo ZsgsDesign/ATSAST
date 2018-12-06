@@ -48,4 +48,4 @@ The type in the configuration of your mysql server to this file.
 
 ## For Developers
 
-We highly recommend VSCode and PHPStorm for development. And do aware, **AT THIS MOMENT ALL PUSH ACTION WOULD DIRECTLY DEPLOIED TO PRODUCE ENVIRONMENT**. Please do not push unless gain permission from the leader.
+We highly recommend `VSCode` and `PHPStorm` for development. And do aware, **AT THIS MOMENT ALL PUSH ACTION WOULD DIRECTLY DEPLOIED TO PRODUCE ENVIRONMENT**. Please do not push unless gain permission from the leader.
