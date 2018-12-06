@@ -1315,7 +1315,7 @@ class AjaxController extends BaseController
         }
         $uid=$user_info['uid'];
         $OPENID=$user_info['OPENID'];
-        @$result=AccountController::sendRetrievePasswordEmail($email, $uid, $OPENID, $this->ATSAST_DOMAIN);
+        @$result=sendRetrievePasswordEmail($email, $uid, $OPENID, $this->ATSAST_DOMAIN);
         if ($result) {
             SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
         } else {
@@ -1497,7 +1497,7 @@ class AjaxController extends BaseController
 
         $email=$user_info['email'];
         $OPENID=$user_info['OPENID'];
-        @$result=AccountController::sendActivateEmail($email, $OPENID, $this->ATSAST_DOMAIN);
+        @$result=sendActivateEmail($email, $OPENID, $this->ATSAST_DOMAIN);
         if ($result) {
             SUCCESS::Catcher("一封邮件已经发送至您的邮箱，请按照指示进一步操作。");
         } else {
