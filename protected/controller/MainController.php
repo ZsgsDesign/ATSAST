@@ -46,7 +46,7 @@ class MainController extends BaseController
     public function actionContests()
     {
         $this->url="contests";
-        $this->title="赛事";
+        $this->title="活动";
         $contest=new Model("contest");
         $register=new Model("contest_register");
         if ($this->islogin) {

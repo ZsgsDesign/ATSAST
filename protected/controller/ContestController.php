@@ -74,7 +74,7 @@ class ContestController extends BaseController
     public function actionRegister()
     {
         $this->url="contest/register";
-        $this->title="赛事报名";
+        $this->title="活动报名";
 
         if (arg("contest_id") && is_numeric(arg("contest_id")) && $this->islogin) {
             $coid=arg("contest_id");
