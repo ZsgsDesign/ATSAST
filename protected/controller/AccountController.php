@@ -196,7 +196,7 @@ class AccountController extends BaseController
     public function actionContests()
     {
         $this->url="account/contests";
-        $this->title="报名比赛";
+        $this->title="报名活动";
         $this->bg="";
         $users=new Model("users");
 

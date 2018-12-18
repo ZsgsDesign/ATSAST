@@ -102,7 +102,7 @@
             </div>
             <div class="atsast-content-container">
                 <h3 class="mundb-text-truncate-2"><{$r['name']}></h3>
-                <p class="mundb-text-truncate-1"><{$r['creator_name']}> · <{if $r['type']==1}>线上<{else}>线下<{/if}>比赛</p>
+                <p class="mundb-text-truncate-1"><{$r['creator_name']}> · <{if $r['type']==1}>线上<{else}>线下<{/if}>活动</p>
                 <p class="mundb-text-truncate-1"><i class="MDI clock"></i> <{$r['parse_date']}> </p>
                 <a href="<{$ATSAST_DOMAIN}>/contest/<{$r['contest_id']}>/detail"><button class="btn btn-outline-info">了解更多</button></a>
                 <{ if $islogin }><{ if !$r['is_register'] }><a href="<{$ATSAST_DOMAIN}>/contest/<{$r['contest_id']}>/register"><button class="btn btn-info">立即报名</button></a><{ else }><a href="<{$ATSAST_DOMAIN}>/account/contests/"><button class="btn btn-success">已报名</button></a><{ /if }><{ /if }>

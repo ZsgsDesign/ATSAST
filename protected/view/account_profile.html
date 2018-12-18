@@ -316,7 +316,7 @@
                 </div>
             </card>
             <card class="mb-5" id="user-info">
-                <h5><i class="MDI airballoon"></i> 报名比赛</h5>
+                <h5><i class="MDI airballoon"></i> 报名活动</h5>
                 <div class="row <{if empty($contest_result)}>atsast-empty<{/if}>">
                 <{if empty($contest_result)}>
                     <badge>暂无</badge>
@@ -329,7 +329,7 @@
                             </div>
                             <div class="atsast-content-container">
                                 <h3 class="mundb-text-truncate-1"><{$c['name']}></h3>
-                                <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>比赛</p>
+                                <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>活动</p>
                                 <p class="mundb-text-truncate-1"> <{$c['parse_status'] nofilter }> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
                                 <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI note"></i> 查看详情</button></a>
                                 <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pen"></i> 查看报名信息</button></a>

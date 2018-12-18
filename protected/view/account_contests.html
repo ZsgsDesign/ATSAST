@@ -153,12 +153,12 @@
 </style>
 
 <div class="container mundb-standard-container">
-    <h1 class="mb-3"><i class="MDI airballoon"></i> 我报名的比赛</h1>
+    <h1 class="mb-3"><i class="MDI airballoon"></i> 我报名的活动</h1>
     <hr class="atsast-line mb-5">
 
         <div class="row <{if empty($register_contest_result)}>atsast-empty<{/if}>">
             <{if empty($register_contest_result)}>
-                <badge>这里将会展示所有我主动报名参加的比赛</badge>
+                <badge>这里将会展示所有我主动报名参加的活动</badge>
             <{else}>
                 <{foreach $register_contest_result as $c}>
                 <div class="col-lg-6 col-md-12 atsast-courses">
@@ -168,9 +168,9 @@
                         </div>
                         <div class="atsast-content-container">
                             <h3 class="mundb-text-truncate-2"><{$c['name']}></h3>
-                            <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>比赛</p>
+                            <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>活动</p>
                             <p class="mundb-text-truncate-1 atsast-basic-info"> <{$c['parse_status'] nofilter }> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
-                            <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 比赛信息</button></a>
+                            <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
                             <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
                         </div>
                     </contest>
@@ -178,12 +178,12 @@
                 <{/foreach}>
             <{/if}>
         </div>
-    <h1 class="mb-3"><i class="MDI airballoon"></i> 我参加的比赛</h1>
+    <h1 class="mb-3"><i class="MDI airballoon"></i> 我参加的活动</h1>
     <hr class="atsast-line mb-5">
 
         <div class="row <{if empty($attend_contest_result)}>atsast-empty<{/if}>">
             <{if empty($attend_contest_result)}>
-                <badge>这里将会展示所有我作为队员参加的比赛</badge>
+                <badge>这里将会展示所有我作为队员参加的活动</badge>
             <{else}>
                 <{foreach $attend_contest_result as $c}>
                 <div class="col-lg-6 col-md-12 atsast-courses">
@@ -193,9 +193,9 @@
                         </div>
                         <div class="atsast-content-container">
                             <h3 class="mundb-text-truncate-2"><{$c['name']}></h3>
-                            <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>比赛</p>
+                            <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>活动</p>
                             <p class="mundb-text-truncate-1 atsast-basic-info"> <{$c['parse_status'] nofilter }> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
-                            <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 比赛信息</button></a>
+                            <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
                             <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
                         </div>
                     </contest>
