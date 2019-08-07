@@ -69,6 +69,8 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'avatar' => "/static/img/avatar/default.png",
             'album' => "bing",
+            'cloud_size' => 100,
+            'cur_version' => version(),
         ]);
     }
 

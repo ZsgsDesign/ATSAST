@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration {
 	{
 		Schema::create('users', function(Blueprint $table)
 		{
-			$table->integer('uid', true);
+			$table->integer('id', true);
 			$table->string('name')->nullable();
 			$table->string('real_name')->nullable();
 			$table->string('avatar')->nullable();
@@ -32,6 +32,9 @@ class CreateUsersTable extends Migration {
 			$table->string('ip')->nullable();
 			$table->boolean('insecure')->nullable();
 			$table->string('cur_version');
+			$table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
 		});
 	}
 

@@ -91,6 +91,9 @@
                 <h1 style="padding:20px;display:inline-block;">@SAST</h1>
                 <p>Auxiliary Teaching for SAST</p>
             </div>
+            <div class="alert alert-primary text-left" role="alert">
+                由于系统重构，2019年8月前注册的用户请<a href="/">点击这里</a>更新密码。
+            </div>
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs nav-justified nav-tabs-material" id="accountTab" role="tablist">
@@ -139,12 +142,11 @@
                                     <label for="password" class="bmd-label-floating">确认密码</label>
                                     <input type="password" name="password_confirmation" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="register_password_again" required>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <div class="checkbox">
                                         <label for="agreement"><input class="form-control" type="checkbox" name="agreement" id="agreement" required><span>我已阅读并同意隐私条款和服务条款</span></label>
                                     </div>
-                                </div>
-
+                                </div> --}}
                             </div>
                             <div class="card-footer text-right">
                                 <button type="submit" class="btn btn-danger">注册</button>
