@@ -198,13 +198,6 @@
                         <a class="nav-link @if ($navigation === "Finance") active @endif" href="/finance">报销</a>
                     </li>
                     @endif
-                    @if(!Auth::check())
-                        @foreach(getCustomUrl() as $u)
-                            <li class="nav-item />">
-                                <a class="nav-link" href="{{$u["url"]}}" target="{{$u["newtab"]?'_blank':''}}">{{$u["display_name"]}}</a>
-                            </li>
-                        @endforeach
-                    @endif
                 </ul>
 
                 <ul class="navbar-nav mundb-nav-right">
