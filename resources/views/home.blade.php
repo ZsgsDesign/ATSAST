@@ -77,6 +77,10 @@
             transform: translate3d(0,0,0)
         }
     }
+
+    #nav-container {
+        margin-bottom: 0px !important;
+    }
 </style>
 
 <div class="container-fluid">
@@ -88,7 +92,7 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-100" src="https://pikanglong.com/wp-content/uploads/2019/07/csnz.jpg" alt="First slide">
+            <img class="d-block w-100" src="{{$imgurl}}" alt="First slide">
                 <div class="carousel-caption">
                     <div>
                         <h5 class="card-title mundb-text-truncate-2">@SAST正式启用啦</h5>

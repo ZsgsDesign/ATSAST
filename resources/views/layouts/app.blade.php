@@ -158,52 +158,36 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    @if(!Auth::check())
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Home") active @endif" href="/">发现</a>
                     </li>
-                    @endif
-                    @if(!Auth::check())
-                        <li class="nav-item />">
-                            <a class="nav-link @if ($navigation === "Courses") active @endif" href="/courses">课程</a>
-                        </li>
-                    @endif
-                    @if(!Auth::check())
-                        <li class="nav-item />">
-                            <a class="nav-link @if ($navigation === "Contests") active @endif" href="/contests">活动</a>
-                        </li>
-                    @endif
-                    @if(!Auth::check())
-                        <li class="nav-item />">
-                            <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="/pastebin">PASTEBIN</a>
-                        </li>
-                    @endif
-                    @if(!Auth::check())
+                    <li class="nav-item />">
+                        <a class="nav-link @if ($navigation === "Courses") active @endif" href="/courses">课程</a>
+                    </li>
+                    <li class="nav-item />">
+                        <a class="nav-link @if ($navigation === "Contests") active @endif" href="/contests">活动</a>
+                    </li>
+                    <li class="nav-item />">
+                        <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="/pastebin">PASTEBIN</a>
+                    </li>
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Cloud") active @endif" href="/cloud">网盘</a>
                     </li>
-                    @endif
-                    @if(!Auth::check())
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Blog") active @endif" href="/blog">博客</a>
                     </li>
-                    @endif
-                    @if(!Auth::check())
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Credit") active @endif" href="/credit">借还</a>
                     </li>
-                    @endif
-                    @if(!Auth::check())
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Finance") active @endif" href="/finance">报销</a>
                     </li>
-                    @endif
                 </ul>
 
                 <ul class="navbar-nav mundb-nav-right">
                     <li class="nav-item mundb-no-shrink />">
                         @guest
-                            <a class="nav-link @if ($navigation === "Account") active @endif" href="/account">Account</a>
+                            <a class="nav-link @if ($navigation === "Account") active @endif" href="/login">登录/注册</a>
                         @else
                             <li class="nav-item dropdown mundb-btn-ucenter">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$greeting}}, <span id="nav-username">{{ Auth::user()["name"] }}</span></a>
