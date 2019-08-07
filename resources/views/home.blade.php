@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="https://pikanglong.com/wp-content/uploads/2019/07/csnz.jpg" alt="First slide">
+                <img class="d-block w-100" src="/static/img/coding.jpeg" alt="First slide">
                 <div class="carousel-caption">
                     <div>
                         <h5 class="card-title mundb-text-truncate-2">新生杯开始报名啦</h5>
