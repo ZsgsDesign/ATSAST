@@ -77,8 +77,8 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         return view("auth.register", [
-            'page_title'=>"Register",
-            'site_title'=>config("app.name"),
+            'page_title'=>"注册",
+            'site_title'=>"SAST教学辅助平台",
             'navigation' => "Account"
         ]);
     }
