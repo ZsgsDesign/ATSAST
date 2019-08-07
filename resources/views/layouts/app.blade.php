@@ -187,7 +187,7 @@
                 <ul class="navbar-nav mundb-nav-right">
                     <li class="nav-item mundb-no-shrink />">
                         @guest
-                            <a class="nav-link @if ($navigation === "Account") active @endif" href="/login">登录/注册</a>
+                            <a class="nav-link @if ($navigation === "Account") active @endif" href="/login">登录 / 注册</a>
                         @else
                             <li class="nav-item dropdown mundb-btn-ucenter">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$greeting}}, <span id="nav-username">{{ Auth::user()["name"] }}</span></a>

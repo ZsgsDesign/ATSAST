@@ -101,23 +101,12 @@
                 <p>Auxiliary Teaching for SAST</p>
             </div>
             <div class="alert alert-primary text-left" role="alert">
-                由于系统重构，2019年8月前注册的用户请<a href="/account/update">点击这里</a>更新密码。
+                在ATSAST的v2.0.0更新中，我们重构了整个后台框架，其中也包括了加密算法。为了保障您账号的安全，在进一步登录之前，我们希望您能够更新自己的密码。输入的原密码仅为了校验，新密码可以与原密码一致。
             </div>
             <div class="card">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs nav-justified nav-tabs-material" id="accountTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">使用您的ATSAST账号登录</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">注册一个新的ATSAST账号</a>
-                        </li>
-                        <div class="nav-tabs-indicator" id="nav-tabs-indicator" style="left: 0px;"></div>
-                    </ul>
-                </div>
                 <div class="tab-content" id="accountTabContent">
                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                        <form class="needs-validation" action="{{ route('login') }}" method="post" id="login_form" novalidate>
+                        <form class="needs-validation" action="" method="post" id="login_form" novalidate>
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
@@ -130,23 +119,31 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="bmd-label-floating">密码</label>
-                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" required>
-                                    @if ($errors->has('password'))
+                                    <label for="password" class="bmd-label-floating">原密码</label>
+                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="oldpassword" required>
+                                    @if ($errors->has('oldpassword'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('password') }}</strong>
+                                            <strong>{{ $errors->first('oldpassword') }}</strong>
                                         </span>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <div class="checkbox">
-                                        <label for="remember"><input class="form-control" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}><span>记住我</span></label>
-                                    </div>
+                                    <label for="password" class="bmd-label-floating">新密码</label>
+                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="newpassword" required>
+                                    @if ($errors->has('newpassword'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('newpassword') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="bmd-label-floating">验证密码</label>
+                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="newpassword" required>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记密码？</button></a>
-                                <button type="submit" class="btn btn-danger">登录</button>
+                                <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记原密码？</button></a>
+                                <button type="submit" class="btn btn-danger">更新</button>
                             </div>
                         </form>
                     </div>

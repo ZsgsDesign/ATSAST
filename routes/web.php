@@ -15,4 +15,8 @@ Route::redirect('/home', '/', 301);
 
 Route::get('/', 'MainController@home')->name('home');
 
+Route::group(['prefix' => 'account'], function () {
+    Route::get('/update', 'AccountController@update')->name('update');
+});
+
 Auth::routes();
