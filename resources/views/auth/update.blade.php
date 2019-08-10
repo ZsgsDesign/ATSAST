@@ -105,45 +105,30 @@
             </div>
             <div class="card">
                 <div class="tab-content" id="accountTabContent">
-                    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                        <form class="needs-validation" action="" method="post" id="login_form" novalidate>
+                    <div class="tab-pane fade show active" role="tabpanel">
+                        <form class="needs-validation" method="post" id="login_form" novalidate>
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="email" class="bmd-label-floating">电子邮箱</label>
-                                    <input type="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" id="email" required>
-                                    @if ($errors->has('email'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="email" name="email" class="form-control" value="{{ old('email') }}" id="email" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">原密码</label>
-                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="oldpassword" required>
-                                    @if ($errors->has('oldpassword'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('oldpassword') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="password" name="password" class="form-control" id="old_password" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">新密码</label>
-                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="newpassword" required>
-                                    @if ($errors->has('newpassword'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('newpassword') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="password" name="password" class="form-control" id="new_password" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">验证密码</label>
-                                    <input type="password" name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="newpassword" required>
+                                    <input type="password" name="password" class="form-control" id="confirm_password" required>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
                                 <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记原密码？</button></a>
-                                <button type="submit" class="btn btn-danger">更新</button>
+                                <button class="btn btn-danger" onclick="updatePassword()">更新</button>
                             </div>
                         </form>
                     </div>
@@ -154,14 +139,6 @@
 </div>
 <script>
     window.addEventListener("load",function() {
-        $('#login-tab').on('click', function (e) {
-            e.preventDefault();
-        })
-        $('#register-tab').on('click', function (e) {
-            e.preventDefault();
-            location.href="/register";
-        })
-
         $('input:-webkit-autofill').each(function(){
             if ($(this).val().length !== "") {
                 console.log($(this).siblings('label'));
@@ -169,9 +146,49 @@
                 $(this).parent().addClass('is-filled');
             }
         });
-
     }, false);
 
+    let ajaxing = false;
+    function updatePassword() {
+        if(ajaxing)return;
+        ajaxing=true;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/account/updatePassword',
+            data: {
+                email: email,
+                old_password: old_password,
+                new_password: new_password,
+                confirm_password: confirm_password,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                if (ret.ret==200) {
+                    location.href="/login";
+                } else {
+                    alert(ret.desc);
+                }
+                ajaxing=false;
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to passwordUpdate!');
+                ajaxing=false;
+            }
+        });
+    }
 </script>
 
 @endsection
