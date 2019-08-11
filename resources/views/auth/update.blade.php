@@ -106,7 +106,7 @@
             <div class="card">
                 <div class="tab-content" id="accountTabContent">
                     <div class="tab-pane fade show active" role="tabpanel">
-                        <form class="needs-validation" method="post" id="login_form" novalidate>
+                        <form class="needs-validation" method="post" id="update_form" novalidate>
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
@@ -115,15 +115,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">原密码</label>
-                                    <input type="password" name="password" class="form-control" id="old_password" required>
+                                    <input type="password" name="old_password" class="form-control" id="old_password" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">新密码</label>
-                                    <input type="password" name="password" class="form-control" id="new_password" required>
+                                    <input type="password" name="new_password" class="form-control" id="new_password" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">验证密码</label>
-                                    <input type="password" name="password" class="form-control" id="confirm_password" required>
+                                    <input type="password" name="confirm_password" class="form-control" id="confirm_password" required>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
