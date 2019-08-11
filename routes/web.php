@@ -17,7 +17,6 @@ Route::get('/', 'MainController@home')->name('home');
 
 Route::group(['prefix' => 'account'], function () {
     Route::get('/update', 'AccountController@update')->name('update');
-    Route::post('/update', 'AccountController@update')->name('update');
 });
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {

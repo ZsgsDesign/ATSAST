@@ -128,7 +128,7 @@
                             </div>
                             <div class="card-footer text-right">
                                 <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记原密码？</button></a>
-                                <button class="btn btn-danger" onclick="updatePassword()">更新</button>
+                                <button type="button" class="btn btn-danger" onclick="updatePassword()">更新</button>
                             </div>
                         </form>
                     </div>
