@@ -27,14 +27,14 @@ class AccountController extends Controller
         $new_password = $request->input('new_password');
         $confirm_password = $request->input('confirm_password');
         $accountmodel = new AccountModel();
+        if(md5($old_password)!=$accountmodel->getPassword($email)){
+            return ResponseModel::err(2009);
+        }
         if($new_password != $confirm_password){
             return ResponseModel::err(2011);
         }
         if(strlen($new_password) < 8){
             return ResponseModel::err(2012);
-        }
-        if(md5($old_password)!=$accountmodel->getPassword($email)){
-            return ResponseModel::err(2009);
         }
         $accountmodel->updatePassword($email, $new_password);
         return ResponseModel::success();

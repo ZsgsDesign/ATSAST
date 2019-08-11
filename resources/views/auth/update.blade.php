@@ -106,12 +106,10 @@
             <div class="card">
                 <div class="tab-content" id="accountTabContent">
                     <div class="tab-pane fade show active" role="tabpanel">
-                        <form class="needs-validation" method="post" id="update_form" novalidate>
-                            @csrf
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="email" class="bmd-label-floating">电子邮箱</label>
-                                    <input type="email" name="email" class="form-control" value="{{ old('email') }}" id="email" required>
+                                    <input type="email" name="email" class="form-control" id="email" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="bmd-label-floating">原密码</label>
@@ -130,7 +128,6 @@
                                 <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记原密码？</button></a>
                                 <button type="button" class="btn btn-danger" onclick="updatePassword()">更新</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -150,6 +147,10 @@
 
     let ajaxing = false;
     function updatePassword() {
+        var email = $('#email').val();
+        var old_password = $('#old_password').val();
+        var new_password = $('#new_password').val();
+        var confirm_password = $('#confirm_password').val();
         if(ajaxing)return;
         ajaxing=true;
         $.ajax({
@@ -167,6 +168,7 @@
             }, success: function(ret){
                 console.log(ret);
                 if (ret.ret==200) {
+                    alert("更新成功！");
                     location.href="/login";
                 } else {
                     alert(ret.desc);

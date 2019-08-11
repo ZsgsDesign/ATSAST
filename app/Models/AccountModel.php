@@ -13,7 +13,7 @@ class AccountModel extends Model
 {
     public function getPassword($email)
     {
-        return DB::table('users')->where('email','=',$email)->get()->first()['password'];
+        return DB::table('users')->where('email','=',$email)->get()->first()->password;
     }
 
     public function updatePassword($email, $password)
