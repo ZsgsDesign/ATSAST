@@ -20,7 +20,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{$page_title}} | {{$site_title}}</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Necessarily Declarations -->
@@ -159,35 +158,35 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Home") active @endif" href="/">发现</a>
+                        <a class="nav-link" href="/">发现</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Courses") active @endif" href="/courses">课程</a>
+                        <a class="nav-link" href="/courses">课程</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Contests") active @endif" href="/contests">活动</a>
+                        <a class="nav-link" href="/contests">活动</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="/pastebin">PASTEBIN</a>
+                        <a class="nav-link" href="/pastebin">PASTEBIN</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Cloud") active @endif" href="/cloud">网盘</a>
+                        <a class="nav-link" href="/cloud">网盘</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Blog") active @endif" href="/blog">博客</a>
+                        <a class="nav-link" href="/blog">博客</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Credit") active @endif" href="/credit">借还</a>
+                        <a class="nav-link" href="/credit">借还</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Finance") active @endif" href="/finance">报销</a>
+                        <a class="nav-link" href="/finance">报销</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav mundb-nav-right">
                     <li class="nav-item mundb-no-shrink />">
                         @guest
-                            <a class="nav-link @if ($navigation === "Account") active @endif" href="/login">登录 / 注册</a>
+                            <a class="nav-link" href="/login">登录 / 注册</a>
                         @else
                             <li class="nav-item dropdown mundb-btn-ucenter">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$greeting}}, <span id="nav-username">{{ Auth::user()["name"] }}</span></a>
