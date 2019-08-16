@@ -15,9 +15,9 @@ class ContestModel extends Model
         $paginator = DB::table('contest as c')
         ->leftJoin('organization as o', 'c.creator', '=', 'o.oid')
         ->select('contest_id', 'c.name', 'creator', 'desc', 'type', 'start_date', 'end_date', 'status', 'due_register', 'image', 'o.name as creator_name')
+        ->orderBy('contest_id', 'desc')
         ->paginate(5);
         $list = $paginator->all();
-        // dd($list);
         foreach($list as $l){
             if ($l->start_date==$l->end_date) {
                 $l->parse_date=$l->start_date;
