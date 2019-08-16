@@ -19,6 +19,10 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/update', 'AccountController@update')->name('update');
 });
 
+Route::group(['prefix' => 'courses'], function () {
+    Route::get('/', 'CourseController@index')->name('courses');
+});
+
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('updatePassword', 'AccountController@updatePassword');
