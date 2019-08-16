@@ -29,7 +29,6 @@
         background-image: linear-gradient(135deg,rgba(0,0,0,0),rgba(0,0,0,0.25));
     } */
 </style>
-<!-- <canvas id="atsast-background-canvas"></canvas> -->
 <div class="container mundb-standard-container">
     <section class="mb-5">
         <h1>课程</h1>
