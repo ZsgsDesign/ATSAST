@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Cache;
 use Storage;
+use Auth;
 
 class ContestModel extends Model
 {
@@ -23,6 +24,22 @@ class ContestModel extends Model
                 $l->parse_date=$l->start_date;
             } else {
                 $l->parse_date=$l->start_date." ~ ".$l->end_date;
+            }
+        }
+        if (Auth::check()) {
+            $result = DB::table('users')->where('id','=',Auth::user()->id)->get()->first();
+            $sid=$result->SID;
+            foreach($list as $l){
+                $l->is_register=false;
+                $result2 = DB::table('contest_register')->where('contest_id','=',$l->contest_id)->where('uid','=',Auth::user()->id)->get()->first();
+                if (!empty($result2)) {
+                    $l->is_register=true;
+                } else {
+                    $result2 = DB::table('contest_register')->where('contest_id','=',$l->contest_id)->where('info','like',$sid.'%')->get()->first();
+                    if (!empty($result2)) {
+                        $l->is_register=true;
+                    }
+                }
             }
         }
         return [
