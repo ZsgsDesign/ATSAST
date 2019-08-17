@@ -190,7 +190,7 @@
                             <a class="nav-link @if ($navigation === "Account") active @endif" href="/login">登录 / 注册</a>
                         @else
                             <li class="nav-item dropdown mundb-btn-ucenter">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$greeting}}, <span id="nav-username">{{ Auth::user()["name"] }}</span></a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$greeting}}，<span id="nav-username">@if(isset(Auth::user()["real_name"])){{ Auth::user()["real_name"] }}@else{{ Auth::user()["name"] }}@endif</span></a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <div class="dropdown-header"><img src="{{ Auth::user()->avatar }}" class="mundb-avatar" id="atsast_nav_avatar" /><div><h6><span id="nav-dropdown-username">{{ Auth::user()["name"] }}</span><br/><small>{{ Auth::user()->email }}</small></h6></div></div>
                                     <div class="dropdown-divider"></div>
