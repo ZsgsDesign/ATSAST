@@ -19,12 +19,13 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/update', 'AccountController@update')->name('update');
 });
 
-Route::group(['prefix' => 'courses'], function () {
-    Route::get('/', 'CourseController@index')->name('courses');
+Route::group(['prefix' => 'course'], function () {
+    Route::get('/', 'CourseController@index')->name('course');
+    Route::get('/{cid}/detail', 'CourseController@detail')->name('detail');
 });
 
-Route::group(['prefix' => 'contests'], function () {
-    Route::get('/', 'ContestController@index')->name('contests');
+Route::group(['prefix' => 'contest'], function () {
+    Route::get('/', 'ContestController@index')->name('contest');
 });
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {

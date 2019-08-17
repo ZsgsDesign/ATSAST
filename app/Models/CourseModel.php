@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Cache;
 use Storage;
+use Auth;
 
 class CourseModel extends Model
 {
@@ -18,5 +19,47 @@ class CourseModel extends Model
             'paginator' => $paginator,
             'list' => $list
         ];
+    }
+
+    public function detail($cid)
+    {
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
+        if(empty($result)){
+            return null;
+        }
+        $creator = DB::table('organization')->where('oid','=',$result->course_creator)->first();
+        $detail = DB::table('course_details')->where('cid','=',$cid)->get();
+        $instructor_info = DB::table('instructor as i')->leftJoin('users as u','i.uid','=','u.id')->where('i.cid','=',$cid)->orderBy('i.iid','asc')->get();
+        $result->creator_name = $creator->name;
+        $result->creator_logo = $creator->logo;
+        if(Auth::check()){
+            $syllabus_info = DB::table('syllabus as s')->leftJoin('syllabus_sign as u', function($join){
+                $join->on('s.syid','=','u.syid')
+                ->where('u.uid','=',Auth::user()->id);
+            })->where('s.cid','=',$cid)->orderBy("time",'asc')->get();
+        }else{
+            $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->orderBy("time",'asc')->get();
+        }
+        foreach($syllabus_info as &$s){
+            $s->time = date('Y年m月d日 H时i分 开始', strtotime($s->time));
+        }
+        if(Auth::check()){
+            $register_status = DB::table('course_register')->where('cid','=',$cid)->where('uid','=',Auth::user()->id)->get()->first();
+        }
+        if(empty($register_status)){
+            $register_status = 0;
+        }else{
+            $register_status=$register_status->status;
+        }
+        $instructor=$instructor_info;
+        $syllabus=$syllabus_info;
+        return ([
+            'creator'=>$creator,
+            'detail'=>$detail,
+            'result'=>$result,
+            'register_status'=>$register_status,
+            'instructor'=>$instructor,
+            'syllabus'=>$syllabus,
+        ]);
     }
 }

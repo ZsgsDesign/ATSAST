@@ -161,10 +161,10 @@
                         <a class="nav-link" href="/">发现</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link" href="/courses">课程</a>
+                        <a class="nav-link" href="/course">课程</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link" href="/contests">活动</a>
+                        <a class="nav-link" href="/contest">活动</a>
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link" href="/pastebin">PASTEBIN</a>

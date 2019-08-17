@@ -162,10 +162,10 @@
                         <a class="nav-link @if ($navigation === "Home") active @endif" href="/">发现</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Courses") active @endif" href="/courses">课程</a>
+                        <a class="nav-link @if ($navigation === "Courses") active @endif" href="/course">课程</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Contests") active @endif" href="/contests">活动</a>
+                        <a class="nav-link @if ($navigation === "Contests") active @endif" href="/contest">活动</a>
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="/pastebin">PASTEBIN</a>
