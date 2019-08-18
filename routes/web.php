@@ -33,6 +33,10 @@ Route::group(['prefix' => 'pb'], function () {
     Route::get('/{code}', 'PastebinController@view')->name('pastebin.view');
 });
 
+Route::group(['prefix' => 'system'], function () {
+    Route::get('/logs', 'SystemController@logs')->name('system.logs');
+});
+
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('updatePassword', 'AccountController@updatePassword')->name('ajax.account.updatepassword');
