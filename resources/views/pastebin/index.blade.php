@@ -241,7 +241,7 @@
         else generate_processing=true;
         $.ajax({
             type: 'POST',
-            url: '/tool/ajax/pastebin/generate',
+            url: '/ajax/pastebin/generate',
             data: {
                 syntax: targ_lang,
                 expiration:targ_expire,

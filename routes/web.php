@@ -36,6 +36,10 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('updatePassword', 'AccountController@updatePassword');
     });
+
+    Route::group(['prefix' => 'pastebin'], function () {
+        Route::post('generate', 'PastebinController@generate')->middleware('auth')->name('ajax.pastebin.generate');
+    });
 });
 
 Auth::routes();
