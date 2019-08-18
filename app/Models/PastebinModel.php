@@ -30,7 +30,7 @@ class PastebinModel extends Model
         if (empty($basic)) {
             return [];
         }
-        $basic["userInfo"]=DB::table("users")->where(["id"=>$basic["uid"]])->first();
+        $basic->userInfo=DB::table("users")->where(["id"=>$basic->uid])->first();
         return $basic;
     }
 

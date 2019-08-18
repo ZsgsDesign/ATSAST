@@ -16,12 +16,12 @@ Route::redirect('/home', '/', 301);
 Route::get('/', 'MainController@home')->name('home');
 
 Route::group(['prefix' => 'account'], function () {
-    Route::get('/update', 'AccountController@update')->name('update');
+    Route::get('/update', 'AccountController@update')->name('account.update');
 });
 
 Route::group(['prefix' => 'course'], function () {
     Route::get('/', 'CourseController@index')->name('course');
-    Route::get('/{cid}/detail', 'CourseController@detail')->name('detail');
+    Route::get('/{cid}/detail', 'CourseController@detail')->name('course.detail');
 });
 
 Route::group(['prefix' => 'contest'], function () {
@@ -30,11 +30,12 @@ Route::group(['prefix' => 'contest'], function () {
 
 Route::group(['prefix' => 'pb'], function () {
     Route::get('/', 'PastebinController@index')->name('pastebin');
+    Route::get('/{code}', 'PastebinController@view')->name('pastebin.view');
 });
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
     Route::group(['prefix' => 'account'], function () {
-        Route::post('updatePassword', 'AccountController@updatePassword');
+        Route::post('updatePassword', 'AccountController@updatePassword')->name('ajax.account.updatepassword');
     });
 
     Route::group(['prefix' => 'pastebin'], function () {
