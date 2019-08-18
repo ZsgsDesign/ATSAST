@@ -168,7 +168,7 @@
                         <a class="nav-link @if ($navigation === "Contests") active @endif" href="/contest">活动</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="/pastebin">PASTEBIN</a>
+                        <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="/pb">PASTEBIN</a>
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Cloud") active @endif" href="/cloud">网盘</a>

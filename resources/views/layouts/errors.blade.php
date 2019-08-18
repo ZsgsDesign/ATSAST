@@ -167,7 +167,7 @@
                         <a class="nav-link" href="/contest">活动</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link" href="/pastebin">PASTEBIN</a>
+                        <a class="nav-link" href="/pb">PASTEBIN</a>
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link" href="/cloud">网盘</a>

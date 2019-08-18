@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "95094afcc3dfa06f2d9745ec3ba69e7a",
+    "content-hash": "eaefa3543873a74990396ac08979bce9",
     "packages": [
         {
             "name": "caouecs/laravel-lang",
@@ -1086,6 +1086,18 @@
                 "php"
             ],
             "time": "2019-05-25T20:07:01+00:00"
+        },
+        {
+            "name": "npm-asset/monaco-editor",
+            "version": "0.17.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.17.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "opis/closure",

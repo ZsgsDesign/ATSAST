@@ -28,6 +28,10 @@ Route::group(['prefix' => 'contest'], function () {
     Route::get('/', 'ContestController@index')->name('contest');
 });
 
+Route::group(['prefix' => 'pb'], function () {
+    Route::get('/', 'PastebinController@index')->name('pastebin');
+});
+
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('updatePassword', 'AccountController@updatePassword');
