@@ -35,6 +35,7 @@ Route::group(['prefix' => 'pb'], function () {
 
 Route::group(['prefix' => 'system'], function () {
     Route::get('/logs', 'SystemController@logs')->name('system.logs');
+    Route::get('/bugs', 'SystemController@bugs')->name('system.bugs');
 });
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
@@ -44,6 +45,10 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
 
     Route::group(['prefix' => 'pastebin'], function () {
         Route::post('generate', 'PastebinController@generate')->middleware('auth')->name('ajax.pastebin.generate');
+    });
+
+    Route::group(['prefix' => 'system'], function () {
+        Route::post('SubmitBugs', 'SystemController@SubmitBugs')->middleware('auth')->name('ajax.pastebin.submitbugs');
     });
 });
 
