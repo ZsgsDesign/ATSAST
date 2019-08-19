@@ -62,7 +62,11 @@
             }, success: function(ret){
                 console.log(ret);
                 if(ret.ret==200){
-                    alert("我们已收到您的反馈！","成功！");
+                    alert2({content:"我们已收到您的反馈！",title:"成功！"},function(deny){
+                        if(!deny){
+                            location.href = '/system/logs';
+                        }
+                    });
                 }else{
                     alert(ret.desc,"糟糕！");
                 }

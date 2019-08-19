@@ -30,7 +30,7 @@
         });
     }
 
-    function alert(content, title = "Notice", icon = "information-outline", backdrop = "static"){
+    function alert(content, title = "注意", icon = "information-outline", backdrop = "static"){
         var id = new Date().getTime();
         if(backdrop !== "static") backdrop = backdrop?"true":"false";
         $('body').append(`
@@ -44,7 +44,7 @@
                             ${content}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
         $(`#notice${id}`).modal('toggle');
     }
 
-    function confirm ({content="",title="Confirm",icon="information-outline",backdrop="static"}={},callback=function(deny){}){
+    function alert2({content, title = "注意", icon = "information-outline", backdrop = "static"}={},callback=function(deny){}){
         var id = new Date().getTime();
         if(backdrop !== "static") backdrop = backdrop?"true":"false";
         $('body').append(`
@@ -70,8 +70,37 @@
                             ${content}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="confirmDeny${id}" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" id="confirmDone${id}" class="btn btn-primary" data-dismiss="modal">OK</button>
+                            <button type="button" id="confirmDone${id}" class="btn btn-primary" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+        $(`#confirmDone${id}`).on('click',function(){
+            callback(false);
+        });
+        $(`#notice${id}`).on('shown.bs.modal', function (e) {
+            changeDepth();
+        });
+        $(`#notice${id}`).modal('toggle');
+    }
+
+    function confirm ({content="",title="确认",icon="information-outline",backdrop="static"}={},callback=function(deny){}){
+        var id = new Date().getTime();
+        if(backdrop !== "static") backdrop = backdrop?"true":"false";
+        $('body').append(`
+            <div class="modal fade" id="notice${id}" data-backdrop="${backdrop}" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-alert" role="document">
+                    <div class="modal-content sm-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="MDI ${icon}"></i> ${title}</h5>
+                        </div>
+                        <div class="modal-body">
+                            ${content}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="confirmDeny${id}" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" id="confirmDone${id}" class="btn btn-primary" data-dismiss="modal">确认</button>
                         </div>
                     </div>
                 </div>
