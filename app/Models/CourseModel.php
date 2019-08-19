@@ -36,7 +36,7 @@ class CourseModel extends Model
             $syllabus_info = DB::table('syllabus as s')->leftJoin('syllabus_sign as u', function($join){
                 $join->on('s.syid','=','u.syid')
                 ->where('u.uid','=',Auth::user()->id);
-            })->where('s.cid','=',$cid)->orderBy("time",'asc')->get();
+            })->where('s.cid','=',$cid)->select('s.syid','s.cid','title','time','location','desc','signed','signid','script','homework','feedback','video')->orderBy("time",'asc')->get();
         }else{
             $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->orderBy("time",'asc')->get();
         }
@@ -61,5 +61,31 @@ class CourseModel extends Model
             'instructor'=>$instructor,
             'syllabus'=>$syllabus,
         ]);
+    }
+
+    public function signStatus($cid, $syid, $uid)
+    {
+        $sign_status = DB::table('syllabus_sign')->where('cid','=',$cid)->where('syid','=',$syid)->where('uid','=',$uid)->first();
+        if(empty($sign_status)){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
+
+    public function syllabusInfo($cid, $syid)
+    {
+        if(Auth::check()){
+            $syllabus_info = DB::table('syllabus as s')->leftJoin('syllabus_sign as u', function($join){
+                $join->on('s.syid','=','u.syid')
+                ->where('u.uid','=',Auth::user()->id);
+            })->where('s.cid','=',$cid)->where('s.syid','=',$syid)->select('s.syid','s.cid','title','time','location','desc','signed','signid','script','homework','feedback','video')->orderBy("time",'asc')->get()->first();
+        }else{
+            $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('s.syid','=',$syid)->orderBy("time",'asc')->get()->first();
+        }
+        if(isset($syllabus_info)){
+            $syllabus_info->time = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info->time));
+        }
+        return $syllabus_info;
     }
 }

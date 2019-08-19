@@ -22,6 +22,7 @@ Route::group(['prefix' => 'account'], function () {
 Route::group(['prefix' => 'course'], function () {
     Route::get('/', 'CourseController@index')->name('course');
     Route::get('/{cid}/detail', 'CourseController@detail')->name('course.detail');
+    Route::get('{cid}/sign/{syid}', 'CourseController@sign')->name('course.sign');
 });
 
 Route::group(['prefix' => 'contest'], function () {

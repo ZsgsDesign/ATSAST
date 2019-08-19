@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\CourseModel;
 use Illuminate\Http\Request;
+use Auth;
 
 class CourseController extends Controller
 {
@@ -44,6 +45,26 @@ class CourseController extends Controller
             'register_status'=>$register_status,
             'cid'=>$cid,
             'instructor'=>$instructor,
+            'syllabus'=>$syllabus,
+        ]);
+    }
+
+    public function sign(Request $request)
+    {
+        if(!Auth::Check()){
+            return Redirect::route('course');
+        }
+        $cid = $request->cid;
+        $syid = $request->syid;
+        $coursemodel = new CourseModel();
+        $sign_status = $coursemodel->signStatus($cid,$syid,Auth::user()->id);
+        $syllabus = $coursemodel->syllabusInfo($cid,$syid);
+        return view('courses.sign', [
+            'page_title'=>"课程",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Courses",
+            'cid'=>$cid,
+            'sign_status'=>$sign_status,
             'syllabus'=>$syllabus,
         ]);
     }
