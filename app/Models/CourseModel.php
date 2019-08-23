@@ -88,4 +88,23 @@ class CourseModel extends Model
         }
         return $syllabus_info;
     }
+
+    public function registerStatus($cid, $uid)
+    {
+        $ret = DB::table('course_register')->where('cid','=',$cid)->where('uid','=',$uid)->get()->first();
+        if($ret==null){
+            DB::table('course_register')->insertGetId([
+                'uid'=>$uid,
+                'cid'=>$cid,
+                'status'=>1
+            ]);
+            return 1;
+        }
+        return 0;
+    }
+
+    public function existCid($cid)
+    {
+        return DB::table('courses')->where('cid','=',$cid)->get()->first();
+    }
 }

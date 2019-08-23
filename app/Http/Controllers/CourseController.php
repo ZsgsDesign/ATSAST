@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 use App\Models\CourseModel;
 use Illuminate\Http\Request;
@@ -28,6 +29,9 @@ class CourseController extends Controller
     {
         $cid = $request->cid;
         $coursemodel = new CourseModel();
+        if(!$coursemodel->existCid($cid)){
+            return Redirect::route('course');
+        }
         $ret = $coursemodel->detail($cid);
         $creator = $ret['creator'];
         $detail = $ret['detail'];
@@ -66,6 +70,23 @@ class CourseController extends Controller
             'cid'=>$cid,
             'sign_status'=>$sign_status,
             'syllabus'=>$syllabus,
+        ]);
+    }
+
+    public function register(Request $request)
+    {
+        $cid = $request->cid;
+        $coursemodel = new CourseModel();
+        if(!Auth::Check() || !$coursemodel->existCid($cid)){
+            return Redirect::route('course');
+        }
+        $register_status = $coursemodel->registerStatus($cid,Auth::user()->id);
+        return view('courses.register', [
+            'page_title'=>"课程",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Courses",
+            'cid'=>$cid,
+            'register_status'=>$register_status,
         ]);
     }
 }
