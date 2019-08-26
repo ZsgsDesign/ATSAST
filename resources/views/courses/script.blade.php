@@ -250,7 +250,7 @@ function loadJsAsync(url){
                     }
                 });
                 
-                        $("#markdown_container").html(marked("{{$script->content_slashed}}",{
+                        $("#markdown_container").html(marked("{!!$script->content_slashed!!}",{
                             sanitize:true,
                             sanitizer:DOMPurify.sanitize,
                             highlight: function (code) {
