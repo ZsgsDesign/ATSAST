@@ -183,43 +183,32 @@ card.order-card > div {
             <div class="responsive col-md-9 col-sm-12 col-12">
                 <div class="form-group">
                     <label for="item_name" class="bmd-label-floating">物品名称</label>
-                    <input type="text" id="item_name" class="form-control" value="<{$item_info['name']}>">
+                    <input type="text" id="item_name" class="form-control" value="">
                     <span class="bmd-help">物品名称包含关键词可以更好地被搜索到哦。</span>
                 </div>
                 <div class="form-group">
                     <label for="number" class="bmd-label-floating">借用时限(天)</label>
-                    <input type="number" id="time_limit" placeholder="物品应于多少天内归还" class="form-control" min="1" value="<{$item_info['limit_time']}>">
+                    <input type="number" id="time_limit" placeholder="" class="form-control" min="1" value="">
                     <span class="bmd-help">该物品在"确认借用"后要求在规定天数内归还。</span>
                 </div>
-                <div class="form-group">
-                    <label for="credit_required" class="bmd-label-floating">最低信用</label>
-                    <select class="form-control" id="credit_required">
-                        <option <{if $item_info['credit_limit'] == 0  }> selected <{/if}> >无</option>
-                        <option <{if $item_info['credit_limit'] == 80 }> selected <{/if}> >信用良好</option>
-                        <option <{if $item_info['credit_limit'] == 100}> selected <{/if}> >信用优秀</option>
-                        <option <{if $item_info['credit_limit'] == 120}> selected <{/if}> >信用极佳</option>
-                    </select>
-                    <span class="bmd-help">信用分低于该等级的用户将不能借用该物品。</span>
-                </div>
+                
                 <div class="form-group">
                     <label for="location" class="bmd-label-floating">物品位置</label>
-                    <input type="text"  id="location" class="form-control" value="<{$item_info['location']}>">
+                    <input type="text"  id="location" class="form-control" value="">
                 </div>
                 <div class="form-group">
                     <label for="number" class="bmd-label-floating">物品数量</label>
-                    <input type="number" id="number" class="form-control" min="1" value="<{$item_info['count']}>">
+                    <input type="number" id="number" class="form-control" min="1" value="">
                 </div>
                 <div class="form-group">
                     <label for="desc" class="bmd-label-floating">物品介绍</label>
-                    <textarea class="form-control" id="desc" rows="10"><{$item_info['desc']}></textarea>
+                    <textarea class="form-control" id="desc" rows="10"></textarea>
                 </div>
             </div>
         </div>
         <div class="text-right">
-            <{if $iid != -1}>
-                <button id="delete-btn" class="btn btn-outline-danger" onclick="deleteItem(<{$iid}>)">彻底删除</button>
+                {{-- <button id="delete-btn" class="btn btn-outline-danger" onclick="deleteItem(<{$iid}>)">彻底删除</button> --}}
                 <!--TODO这边需要加个确认框-->
-            <{/if}>
             <button class="btn btn-outline-primary" onclick="publish()">发布物品</button>
         </div>
     </card>
