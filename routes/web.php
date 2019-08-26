@@ -36,7 +36,9 @@ Route::group(['prefix' => 'handling'], function () {
     Route::get('/cart', 'HandlingController@cart')->name('handling.cart');
     Route::get('/publish', 'HandlingController@publish')->name('handling.publish');
     Route::get('/detail/{itemId}', 'HandlingController@detail')->name('handling.detail');
-    Route::get('/order/{orderId}', 'HandlingController@order')->name('handling.order');
+    Route::get('/order', 'HandlingController@order')->name('handling.order');
+    Route::get('/order/create', 'HandlingController@orderCreate')->name('handling.orderCreate');
+    Route::get('/order/{orderId}', 'HandlingController@orderDetail')->name('handling.orderDetail');
 });
 
 Route::group(['prefix' => 'pb'], function () {

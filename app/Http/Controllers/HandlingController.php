@@ -9,7 +9,7 @@ class HandlingController extends Controller
 {
     public function index(){
         $itemModel = new ItemModel();
-        $items = $itemModel->orderBy('create_time', 'desc')->get();
+        $items = $itemModel->getItems();
 
         return view('handling.index',[
             'page_title'=>"借还",
@@ -43,9 +43,25 @@ class HandlingController extends Controller
         ]);
     }
 
-    public function order($orderId){
+    public function order(){
         return view('handling.order',[
             'page_title'=>"我的订单",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Handling"
+        ]);
+    }
+
+    public function orderCreate(){
+        return view('handling.orderCreate',[
+            'page_title'=>"创建订单",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Handling"
+        ]);
+    }
+
+    public function orderDetail($orderId){
+        return view('handling.orderDetail',[
+            'page_title'=>"订单详情",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Handling"
         ]);

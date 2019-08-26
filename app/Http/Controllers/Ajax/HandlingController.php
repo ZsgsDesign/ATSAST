@@ -33,4 +33,5 @@ class HandlingController extends Controller
 
         return ResponseModel::success();
     }
+    
 }
