@@ -52,7 +52,7 @@ class HandlingController extends Controller
     }
 
     public function orderCreate(){
-        return view('handling.orderCreate',[
+        return view('handling.order_create',[
             'page_title'=>"创建订单",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Handling"
@@ -60,7 +60,7 @@ class HandlingController extends Controller
     }
 
     public function orderDetail($orderId){
-        return view('handling.orderDetail',[
+        return view('handling.order_detail',[
             'page_title'=>"订单详情",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Handling"
