@@ -329,7 +329,7 @@
                 @if($r->feedback)<a href="feedback/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
                 @if($r->video)<a href="{{ $r->video }}" target="_blank"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI video"></i> 视频地址</action></button></a>@endif
             @elseif(Auth::check())
-            <a href="register/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
+            <a href="register"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
             @else
             <a href="/login"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-circle"></i> 请在登录后查看课时详情</action></button></a>
             @endif

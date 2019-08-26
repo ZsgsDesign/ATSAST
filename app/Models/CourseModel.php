@@ -107,4 +107,41 @@ class CourseModel extends Model
     {
         return DB::table('courses')->where('cid','=',$cid)->get()->first();
     }
+
+    public function existSyid($cid, $syid)
+    {
+        return DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
+    }
+
+    public function existScid($cid, $scid)
+    {
+        return DB::table('syllabus_script')->where('cid','=',$cid)->where('scid','=',$scid)->get()->first();
+    }
+
+    public function syidByScid($scid)
+    {
+        $ret = DB::table('syllabus_script')->where('scid','=',$scid)->get()->first();
+        if($ret==null){
+            return $ret;
+        }else{
+            return $ret->syid;
+        }
+    }
+
+    public function script($cid, $scid)
+    {
+        $result = DB::table('courses')->where('cid','=',$cid)->get();
+        $register_status = DB::table('course_register')->where('cid','=',$cid)->where('uid','=',Auth::user()->id)->get()->first();
+        if($register_status==null){
+            return null;
+        }
+        $syid = $this->syidByScid($scid);
+        $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
+        if (empty($result) || empty($syllabus_info)) {
+            return null;
+        }
+        if ($syllabus_info->script==0) {
+            return null;
+        }
+    }
 }
