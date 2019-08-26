@@ -135,22 +135,8 @@ card.order-card > div {
 </style>
 <div class="container mundb-standard-container">
   <h5 class="mhs-title mt-3"><i class="MDI gift"></i> SAST 物品借还系统</h5>
-  <div class="alert alert-primary alert-dismissible fade show" role="alert">
-      <strong>你有0笔订单更新了状态 </strong><a href="/orders" class="alert-link">点击这里查看</a>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="">
-          <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>你有0笔订单已逾期 </strong><a href="" class="alert-link">点击这里查看</a>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="">
-          <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
       <div class="input-group text-center">
-              <input id="keyword" type="text" class="form-control" placeholder="搜索物品..." aria-describedby="basic-addon1" value="">
               <div class="input-group-btn">
-                  <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href=''">搜索</button>
                   <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href=''">发布物品</button>
               </div>
       </div>
@@ -160,28 +146,7 @@ card.order-card > div {
               }
           });
       </script>
-      <ul class="nav nav-pills">
-          <li class="nav-item">
-              <a class="nav-link active" href="">默认排序</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link  active " href="">最多借用</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link  " href="">信用优先</a>
-          </li>
-          <li class="nav-item dropdown ml-auto">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选</a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="">仅看可借用</a>
-                      <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="">显示无货</a>
-                    <a class="dropdown-item" href="">显示高于当前信用</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="">我发布的</a>
-                  </div>
-                </li>
-      </ul>
+      
       <br>
       <h5 class="text-center text-warning">没有搜到你找的物品哦</h5> <!-- 表达来自闲鱼 -->
       <p class="text-center">试试别的关键词</p>
@@ -229,9 +194,6 @@ card.order-card > div {
               </li>
           </ul>
         </nav>
-  <div class="row atsast-empty">
-      <badge onclick="location.href='/account'"><i class="MDI account-circle"></i> 请先登录才能使用MHS </badge>
-  </div>
 </div>
 @inlude('js.common.item');
 

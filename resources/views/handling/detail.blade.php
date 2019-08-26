@@ -233,7 +233,7 @@ card.order-card > div {
     <br>
     <div id="navs-pos">
     </div>
-    <nav id="navs" class="navbar justify-content-center" style="background-color: white; border:0px;box-shadow:0px">
+    {{-- <nav id="navs" class="navbar justify-content-center" style="background-color: white; border:0px;box-shadow:0px">
         <ul class="nav" >
             <li class="nav-item">
                 <a class="nav-link" href="#intro">简介</a>
@@ -248,122 +248,9 @@ card.order-card > div {
                 <a class="nav-link" href="#about">关于</a>
             </li>
         </ul>
-    </nav>
-    <br>
-        <div data-spy="scroll" data-target="#navbar-detailed-page" data-offset="0">
-            <card id="intro" class="p-3">
-                <h5 class="text-primary text-center">暂无物品简介</h5>
-                <article class="markdown-body" id="desc">
-                </article>
-            </card>
-            <card id="comment">
-                <div class="text-center">
-                    <button type="button" class="btn btn-dark" onclick="refer=null;$('#comment-title').html('发布留言');$('#Comment').modal('show');"><i class="MDI comment-remove-outline"></i>发布评论</button>
-                </div>
-                <p class="text-center text-secondary">这里一条留言也没有～～</p>
-                <div class="media ml-3">
-                    <avatar class="mr-3 align-self-start"><img src="<{$r['avatar']}>"></avatar>
-                    <div class="media-body">
-                        <{if $r['uid'] == $userinfo['uid'] }><h5 class="mt-0 text-primary">我</h5><{else}><h5 class="mt-0"><a href="<{$MHS_DOMAIN}>/user/<{$r['uid']}>"><{$r['real_name']}></a></h5><{/if}>
-                        <br><small><{$r['time']}></small>
-                        <button type="button" class="btn btn-sm <{if $r['i_liked']}>btn-warning<{else}>btn-secondary<{/if}>" id="like-<{$r['mid']}>" onclick="likeComment(<{$r['mid']}>);"><i class="MDI heart"></i> <{if !$r['liked']}>喜欢<{else}><{$r['liked']}><{/if}></button> <!-- TODO -->
-                        <button type="button" class="btn btn-primary btn-sm" onclick="refer=<{$r['mid']}>;$('#comment-title').html('回复<{$r['real_name']}>');$('#Comment').modal('show');"><i class="MDI comment"></i> <{if empty($r['comments'])}>评论<{else}><{count($r['comments'])}><{/if}></button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$r['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
-                        <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$r['mid']}>;$('#Delete').modal('show');"><i class="MDI delete"></i> 删除</button> <!-- 自己删除自己的评论 -->
-                        <div class="media mt-3">
-                            <avatar class="mr-3 align-self-start"><img src="<{$q['avatar']}>"></avatar>
-                            <div class="media-body">
-                                <h5 class="mt-0"><{if $q['uid'] == $userinfo['uid'] }>我<{else}><{$q['real_name']}><{/if}><strong> 回复 </strong><{if $q['refer_id'] == $userinfo['uid'] }>我<{else}><{$q['refer_real_name']}><{/if}></h5>
-                                <br><small><{$q['time']}></small>
-                                <button type="button" class="btn btn-sm <{if $q['i_liked']}>btn-warning<{else}>btn-secondary<{/if}>" id="like-<{$q['mid']}>" onclick="likeComment(<{$q['mid']}>);"><i class="MDI heart"></i> <{if !$q['liked']}>喜欢<{else}><{$q['liked']}><{/if}></button> <!-- TODO -->
-                                <button type="button" class="btn btn-info btn-sm" onclick="refer=<{$q['mid']}>;$('#comment-title').html('回复 <{$q['real_name']}>');$('#Comment').modal('show');"><i class="MDI reply"></i> 回复</button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
-                                <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI delete"></i> 删除</button> <!-- 自己删除自己的评论 -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </card>
-            <card id="review" class="p-3">
-                <h5 class="text-center text-info">借用评价</h5>
-                <p class="text-center text-secondary">这里一条评价也没有～～</p>
-                <div class="media mt-3">
-                    <avatar class="mr-3 align-self-start"><img src="<{$r['avatar']}>"><span class="badge badge-pill top-fc <{if $r['renter_review']==1}>badge-success">好评<{else if $r['renter_review']==0}>badge-dark">中评<{else}>badge-warning">差评<{/if}></span></avatar>
-                    <div class="media-body">
-                        <h5 class="mt-0"><a href="<{$MHS_DOMAIN}>/user/<{$r['uid']}>"><{$r['real_name']}></a></h5>
-                        <br><small>归还于 <{$r['return_time']}></small>
-                    </div>
-                </div>
-            </card>
-            <card id="about" class="p-3">
-                <div class="row text-center">
-                    <div class="col-md-3 col-6">
-                        <statistic>
-                            <h1><a href="<{$MHS_DOMAIN}>/user/<{$item_info['owner']}>"><{$publisher_info["publisher"]}></a></h1>
-                            <p>出借者</p>
-                        </statistic>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <statistic>
-                            <h1><{$publisher_info["publisher_credit"]}></h1>
-                            <p>出借者信用</p>
-                        </statistic>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <statistic>
-                            <h1><{$publisher_info["publisher_order_count"]}></h1>
-                            <p>总出借笔数</p>
-                        </statistic>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <statistic>
-                            <h1><{$publisher_info["publisher_item_count"]}></h1>
-                            <p>发布物品数</p>
-                        </statistic>
-                    </div>
-                </div>
-            </card>
-
-        </div>
-</div>
-<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">删除</h5>
-            </div>
-            <div class="modal-body">
-                <p class="text-danger">您确定删除这个留言吗？</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick="deleteComment();">确定</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="Comment" tabindex="-1" role="dialog" aria-labelledby="Comment" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="comment-title">发布留言</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="comment-text" class="bmd-label-floating">留言文本(不超过140字)</label>
-                    <textarea class="form-control" id="comment-text" rows="6"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick="sendComment($('#comment-text').val());">确定</button>
-            </div>
-        </div>
-    </div>
+    </nav> --}}
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" integrity="sha256-HbgiGHMLxHZ3kkAiixyvnaaZFNjNWLYKD/QG6PWaQPc=" crossorigin="anonymous" />
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行

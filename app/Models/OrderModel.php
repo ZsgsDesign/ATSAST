@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class OrderModel extends Model
 {
-    protected $tableName='order';
+    protected $table='order';
 }
