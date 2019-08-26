@@ -55,12 +55,12 @@ class CourseController extends Controller
 
     public function sign(Request $request)
     {
-        if(!Auth::Check()){
-            return Redirect::route('course');
-        }
         $cid = $request->cid;
         $syid = $request->syid;
         $coursemodel = new CourseModel();
+        if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existSyid($cid,$syid)){
+            return Redirect::route('course');
+        }
         $sign_status = $coursemodel->signStatus($cid,$syid,Auth::user()->id);
         $syllabus = $coursemodel->syllabusInfo($cid,$syid);
         return view('courses.sign', [
@@ -87,6 +87,22 @@ class CourseController extends Controller
             'navigation'=>"Courses",
             'cid'=>$cid,
             'register_status'=>$register_status,
+        ]);
+    }
+
+    public function script(Request $request)
+    {
+        $cid = $request->cid;
+        $scid = $request->scid;
+        $coursemodel = new CourseModel();
+        if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existScid($cid,$scid)){
+            return Redirect::route('course');
+        }
+        return view('courses.script', [
+            'page_title'=>"课程",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Courses",
+            'cid'=>$cid,
         ]);
     }
 }
