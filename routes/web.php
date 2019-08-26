@@ -31,12 +31,12 @@ Route::group(['prefix' => 'contest'], function () {
     Route::get('/', 'ContestController@index')->name('contest');
 });
 
-Route::group(['prefix' => 'mhs'], function () {
-    Route::get('/', 'MaterialHandlingSystemController@index')->name('mhs.index');
-    Route::get('/cart', 'MaterialHandlingSystemController@cart')->name('mhs.cart');
-    Route::get('/publish', 'MaterialHandlingSystemController@publish')->name('mhs.publish');
-    Route::get('/detail/{itemId}', 'MaterialHandlingSystemController@detail')->name('mhs.detail');
-    Route::get('/order/{orderId}', 'MaterialHandlingSystemController@order')->name('mhs.order');
+Route::group(['prefix' => 'handling'], function () {
+    Route::get('/', 'HandlingController@index')->name('handling.index');
+    Route::get('/cart', 'HandlingController@cart')->name('handling.cart');
+    Route::get('/publish', 'HandlingController@publish')->name('handling.publish');
+    Route::get('/detail/{itemId}', 'HandlingController@detail')->name('handling.detail');
+    Route::get('/order/{orderId}', 'HandlingController@order')->name('handling.order');
 });
 
 Route::group(['prefix' => 'pb'], function () {
