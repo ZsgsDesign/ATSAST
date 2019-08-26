@@ -130,7 +130,7 @@ class CourseModel extends Model
 
     public function script($cid, $scid)
     {
-        $result = DB::table('courses')->where('cid','=',$cid)->get();
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $register_status = DB::table('course_register')->where('cid','=',$cid)->where('uid','=',Auth::user()->id)->get()->first();
         if($register_status==null){
             return null;
@@ -143,5 +143,25 @@ class CourseModel extends Model
         if ($syllabus_info->script==0) {
             return null;
         }
+        $syllabus_info->time = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info->time));
+        $creator = DB::table('organization')->where('oid','=',$result->course_creator)->get()->first();
+        $result->creator_name = $creator->name;
+        $result->creator_logo = $creator->logo;
+        $result2 = DB::table('syllabus_script')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
+        if(empty($result2)){
+            return null;
+        }
+        $title = $syllabus_info->title;
+        $result2->content_slashed = str_replace('\\', '\\\\', $result2->content);
+        $result2->content_slashed = str_replace("\r\n", "\\n", $result2->content_slashed);
+        $result2->content_slashed = str_replace("\n", "\\n", $result2->content_slashed);
+        $result2->content_slashed = str_replace("\"", "\\\"", $result2->content_slashed);
+        $result2->content_slashed = str_replace("<", "\<", $result2->content_slashed);
+        $result2->content_slashed = str_replace(">", "\>", $result2->content_slashed);
+        return ([
+            'result'=>$result,
+            'script'=>$result2,
+            'title'=>$title,
+        ]);
     }
 }
