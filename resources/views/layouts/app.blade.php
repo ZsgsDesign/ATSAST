@@ -177,7 +177,7 @@
                         <a class="nav-link @if ($navigation === "Blog") active @endif" href="/blog">博客</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link @if ($navigation === "Credit") active @endif" href="/credit">借还</a>
+                        <a class="nav-link @if ($navigation === "MHS") active @endif" href="/mhs">借还</a>
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Finance") active @endif" href="/finance">报销</a>
