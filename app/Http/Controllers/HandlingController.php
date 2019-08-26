@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ItemModel;
 use Illuminate\Http\Request;
+use Auth;
 
 class HandlingController extends Controller
 {
@@ -20,6 +21,9 @@ class HandlingController extends Controller
     }
 
     public function publish(){
+        if(!Auth::user()['vip']){
+            return redirect(route('handling.index'));
+        }
         return view('handling.publish',[
             'page_title'=>"发布物品",
             'site_title'=>"SAST教学辅助平台",
@@ -36,10 +40,13 @@ class HandlingController extends Controller
     }
 
     public function detail($itemId){
+        $itemModel = new ItemModel();
+        $detail = $itemModel->findOrFail($itemId);
         return view('handling.detail',[
             'page_title'=>"物品详情",
             'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Handling"
+            'navigation'=>"Handling",
+            'detail'=>$detail
         ]);
     }
 
