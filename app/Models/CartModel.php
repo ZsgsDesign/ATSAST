@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class CartModel extends Model
 {
-    protected $tableName='cart';
+    protected $table='cart';
 
 }

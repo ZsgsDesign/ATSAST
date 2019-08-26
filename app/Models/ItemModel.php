@@ -1,11 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class ItemModel extends Model
 {
-    protected $tableName='item';
+    protected $table='item';
+
 }

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ItemModel;
 use Illuminate\Http\Request;
 
 class HandlingController extends Controller
 {
     public function index(){
+        $itemModel = new ItemModel();
+        $items = $itemModel->orderBy('create_time', 'desc')->get();
+
         return view('handling.index',[
             'page_title'=>"借还",
             'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Handling"
+            'navigation'=>"Handling",
+            'items'=>$items,
         ]);
     }
 
