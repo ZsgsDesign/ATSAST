@@ -194,10 +194,14 @@
             left: calc(50vw - 5rem);
         }
     }
+
+    #nav-container {
+        margin-bottom: 0px !important;
+    }
 </style>
 <link rel="stylesheet" href="/static/css/github.min.css">
 <div class="atsast-course-header">
-    <img src="/static/img/atsast/bg.jpg" class="atsast-focus-img">
+    <img src="/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$result->course_color}}">
             <i class="devicon-{{$result->course_logo}}-plain"></i>
@@ -246,7 +250,7 @@ function loadJsAsync(url){
                     }
                 });
                 
-                        $("#markdown_container").html(marked("{{$script->content_slashed}} nofilter",{
+                        $("#markdown_container").html(marked("{{$script->content_slashed}}",{
                             sanitize:true,
                             sanitizer:DOMPurify.sanitize,
                             highlight: function (code) {

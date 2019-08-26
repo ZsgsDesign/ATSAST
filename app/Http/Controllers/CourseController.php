@@ -98,11 +98,17 @@ class CourseController extends Controller
         if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existScid($cid,$scid)){
             return Redirect::route('course');
         }
+        $ret = $coursemodel->script($cid,$scid);
+        $result = $ret['result'];
+        $script = $ret['script'];
+        $title = $ret['title'];
         return view('courses.script', [
-            'page_title'=>"课程",
+            'page_title'=>$title,
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Courses",
             'cid'=>$cid,
+            'result'=>$result,
+            'script'=>$script,
         ]);
     }
 }
