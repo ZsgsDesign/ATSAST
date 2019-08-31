@@ -20,7 +20,7 @@ class CreateReimbursementsTable extends Migration
             $table->string('title');                                     //标题
             $table->string('content')->nullable();                       //内容
             $table->string('money');                                     //金额
-            $table->tinyInteger('status');                               //状态 0等待审批 1已经通过 2被驳回 3被挂起
+            $table->tinyInteger('status');                               //状态 0等待审批 1被驳回 2被挂起 3已经通过
             $table->string('invoice');                                   //发票文件路径
             $table->string('transaction_voucher')->nullable();           //交易凭证
             $table->string('declaration')->nullable();                   //申报单
