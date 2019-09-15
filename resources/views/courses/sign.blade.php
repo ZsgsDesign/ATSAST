@@ -34,46 +34,99 @@
 </style>
 @if($sign_status==0)
 <div class="container mundb-standard-container atsast-middle-container">
-        <div class="row atsast-middle-container">
-            <div class="col-md-8 col-sm-12">
-                <div class="card">
-                    <div class="card-img-top bg-info">
-                        <i class="MDI key-variant"></i>
+    <div class="row atsast-middle-container">
+        <div class="col-md-8 col-sm-12">
+            <div class="card">
+                <div class="card-img-top bg-info">
+                    <i class="MDI key-variant"></i>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">填写签到码</h5>
+                    <p class="card-text">{{ $syllabus->title }}</p>
+                    <div class="form-group">
+                        <label for="password" class="bmd-label-floating">签到码</label>
+                        <input type="password" name="password" class="form-control" id="password" required>
+                        <div class="invalid-feedback">请填写签到码</div>
                     </div>
-                    <div class="card-body text-center">
-                        <h5 class="card-title">填写签到码</h5>
-                        <p class="card-text">{{ $syllabus->title }}</p>
-                        <form action="#" method="POST">
-                            <div class="form-group">
-                                <label for="password" class="bmd-label-floating">签到码</label>
-                                <input type="password" name="password" class="form-control" id="password" required>
-                                <div class="invalid-feedback">请填写签到码</div>
-                            </div>
-                            <div class="text-right">
-                                <button type="submit" class="btn btn-danger">签到</button>
-                            </div>
-                        </form>
+                    <div class="text-right">
+                        <button type="button" class="btn btn-danger" onclick="sign()">签到</button>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
+    </div>
 </div>
+<script>
+    let ajaxing = false;
+    function sign() {
+        var password = $('#password').val();
+        if(ajaxing)return;
+        ajaxing=true;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/course/sign',
+            data: {
+                signed: password,
+                cid: {{$cid}},
+                syid: {{$syid}},
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                if (ret.data==1) {
+                    $('.card-img-top').removeClass('bg-info');
+                    $('.card-img-top').addClass('bg-success');
+                    $('.MDI').removeClass('key-variant');
+                    $('.MDI').addClass('check');
+                    $('.card-title').html("签到成功");
+                    $('.card-text').html("签到成功");
+                    $('.form-group').remove();
+                    $('.text-right').remove();
+                    $('.card-body').append("<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>");
+                    setTimeout(function(){
+                        location.href="/course/{{$cid}}/detail";
+                    }, 1000);
+                } else {
+                    alert(ret.desc);
+                    // TODO
+                }
+                ajaxing=false;
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to passwordUpdate!');
+                ajaxing=false;
+            }
+        });
+    }
+</script>
 @else
 <div class="container mundb-standard-container atsast-middle-container">
-        <div class="row atsast-middle-container">
-            <div class="col-md-8 col-sm-12">
-                <div class="card">
-                    <div class="card-img-top @if($sign_status>0) bg-success @else bg-danger @endif">
-                        <i class="MDI @if($sign_status>0) check @else alert @endif"></i>
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="card-title">@if($sign_status>0) 签到成功 @else 签到失败 @endif</h5>
-                        <p class="card-text">@if($sign_status==1) 签到成功@elseif($sign_status==-1) 已经签到过了哦@else 签到码错误@endif，请返回。 </p>
-                        <a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>
-                    </div>
+    <div class="row atsast-middle-container">
+        <div class="col-md-8 col-sm-12">
+            <div class="card">
+                <div class="card-img-top @if($sign_status>0) bg-success @else bg-danger @endif">
+                    <i class="MDI @if($sign_status>0) check @else alert @endif"></i>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">@if($sign_status>0) 签到成功 @else 签到失败 @endif</h5>
+                    <p class="card-text">@if($sign_status==1) 签到成功@elseif($sign_status==-1) 已经签到过了哦@else 签到码错误@endif，请返回。 </p>
+                    <a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 <script>
     setTimeout(function(){
@@ -81,5 +134,4 @@
     }, 1000);
 </script>
 @endif
-
 @endsection

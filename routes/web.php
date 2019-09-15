@@ -63,6 +63,10 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
     Route::group(['prefix' => 'system'], function () {
         Route::post('SubmitBugs', 'SystemController@SubmitBugs')->middleware('auth')->name('ajax.pastebin.submitbugs');
     });
+
+    Route::group(['prefix' => 'course'], function () {
+        Route::post('sign', 'CourseController@sign')->middleware('auth')->name('ajax.course.sign');
+    });
 });
 
 Auth::routes();

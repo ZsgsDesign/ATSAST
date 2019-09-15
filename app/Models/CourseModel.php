@@ -164,4 +164,23 @@ class CourseModel extends Model
             'title'=>$title,
         ]);
     }
+
+    public function updateSignStatus($signed, $cid, $syid, $uid)
+    {
+        $realSigned = DB::table('syllabus')->where('syid','=',$syid)->get()->first()->signed;
+        if($signed != $realSigned){
+            return -1;
+        }
+        $ret = DB::table('syllabus_sign')->where('syid','=',$syid)->where('uid','=',$uid)->get()->first();
+        if($ret==null){
+            DB::table('syllabus_sign')->insertGetId([
+                'cid'=>$cid,
+                'syid'=>$syid,
+                'uid'=>$uid,
+                'stime'=>date('Y-m-d H:i:s',time())
+            ]);
+            return 1;
+        }
+        return 0;
+    }
 }

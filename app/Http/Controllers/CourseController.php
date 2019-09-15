@@ -68,6 +68,7 @@ class CourseController extends Controller
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Courses",
             'cid'=>$cid,
+            'syid'=>$syid,
             'sign_status'=>$sign_status,
             'syllabus'=>$syllabus,
         ]);

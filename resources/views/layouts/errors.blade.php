@@ -176,7 +176,7 @@
                         <a class="nav-link" href="/blog">博客</a>
                     </li>
                     <li class="nav-item />">
-                        <a class="nav-link" href="/credit">借还</a>
+                        <a class="nav-link" href="/handling">借还</a>
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link" href="/finance">报销</a>
