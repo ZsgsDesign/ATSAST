@@ -15,7 +15,7 @@ class ResponseModel extends Model
         }
         $output=[
              'ret' => $statusCode,
-            'desc' => is_null($desc) ? self::desc($statusCode) : $desc,
+            'desc' => is_null($desc) ? 'Successful!' : $desc,
             'data' => $data
         ];
         return response()->json($output);
@@ -38,7 +38,7 @@ class ResponseModel extends Model
     {
         $errDesc=[
             '1000' => "Unspecified Error",  /** Under normal condictions those errors shouldn't displayed to end users unless they attempt to do so
-                                             *  some submissions should be intercepted by the frontend before the request sended 
+                                             *  some submissions should be intercepted by the frontend before the request sended
                                              */
             '1001' => "Internal Sever Error : SECURE_VALUE 非法",
             '1002' => "内部服务器错误：操作失败",
@@ -83,6 +83,15 @@ class ResponseModel extends Model
             '5000' => "Organization-Related Error",
 
             '5001' => "未找到该组织",
+            '5002' => "未找到该部门",
+            '5003' => "该部门不属于该组织",
+
+            '6000' => "找不到该报销记录",
+            '6001' => "200元以上的交易必须上传交易凭证",
+            '6002' => "500元以上的交易必须上传申报单",
+            '6003' => "电子发票必须是pdf文件",
+            '6004' => "交易凭证必须是清晰的jpg或者png文件",
+            '6005' => "申报单必须是docx文件",
         ];
         return isset($errDesc[$errCode]) ? $errDesc[$errCode] : $errDesc['1000'];
     }

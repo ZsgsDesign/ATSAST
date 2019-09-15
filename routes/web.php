@@ -41,6 +41,13 @@ Route::group(['prefix' => 'handling'], function () {
     Route::get('/order/{orderId}', 'HandlingController@orderDetail')->name('handling.orderDetail');
 });
 
+Route::group(['prefix' => 'finance', 'as' => 'finance.', 'middleware' => 'auth'], function () {
+    Route::get('/', 'FinanceController@index')->name('index');
+    Route::get('/initiate', 'FinanceController@initiate')->name('initiate');
+    Route::get('/edit/{id}', 'FinanceController@edit')->name('edit');
+    Route::get('/details/{id}', 'FinanceController@details')->name('details');
+});
+
 Route::group(['prefix' => 'pb'], function () {
     Route::get('/', 'PastebinController@index')->name('pastebin');
     Route::get('/{code}', 'PastebinController@view')->name('pastebin.view');
@@ -51,17 +58,23 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/bugs', 'SystemController@bugs')->name('system.bugs');
 });
 
-Route::group(['prefix' => 'ajax', 'namespace' => 'ajax'], function () {
+Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], function () {
     Route::group(['prefix' => 'account'], function () {
-        Route::post('updatePassword', 'AccountController@updatePassword')->name('ajax.account.updatepassword');
+        Route::post('updatePassword', 'AccountController@updatePassword')->name('account.updatepassword');
     });
 
     Route::group(['prefix' => 'pastebin'], function () {
-        Route::post('generate', 'PastebinController@generate')->middleware('auth')->name('ajax.pastebin.generate');
+        Route::post('generate', 'PastebinController@generate')->middleware('auth')->name('pastebin.generate');
     });
 
     Route::group(['prefix' => 'system'], function () {
-        Route::post('SubmitBugs', 'SystemController@SubmitBugs')->middleware('auth')->name('ajax.pastebin.submitbugs');
+        Route::post('SubmitBugs', 'SystemController@SubmitBugs')->middleware('auth')->name('pastebin.submitbugs');
+    });
+
+    Route::group(['prefix' => 'finance', 'as' => 'finance.', 'middleware' => 'auth'], function () {
+        Route::post('/initiate', 'FinanceController@initiate')->name('initiate');
+        Route::post('/details', 'FinanceController@details')->name('details');
+        Route::post('/edit', 'FinanceController@edit')->name('edit');
     });
 
     Route::group(['prefix' => 'course'], function () {
