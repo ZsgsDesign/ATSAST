@@ -84,13 +84,36 @@
                     $('.card-text').html("签到成功");
                     $('.form-group').remove();
                     $('.text-right').remove();
-                    $('.card-body').append("<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>");
+                    $('.card-body').append(`<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
+                    setTimeout(function(){
+                        location.href="/course/{{$cid}}/detail";
+                    }, 1000);
+                } else if(ret.data==0) {
+                    $('.card-img-top').removeClass('bg-info');
+                    $('.card-img-top').addClass('bg-danger');
+                    $('.MDI').removeClass('key-variant');
+                    $('.MDI').addClass('alert');
+                    $('.card-title').html("签到失败");
+                    $('.card-text').html("已经签到过了哦，请返回。");
+                    $('.form-group').remove();
+                    $('.text-right').remove();
+                    $('.card-body').append(`<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
                     setTimeout(function(){
                         location.href="/course/{{$cid}}/detail";
                     }, 1000);
                 } else {
-                    alert(ret.desc);
-                    // TODO
+                    $('.card-img-top').removeClass('bg-info');
+                    $('.card-img-top').addClass('bg-danger');
+                    $('.MDI').removeClass('key-variant');
+                    $('.MDI').addClass('alert');
+                    $('.card-title').html("签到失败");
+                    $('.card-text').html("签到码错误，请返回。");
+                    $('.form-group').remove();
+                    $('.text-right').remove();
+                    $('.card-body').append(`<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
+                    setTimeout(function(){
+                        location.href="/course/{{$cid}}/detail";
+                    }, 1000);
                 }
                 ajaxing=false;
             }, error: function(xhr, type){
@@ -105,7 +128,7 @@
                     default:
                         alert("Server Connection Error");
                 }
-                console.log('Ajax error while posting to passwordUpdate!');
+                console.log('Ajax error while posting to sign!');
                 ajaxing=false;
             }
         });
