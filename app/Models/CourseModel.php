@@ -105,17 +105,22 @@ class CourseModel extends Model
 
     public function existCid($cid)
     {
-        return DB::table('courses')->where('cid','=',$cid)->get()->first();
+        return DB::table('courses')->where('cid','=',$cid)->count();
     }
 
     public function existSyid($cid, $syid)
     {
-        return DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
+        return DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->count();
     }
 
     public function existScid($cid, $scid)
     {
-        return DB::table('syllabus_script')->where('cid','=',$cid)->where('scid','=',$scid)->get()->first();
+        return DB::table('syllabus_script')->where('cid','=',$cid)->where('scid','=',$scid)->count();
+    }
+
+    public function existSyidInScript($cid, $syid)
+    {
+        return DB::table('syllabus_script')->where('cid','=',$cid)->where('syid','=',$syid)->count();
     }
 
     public function syidByScid($scid)
@@ -128,14 +133,13 @@ class CourseModel extends Model
         }
     }
 
-    public function script($cid, $scid)
+    public function script($cid, $syid)
     {
         $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $register_status = DB::table('course_register')->where('cid','=',$cid)->where('uid','=',Auth::user()->id)->get()->first();
         if($register_status==null){
             return null;
         }
-        $syid = $this->syidByScid($scid);
         $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
         if (empty($result) || empty($syllabus_info)) {
             return null;

@@ -94,12 +94,12 @@ class CourseController extends Controller
     public function script(Request $request)
     {
         $cid = $request->cid;
-        $scid = $request->scid;
+        $syid = $request->syid;
         $coursemodel = new CourseModel();
-        if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existScid($cid,$scid)){
+        if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existSyidInScript($cid,$syid)){
             return Redirect::route('course');
         }
-        $ret = $coursemodel->script($cid,$scid);
+        $ret = $coursemodel->script($cid,$syid);
         $result = $ret['result'];
         $script = $ret['script'];
         $title = $ret['title'];
