@@ -48,3 +48,16 @@ php artisan migrate
 ```
 
 8. ATSAST's up-and-running, enjoy!
+
+## To-Do List
+
+- [X] 发现
+- [ ] 课程
+- [ ] 活动
+- [X] PasteBin
+- [ ] 网盘
+- [ ] 博客
+- [ ] 借还
+- [ ] 报销
+- [ ] 用户相关
+- [ ] 管理员后台
