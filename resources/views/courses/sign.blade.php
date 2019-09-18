@@ -74,7 +74,6 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, success: function(ret){
-                console.log(ret);
                 if (ret.data==1) {
                     $('.card-img-top').removeClass('bg-info');
                     $('.card-img-top').addClass('bg-success');

@@ -25,6 +25,7 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/sign/{syid}', 'CourseController@sign')->name('course.sign');
     Route::get('{cid}/register', 'CourseController@register')->name('course.register');
     Route::get('{cid}/script/{syid}', 'CourseController@script')->name('course.script');
+    Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->name('course.feedback');
 });
 
 Route::group(['prefix' => 'contest'], function () {
@@ -79,6 +80,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
 
     Route::group(['prefix' => 'course'], function () {
         Route::post('sign', 'CourseController@sign')->middleware('auth')->name('ajax.course.sign');
+        Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth')->name('ajax.course.submitFeedBack');
     });
 });
 
