@@ -83,6 +83,13 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('sign', 'CourseController@sign')->middleware('auth')->name('ajax.course.sign');
         Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth')->name('ajax.course.submitFeedBack');
     });
+
+    Route::group(['prefix' => 'handling'], function () {
+        Route::post('publishItem', 'HandlingController@publishItem')->middleware('auth')->name('ajax.handling.publishitem');
+        Route::post('AddToCart', 'HandlingController@AddToCart')->middleware('auth')->name('ajax.handling.addtocart');
+        Route::post('removeItem', 'HandlingController@removeItem')->middleware('auth')->name('ajax.handling.removeitem');
+        Route::post('restoreItem', 'HandlingController@restoreItem')->middleware('auth')->name('ajax.handling.restoreitem');
+    });
 });
 
 Auth::routes();

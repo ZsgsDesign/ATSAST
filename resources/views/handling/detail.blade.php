@@ -179,10 +179,13 @@ card.order-card > div {
                     @else
                     <br>
                     <p>这是您发布的物品</p>
-                    <button type="button" class="btn btn-raised mhs-button-cart btn-primary" onclick="location.href=''">编辑</button>
+                    <button type="button" class="btn btn-raised mhs-button-cart btn-primary" onclick="location.href='/handing/edit/{{$item_info->iid}}'">编辑</button>
                     <button type="button" class="btn btn-warning mhs-button-cart btn-raised" onclick="alert2({content:'您确定要下架「{{$item_info->name}}」吗？',title:'下架物品'},function(deny){if(!deny){removeItem({{$item_info->iid}})}})"><i class="MDI close-box"></i>下架</button>
                     @endif
                     @elseif($item_info->scode==-1)
+                    <br>
+                    <p>这是您发布的物品</p>
+                    <button type="button" class="btn btn-raised mhs-button-cart btn-primary" onclick="location.href='/handing/edit/{{$item_info->iid}}'">编辑</button>
                     <button type="button" class="btn btn-success mhs-button-cart btn-raised" onclick="alert2({content:'您确定要上架「{{$item_info->name}}」吗？',title:'下架物品'},function(deny){if(!deny){restoreItem({{$item_info->iid}})}})"><i class="MDI check"></i>上架</button>
                     @endif
                 </figcaption>

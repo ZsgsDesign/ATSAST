@@ -26,4 +26,30 @@ class ItemModel extends Model
     {
         return DB::table($this->table)->where('iid','=',$iid)->first();
     }
+
+    public function existIid($iid)
+    {
+        return DB::table($this->table)->where('iid','=',$iid)->count();
+    }
+
+    public function removeItem($iid)
+    {
+        return DB::table($this->table)->where('iid','=',$iid)->update([
+            'scode'=>'-1'
+        ]);
+    }
+
+    public function restoreItem($iid)
+    {
+        $count = DB::table($this->table)->where('iid','=',$iid)->get()->first()->count;
+        if($count==0){
+            return DB::table($this->table)->where('iid','=',$iid)->update([
+                'scode'=>'0'
+            ]);
+        }else{
+            return DB::table($this->table)->where('iid','=',$iid)->update([
+                'scode'=>'1'
+            ]);
+        }
+    }
 }

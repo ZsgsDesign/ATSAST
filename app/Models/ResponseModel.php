@@ -92,6 +92,16 @@ class ResponseModel extends Model
             '6003' => "电子发票必须是pdf文件",
             '6004' => "交易凭证必须是清晰的jpg或者png文件",
             '6005' => "申报单必须是docx文件",
+
+            '7000' => "Handling-Related Error",
+
+            '7001' => "请填写物品名称",
+            '7002' => "找不到该物品",
+            '7003' => "物品已下架",
+            '7004' => "请填写物品位置",
+            '7005' => "请填写物品描述",
+            '7006' => "请填写物品数量",
+            '7007' => "物品已上架",
         ];
         return isset($errDesc[$errCode]) ? $errDesc[$errCode] : $errDesc['1000'];
     }
