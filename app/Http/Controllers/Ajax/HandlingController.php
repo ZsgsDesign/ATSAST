@@ -47,6 +47,10 @@ class HandlingController extends Controller
             return ResponseModel::err(2009);
         }
         $cartmodel = new CartModel();
+        $itemModel = new ItemModel();
+        if(!$itemModel->existIid($iid)){
+            return ResponseModel::err(7002);
+        }
         $cartmodel->add(Auth::user()->id, $iid, $count);
         return ResponseModel::success();
     }
