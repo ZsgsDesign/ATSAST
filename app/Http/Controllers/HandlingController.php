@@ -23,7 +23,7 @@ class HandlingController extends Controller
     }
 
     public function publish(){
-        if(!Auth::user()['vip']){
+        if(!Auth::user()->vip){
             return redirect(route('handling.index'));
         }
         return view('handling.publish',[
@@ -43,12 +43,13 @@ class HandlingController extends Controller
 
     public function detail($itemId){
         $itemModel = new ItemModel();
-        $detail = $itemModel->findOrFail($itemId);
+        $item_info = $itemModel->detail($itemId);
+        if(empty($item_info)) return redirect(route('handling.index'));
         return view('handling.detail',[
             'page_title'=>"物品详情",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Handling",
-            'detail'=>$detail
+            'item_info'=>$item_info
         ]);
     }
 

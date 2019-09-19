@@ -153,15 +153,15 @@ card.order-card > div {
                 </div>
                 <div class="card-body">
                     <h5 class="card-title mhs-item-text mundb-text-truncate-1">{{$l->name}}</h5>
-                    @if($l->owner==Auth::user()->id)
-                    <button type="button" class="btn btn-primary mhs-button" onclick="location.href='/handing/edit/{{$l->iid}}'">编辑</button>
-                    <button type="button" class="btn btn-warning mhs-button" onclick="alert2({content:'您确定要下架「{{$l->name}}」吗？',title:'下架物品'},function(deny){if(!deny){removeItem({{$l->iid}})}})"><i class="MDI close-box"></i>下架</button>
-                    @else
+                    @if($l->owner!=Auth::user()->id)
                     <button id="minus{{$l->iid}}" type="button" class="btn btn-sm btn-primary mhs-button-count" disabled="disabled" onclick="minus({{$l->iid}},{{$l->count}})"><strong>-</strong></button>
                     <button id="count{{$l->iid}}" type="button" @if($l->count==0) disabled="disabled" @endif class="btn btn-sm btn-primary mhs-button-count">@if($l->count==0) 0 @else 1 @endif</button>
                     <button id="add{{$l->iid}}" type="button" @if($l->count<2) disabled="disabled" @endif class="btn btn-sm btn-primary mhs-button-count" onclick="add({{$l->iid}},{{$l->count}})"><strong>+</strong></button>
                     <button class="btn btn-primary mhs-button" @if($l->count==0) disabled="disabled" @endif onclick="addToCart({{$l->iid}})"><i class="MDI cart"></i></button>
                     <button class="btn btn-primary mhs-button" @if($l->count==0) disabled="disabled" @endif onclick="borrowImmediately({{$l->iid}})">立即借</button>
+                    @else
+                    <button type="button" class="btn btn-primary mhs-button" onclick="location.href='/handing/edit/{{$l->iid}}'">编辑</button>
+                    <button type="button" class="btn btn-warning mhs-button" onclick="alert2({content:'您确定要下架「{{$l->name}}」吗？',title:'下架物品'},function(deny){if(!deny){removeItem({{$l->iid}})}})"><i class="MDI close-box"></i>下架</button>
                     @endif
                     <div class="row">
                         <div class="col-6">
@@ -274,5 +274,6 @@ card.order-card > div {
     function borrowImmediately(id) {
         window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text();
     }
+    
 </script>
 @endsection

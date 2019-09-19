@@ -99,7 +99,7 @@ card.order-card > div {
     max-height: 5rem;
     object-fit: cover;
 }
-/* 来自mudi 的FAB */
+/* 来自mdui 的FAB */
 .mdui-fab-fixed{
     position: fixed !important;
 }
@@ -153,173 +153,203 @@ card.order-card > div {
         top: -1rem;
     }
 </style>
-<script>
-    function borrowImmediately(id,i){
-        
-    }
-</script>
 <div class="container mundb-standard-container"> 
     <h3 class="mhs-title mb-3 mt-3">物品详情</h3>
+    @if($item_info->scode==-1)
     <h5 class="mhs-title text-danger mb-3">抱歉，该物品已下架。</h5>
+    @elseif($item_info->scode==-2)
     <h5 class="mhs-title text-danger mb-3">此物品已删除，您现在查看的是它的存档。</h5>
-        <div class="row">
-            <div class="col-lg-4 col-sm-12 col-12 text-center">
-                <figure class="figure">
-                    <img class="mhs-item-img-detailed flo" src="">
-                    <figcaption class="figure-caption text-center">
-                        <div class="btn-group">
-                            <small class="mt-2 mr-3">物品数量:</small>
-                            <button id="minus0" type="button" class="btn btn-sm btn-primary" disabled="disabled" onclick="">-</button>
-                            <button id="count0" type="button" class="btn btn-sm btn-primary"></button>
-                            <button id="add0" type="button">+</button>
-                        </div><br>
-                        <button type="button" class="btn btn-raised btn-danger mhs-button-cart">立即借用</button>
-                        <button class="btn btn-raised btn-warning mhs-button-cart" ><i class="MDI cart"></i>加入购物车</button>
-                        <p>这是您发布的物品</p>
-                        <button type="button" class="btn btn-raised mhs-button-cart btn-primary" onclick="location.href=''">编辑</button>
-                        <button type="button" class="btn btn-warning mhs-button-cart btn-raised" onclick="
-                    showDialog('您确定要下架「」？<br>此操作不可恢复','下架物品','removeItem(<{$item_info['iid']}>)');"><i class="MDI close-box"></i>下架</button>
-                        <button type="button" class="btn btn-success mhs-button-cart btn-raised" onclick="
-                    showDialog('您确定要上架「<{$item_info['name']}>」吗？','上架物品','restoreItem(<{$item_info['iid']}>)');"><i class="MDI check"></i>上架</button>
-                    </figcaption>
-                </figure>
-            </div>
-
-            <div class="col-lg-8 col-sm-12 col-12">
-                <h4 class="text-left text-dark"><strong><{$item_info["name"]}></strong></h4>
-                <table class="table table-borderless table-hover">
-                    <tbody>
-                    <tr>
-                        <th scope="row"><i class="MDI clock"></i>发布时间</th>
-                        <td><{$item_info["create_time"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">借用时限</th>
-                        <td><{$item_info["limit_time"]}>天</td>
-                        <td>无限制</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">当前库存</th>
-                        <td><{$item_info["count"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">信用分限制</th>
-                        <td>大于 <{$item_info["credit_limit"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">物品地点</th>
-                        <td><{$item_info["location"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">出借笔数</th>
-                        <td><{$item_info["order_count"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">好评数</th>
-                        <td><{$item_info["gcount"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">中评数</th>
-                        <td><{$item_info["mcount"]}></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">差评数</th>
-                        <td><{$item_info["bcount"]}></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+    @endif
+    <div class="row">
+        <div class="col-lg-4 col-sm-12 col-12 text-center">
+            <figure class="figure">
+                <img class="mhs-item-img-detailed flo" src="{{$item_info->pic}}">
+                <figcaption class="figure-caption text-center">
+                    @if($item_info->scode>-1)
+                    @if($item_info->owner!=Auth::user()->id)
+                    <div class="btn-group">
+                        <small class="mt-2 mr-3">物品数量:</small>
+                        <button id="minus{{$item_info->iid}}" type="button" class="btn btn-sm btn-primary mhs-button-count" disabled="disabled" onclick="minus({{$item_info->iid}},{{$item_info->count}})"><strong>-</strong></button>
+                        <button id="count{{$item_info->iid}}" type="button" @if($item_info->count==0) disabled="disabled" @endif class="btn btn-sm btn-primary mhs-button-count">@if($item_info->count==0) 0 @else 1 @endif</button>
+                        <button id="add{{$item_info->iid}}" type="button" @if($item_info->count<2) disabled="disabled" @endif class="btn btn-sm btn-primary mhs-button-count" onclick="add({{$item_info->iid}},{{$item_info->count}})"><strong>+</strong></button>
+                    </div>
+                    <br>
+                    <button class="btn btn-raised btn-warning mhs-button-cart" @if($item_info->count==0) disabled="disabled" @endif onclick="addToCart({{$item_info->iid}})"><i class="MDI cart"></i>加入购物车</button>
+                    <button type="button" class="btn btn-raised btn-danger mhs-button-cart" @if($item_info->count==0) disabled="disabled" @endif onclick="borrowImmediately({{$item_info->iid}})">立即借用</button>
+                    @else
+                    <br>
+                    <p>这是您发布的物品</p>
+                    <button type="button" class="btn btn-raised mhs-button-cart btn-primary" onclick="location.href=''">编辑</button>
+                    <button type="button" class="btn btn-warning mhs-button-cart btn-raised" onclick="alert2({content:'您确定要下架「{{$item_info->name}}」吗？',title:'下架物品'},function(deny){if(!deny){removeItem({{$item_info->iid}})}})"><i class="MDI close-box"></i>下架</button>
+                    @endif
+                    @elseif($item_info->scode==-1)
+                    <button type="button" class="btn btn-success mhs-button-cart btn-raised" onclick="alert2({content:'您确定要上架「{{$item_info->name}}」吗？',title:'下架物品'},function(deny){if(!deny){restoreItem({{$item_info->iid}})}})"><i class="MDI check"></i>上架</button>
+                    @endif
+                </figcaption>
+            </figure>
         </div>
-    <br>
-    <div id="navs-pos">
+
+        <div class="col-lg-8 col-sm-12 col-12">
+            <h4 class="text-left text-dark"><strong>{{$item_info->name}}</strong></h4>
+            <table class="table table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <th scope="row"><i class="MDI clock"></i>发布时间</th>
+                    <td>{{$item_info->create_time}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">需要归还</th>
+                    <td>{{$item_info->need_return}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">当前库存</th>
+                    <td>{{$item_info->count}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">物品地点</th>
+                    <td>{{$item_info->location}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">出借笔数</th>
+                    <td>{{$item_info->order_count}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    {{-- <nav id="navs" class="navbar justify-content-center" style="background-color: white; border:0px;box-shadow:0px">
-        <ul class="nav" >
-            <li class="nav-item">
-                <a class="nav-link" href="#intro">简介</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#comment">留言<span class="badge badge-pill badge-light"><small><{count($messages)}></small></span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#review">评价<span class="badge badge-pill badge-light"><small><{count($reviews)}></small></span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#about">关于</a>
-            </li>
-        </ul>
-    </nav> --}}
+    <card id="intro" class="p-3">
+        @if(strlen($item_info->dec)==0)
+        <h5 class="text-primary text-center">暂无物品简介</h5>
+        @else
+        <h5 class="text-primary text-center">简介</h5>
+        @endif
+        <article class="markdown-body" id="dec">
+            {{$item_info->dec}}
+        </article>
+    </card>
 </div>
-
-
+<br>
 <script>
-    document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行
-        $('#desc').html(marked("<{$item_info['desc']}>"));
-
-        function isVisible(selectid) {
-            return !($(window).scrollTop() > ($(selectid).offset().top + $(selectid).outerHeight()) || ($(window).scrollTop() + $(window).height()) < $(selectid).offset().top);
-        }
-        function getScrollTop() {
-            let scrollTop = 0;
-            if (document.documentElement && document.documentElement.scrollTop) {
-                scrollTop = document.documentElement.scrollTop;
-            } else if (document.body) {
-                scrollTop = document.body.scrollTop;
-            }
-            return scrollTop;
-        }
-        function isTopOfScreen(selectid){
-            return $(selectid).offset().top > getScrollTop() ? true :false;
-        }
-
-        $(window).scroll(function(){
-            //console.log(document.querySelector('#navs'),document.querySelector('#comment').clientWidth);
-            document.querySelector('#navs').style.width=document.querySelector('#comment').clientWidth+'px';
-            if(!isVisible('#navs-pos')&&!isTopOfScreen('#navs-pos')) {
-                $('#navs').addClass('d');
-            } else {
-                $('#navs').removeClass('d');
-            }
-        });
-        document.body.onresize=function(){
-            document.querySelector('#navs').style.width=document.querySelector('#comment').clientWidth+'px';
-        }
-    });
-
-    let seletedComment = null;
-    let refer = null;
-
-    function likeComment(mid) {
-        $.post('<{$MHS_DOMAIN}>/ajax/LikeMessage',{
-            mid:mid
-        },function (result) {
-            result=JSON.parse(result);
-            if(result.ret==200){
-                let dat = parseInt($('#like-'+mid).text());
-                dat = isNaN(dat)?1:++dat;
-                $('#like-'+mid).html("<i class=\"MDI heart\"></i> "+dat);
-                $('#like-'+mid).removeClass("btn-secondary");
-                $('#like-'+mid).addClass("btn-warning");
-                console.log($('#like-'+mid).html());
+    function removeItem(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/removeItem',
+            data: {
+                iid:id,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("下架成功！","恭喜");
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to removeItem!');
             }
         });
     }
-    function deleteComment() {
-        $.post('<{$MHS_DOMAIN}>/ajax/WithdrawMessage',{
-            mid:seletedComment
-    },function () {
-            location.reload();
+
+    function restoreItem(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/restoreItem',
+            data: {
+                iid:id,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("上架成功！","恭喜");
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to restoreItem!');
+            }
         });
     }
-    function sendComment(content) {
-        let data={};
-        if(refer === null)
-            data={iid:<{$item_info['iid']}>,content:content}
-    else
-        data={iid:<{$item_info['iid']}>,content:content,reference:refer};
-        $.post('<{$MHS_DOMAIN}>/ajax/LeaveMessage', data ,function () {location.reload();});
+
+    function minus(i,max=9999) {
+        var count = $('#count' + i).text();
+        if(count>1)
+            $('#count' + i).text(--count);
+        if(count<=1){
+            $('#minus' + i).attr('disabled',true); //防止减到1以下
+        }
+        if(count<max){
+            $('#add' + i).attr('disabled',false);
+        }
+    }
+
+    function add(i,max=9999) {
+        var count = $('#count' + i).text();
+        $('#count' + i).text(++count);
+        $('#minus' + i).attr('disabled',false);
+        if(count>=max||max===1){
+            $('#add' + i).attr('disabled',true);
+        }
+    }
+
+    function addToCart(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/addToCart',
+            data: {
+                iid:id,
+                count:$('#count' + id).text(),
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("添加成功！","恭喜");
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to addToCart!');
+            }
+        });
+    }
+
+    function borrowImmediately(id) {
+        window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text();
     }
 </script>
-@inlude('js.common.item');
-
 @endsection

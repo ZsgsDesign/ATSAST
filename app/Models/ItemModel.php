@@ -11,6 +11,8 @@ class ItemModel extends Model
     const CREATED_AT = 'create_time';
     protected $primaryKey = 'iid';
 
+    //scode: -1=>下架; -2=>删除;
+
     public function getItems(){
         $paginator = DB::table($this->table)->orderBy('order_count', 'desc')->paginate(12);
         $list = $paginator->all();
@@ -18,5 +20,10 @@ class ItemModel extends Model
             'paginator'=>$paginator,
             'list'=>$list,
         ];
+    }
+
+    public function detail($iid)
+    {
+        return DB::table($this->table)->where('iid','=',$iid)->first();
     }
 }
