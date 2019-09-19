@@ -12,7 +12,7 @@ class ItemModel extends Model
     protected $primaryKey = 'iid';
 
     public function getItems(){
-        $paginator = DB::table($this->table)->orderBy('create_time', 'desc')->paginate(12);
+        $paginator = DB::table($this->table)->orderBy('order_count', 'desc')->paginate(12);
         $list = $paginator->all();
         return [
             'paginator'=>$paginator,

@@ -99,7 +99,7 @@ card.order-card > div {
     max-height: 5rem;
     object-fit: cover;
 }
-/* 来自mudi 的FAB */
+/* 来自mdui 的FAB */
 .mdui-fab-fixed{
     position: fixed !important;
 }
@@ -134,67 +134,145 @@ card.order-card > div {
   }
 </style>
 <div class="container mundb-standard-container">
-  <h5 class="mhs-title mt-3"><i class="MDI gift"></i> SAST 物品借还系统</h5>
-      {{-- <div class="input-group text-center">
-              <div class="input-group-btn">
-                  <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href=''">发布物品</button>
-              </div>
-      </div>
-      <script>
-          document.querySelector("#keyword").addEventListener('keyup',function(e){
-              if(e.keyCode===13){
-              }
-          });
-      </script>
-      
-      <br>
-      <h5 class="text-center text-warning">没有搜到你找的物品哦</h5> <!-- 表达来自闲鱼 -->
-      <p class="text-center">试试别的关键词</p>
-      <div class="row">
-          <div class="col-lg-3 col-md-4 col-6">
-              <card class="item-card mb-3">
-                  <div>
-                      <a class="card-link" href=""><img class="card-img-top mhs-item-img" src=""></a>
-                  </div>
-                  <div class="card-body">
-                      <h5 class="card-title mhs-item-text mundb-text-truncate-1"></h5>
-                          <!-- 如果物品只有1个，那就禁用加号和减号 -->
-                          <button id="minus" type="button" class="btn btn-sm btn-primary mhs-button-count" disabled="disabled" onclick=""><strong>-</strong></button>
-                          <button id="count" type="button"></button>
-                          <button id="" type="button" ><strong>+</strong></button>
-                      <button class="btn btn-primary mhs-button" >立即借</button>
-                      <button class="btn btn-primary mhs-button" ><i class="MDI cart"></i></button>
-                      <button type="button" class="btn btn-primary mhs-button" onclick="location.href=''">编辑</button>
-                      <button type="button" class="btn btn-warning mhs-button" onclick="
-                      showDialog('您确定要下架「」吗？','下架物品','removeItem()');"><i class="MDI close-box"></i>下架</button>
-                      <!-- 分享砍了 -->
-                      <div class="row">
-                          <div class="col-6">
-                              <small><a href=""></a></small>
-                          </div>
-                          <div class="col-6">
-                              <small> 笔借用</small>
-                          </div>
-                      </div>
-                  </div>
-              </card>
-          </div>
-      </div>
-      <br>
-      <br>
-      <nav aria-label="Page navigation">
-          <ul class="pagination justify-content-center">
-              <li style="display:inherit" class="page-item disabled ">
-                  <a class="page-link" href="" tabindex="-1"  aria-disabled="true" >首页</a>
-                  <a class="page-link" href="" tabindex="-1"  aria-disabled="true" >上一页</a>
-              </li>
-                  <li class="page-item"></a></li>
-              <li class="page-item ">
-                  <a class="page-link" href="">下一页</a>
-              </li>
-          </ul>
-        </nav> --}}
+    <h5 class="mhs-title mt-3"><i class="MDI gift"></i> SAST 物品借还系统</h5>
+    @if(Auth::user()->vip)
+    <br>
+    <div class="input-group text-center">
+        <div class="input-group-btn" style="margin:0 auto">
+            <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='/handling/publish'">发布物品</button>
+        </div>
+    </div>
+    @endif
+    <br>
+    <div class="row">
+        @foreach($list as $l)
+        <div class="col-lg-3 col-md-4 col-6">
+            <card class="item-card mb-3">
+                <div>
+                    <a class="card-link" href="/handling/detail/{{$l->iid}}"><img class="card-img-top mhs-item-img" src="{{$l->pic}}"></a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mhs-item-text mundb-text-truncate-1">{{$l->name}}</h5>
+                    @if($l->owner==Auth::user()->id)
+                    <button type="button" class="btn btn-primary mhs-button" onclick="location.href='/handing/edit/{{$l->iid}}'">编辑</button>
+                    <button type="button" class="btn btn-warning mhs-button" onclick="alert2({content:'您确定要下架「{{$l->name}}」吗？',title:'下架物品'},function(deny){if(!deny){removeItem({{$l->iid}})}})"><i class="MDI close-box"></i>下架</button>
+                    @else
+                    <button id="minus{{$l->iid}}" type="button" class="btn btn-sm btn-primary mhs-button-count" disabled="disabled" onclick="minus({{$l->iid}},{{$l->count}})"><strong>-</strong></button>
+                    <button id="count{{$l->iid}}" type="button" @if($l->count==0) disabled="disabled" @endif class="btn btn-sm btn-primary mhs-button-count">@if($l->count==0) 0 @else 1 @endif</button>
+                    <button id="add{{$l->iid}}" type="button" @if($l->count<2) disabled="disabled" @endif class="btn btn-sm btn-primary mhs-button-count" onclick="add({{$l->iid}},{{$l->count}})"><strong>+</strong></button>
+                    <button class="btn btn-primary mhs-button" @if($l->count==0) disabled="disabled" @endif onclick="addToCart({{$l->iid}})"><i class="MDI cart"></i></button>
+                    <button class="btn btn-primary mhs-button" @if($l->count==0) disabled="disabled" @endif onclick="borrowImmediately({{$l->iid}})">立即借</button>
+                    @endif
+                    <div class="row">
+                        <div class="col-6">
+                            <small>{{$l->location}}</small>
+                        </div>
+                        <div class="col-6">
+                            <small>{{$l->order_count}}笔借用</small>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+        @endforeach
+    </div>
+    <br>
+    <br>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {{ $paginator->links() }}
+        </ul>
+    </nav>
 </div>
-{{-- @include('js.common.item'); --}}
+<script>
 
+    function removeItem(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/removeItem',
+            data: {
+                iid:id,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("下架成功！","恭喜");
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to removeItem!');
+            }
+        });
+    }
+
+    function minus(i,max=9999) {
+        var count = $('#count' + i).text();
+        if(count>1)
+            $('#count' + i).text(--count);
+        if(count<=1){
+            $('#minus' + i).attr('disabled',true); //防止减到1以下
+        }
+        if(count<max){
+            $('#add' + i).attr('disabled',false);
+        }
+    }
+
+    function add(i,max=9999) {
+        var count = $('#count' + i).text();
+        $('#count' + i).text(++count);
+        $('#minus' + i).attr('disabled',false);
+        if(count>=max||max===1){
+            $('#add' + i).attr('disabled',true);
+        }
+    }
+
+    function addToCart(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/addToCart',
+            data: {
+                iid:id,
+                count:$('#count' + id).text(),
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("添加成功！","恭喜");
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to addToCart!');
+            }
+        });
+    }
+
+    function borrowImmediately(id) {
+        window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text();
+    }
+</script>
 @endsection

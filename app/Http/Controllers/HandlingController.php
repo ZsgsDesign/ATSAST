@@ -11,12 +11,14 @@ class HandlingController extends Controller
     public function index(){
         $itemModel = new ItemModel();
         $items = $itemModel->getItems();
-
+        $paginator = $items['paginator'];
+        $list = $items['list'];
         return view('handling.index',[
             'page_title'=>"借还",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Handling",
-            'items'=>$items,
+            'paginator'=>$paginator,
+            'list'=>$list,
         ]);
     }
 
