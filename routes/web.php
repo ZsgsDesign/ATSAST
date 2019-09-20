@@ -77,6 +77,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('/initiate', 'FinanceController@initiate')->name('initiate');
         Route::post('/details', 'FinanceController@details')->name('details');
         Route::post('/edit', 'FinanceController@edit')->name('edit');
+        Route::post('/approval', 'FinanceController@approval')->name('approval');
     });
 
     Route::group(['prefix' => 'course'], function () {

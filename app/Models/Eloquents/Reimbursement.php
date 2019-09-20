@@ -31,8 +31,21 @@ class Reimbursement extends Model
         ];
     }
 
-    public static function history()
+    public function logs()
     {
+        return $this->hasMany(\App\Models\Eloquents\ReimbursementLog::class);
+    }
 
+    public function username() {
+        $u = \App\User::find($this->user_id);
+        if(!empty($u)){
+            if(!empty($u->real_name)){
+                return $u->real_name;
+            }else{
+                return $u->name;
+            }
+        }else{
+            return '未知';
+        }
     }
 }

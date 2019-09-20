@@ -70,7 +70,7 @@
         </div>
         <div class="text-right">
             <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='/finance/details/{{$id}}'">返回</button>
-            <button id="initiate" type="button" class="btn btn-primary">确认编辑</button>
+            <button id="submit" type="button" class="btn btn-primary">确认编辑</button>
         </div>
     </div>
 </div>
@@ -159,7 +159,7 @@ window.addEventListener("load",function() {
         }
     });
 
-    $('#initiate').on('click',function(){
+    $('#submit').on('click',function(){
         var id = $('#r_id').val();
         var title = $('#title').val();
         var content = $('#content').val();
@@ -187,14 +187,6 @@ window.addEventListener("load",function() {
         }
         if(department.split(' ').length != 2) {
             alert('请填入完整的组织和部门');
-            return;
-        }
-        if(money >= 200 && transaction_voucher == undefined){
-            alert('交易额大于200必须上传交易凭证');
-            return;
-        }
-        if(money >= 500 && declaration == undefined){
-            alert('交易额大于500必须上传申报单');
             return;
         }
 
