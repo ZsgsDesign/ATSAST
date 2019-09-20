@@ -22,10 +22,10 @@ Route::group(['prefix' => 'account'], function () {
 Route::group(['prefix' => 'course'], function () {
     Route::get('/', 'CourseController@index')->name('course');
     Route::get('/{cid}/detail', 'CourseController@detail')->name('course.detail');
-    Route::get('{cid}/sign/{syid}', 'CourseController@sign')->name('course.sign');
-    Route::get('{cid}/register', 'CourseController@register')->name('course.register');
-    Route::get('{cid}/script/{syid}', 'CourseController@script')->name('course.script');
-    Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->name('course.feedback');
+    Route::get('{cid}/sign/{syid}', 'CourseController@sign')->middleware('auth')->name('course.sign');
+    Route::get('{cid}/register', 'CourseController@register')->middleware('auth')->name('course.register');
+    Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
+    Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth')->name('course.feedback');
 });
 
 Route::group(['prefix' => 'contest'], function () {
@@ -33,14 +33,14 @@ Route::group(['prefix' => 'contest'], function () {
 });
 
 Route::group(['prefix' => 'handling'], function () {
-    Route::get('/', 'HandlingController@index')->name('handling.index');
-    Route::get('/cart', 'HandlingController@cart')->name('handling.cart');
-    Route::get('/publish', 'HandlingController@publish')->name('handling.publish');
-    Route::get('/edit/{itemId}', 'HandlingController@edit')->name('handling.edit');
-    Route::get('/detail/{itemId}', 'HandlingController@detail')->name('handling.detail');
-    Route::get('/order', 'HandlingController@order')->name('handling.order');
-    Route::get('/order/create', 'HandlingController@orderCreate')->name('handling.orderCreate');
-    Route::get('/order/{orderId}', 'HandlingController@orderDetail')->name('handling.orderDetail');
+    Route::get('/', 'HandlingController@index')->middleware('auth')->name('handling.index');
+    Route::get('/cart', 'HandlingController@cart')->middleware('auth')->name('handling.cart');
+    Route::get('/publish', 'HandlingController@publish')->middleware('auth')->name('handling.publish');
+    Route::get('/edit/{itemId}', 'HandlingController@edit')->middleware('auth')->name('handling.edit');
+    Route::get('/detail/{itemId}', 'HandlingController@detail')->middleware('auth')->name('handling.detail');
+    Route::get('/order', 'HandlingController@order')->middleware('auth')->name('handling.order');
+    Route::get('/order/create', 'HandlingController@orderCreate')->middleware('auth')->name('handling.orderCreate');
+    Route::get('/order/{orderId}', 'HandlingController@orderDetail')->middleware('auth')->name('handling.orderDetail');
 });
 
 Route::group(['prefix' => 'finance', 'as' => 'finance.', 'middleware' => 'auth'], function () {
@@ -56,13 +56,13 @@ Route::group(['prefix' => 'pb'], function () {
 });
 
 Route::group(['prefix' => 'system'], function () {
-    Route::get('/logs', 'SystemController@logs')->name('system.logs');
-    Route::get('/bugs', 'SystemController@bugs')->name('system.bugs');
+    Route::get('/logs', 'SystemController@logs')->middleware('auth')->name('system.logs');
+    Route::get('/bugs', 'SystemController@bugs')->middleware('auth')->name('system.bugs');
 });
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], function () {
     Route::group(['prefix' => 'account'], function () {
-        Route::post('updatePassword', 'AccountController@updatePassword')->name('account.updatepassword');
+        Route::post('updatePassword', 'AccountController@updatePassword')->middleware('auth')->name('account.updatepassword');
     });
 
     Route::group(['prefix' => 'pastebin'], function () {

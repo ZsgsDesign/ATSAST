@@ -99,7 +99,7 @@ card.order-card > div {
     max-height: 5rem;
     object-fit: cover;
 }
-/* 来自mudi 的FAB */
+/* 来自mdui 的FAB */
 .mdui-fab-fixed{
     position: fixed !important;
 }

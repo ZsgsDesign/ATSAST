@@ -99,7 +99,7 @@ card.order-card > div {
     max-height: 5rem;
     object-fit: cover;
 }
-/* 来自mudi 的FAB */
+/* 来自mdui 的FAB */
 .mdui-fab-fixed{
     position: fixed !important;
 }
@@ -171,164 +171,44 @@ card.order-card > div {
         <div class="card-body row">
             <div class="col-md-3 col-sm-12 col-12 text-center" >
                 <div class="bg-light mb-4">
-                    <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="<{$MHS_DOMAIN}>/pic/<{$iid}>">
+                    <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="/static/img/-1.png">
                 </div>
                 <div class="p-5 text-center responsive-text">
-                    <label class="text-primary">
-                        拖动图片到页面或点击这里选择图片
-                        <input type="file" class="sr-only" id="pic_upload" accept="image/*" ref="input" onchange="SelectedImg(this.files[0])">
-                    </label>
+                    <button type="button" class="btn btn-raised btn-primary" onclick="">上传图片</button>
                 </div>
             </div>
             <div class="responsive col-md-9 col-sm-12 col-12">
                 <div class="form-group">
                     <label for="item_name" class="bmd-label-floating">物品名称</label>
-                    <input type="text" id="item_name" class="form-control" value="">
-                    <span class="bmd-help">物品名称包含关键词可以更好地被搜索到哦。</span>
+                    <input type="text" id="item_name" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label for="number" class="bmd-label-floating">借用时限(天)</label>
-                    <input type="number" id="time_limit" placeholder="" class="form-control" min="1" value="">
-                    <span class="bmd-help">该物品在"确认借用"后要求在规定天数内归还。</span>
-                </div>
-                
                 <div class="form-group">
                     <label for="location" class="bmd-label-floating">物品位置</label>
-                    <input type="text"  id="location" class="form-control" value="">
+                    <input type="text"  id="location" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="number" class="bmd-label-floating">物品数量</label>
-                    <input type="number" id="number" class="form-control" min="1" value="">
+                    <input type="number" id="number" class="form-control" min="1">
                 </div>
                 <div class="form-group">
                     <label for="desc" class="bmd-label-floating">物品介绍</label>
                     <textarea class="form-control" id="desc" rows="10"></textarea>
                 </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="need_return"> 需要归还
+                    </label>
+                </div>
             </div>
         </div>
         <div class="text-right">
-                {{-- <button id="delete-btn" class="btn btn-outline-danger" onclick="deleteItem(<{$iid}>)">彻底删除</button> --}}
-                <!--TODO这边需要加个确认框-->
             <button class="btn btn-outline-primary" onclick="publish()">发布物品</button>
         </div>
     </card>
 </div>
 
-<!-- https://github.com/fengyuanchen/compressorjs/ -->
-<script src="https://cdn.jsdelivr.net/npm/compressorjs@1.0.5/dist/compressor.min.js"></script>
-
-<link rel="stylesheet" href="https://inacho.github.io/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css">
-<!-- TODO 这个markdown editor 之后还要优化 -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.0/ace.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
 <script>
-    const formData = new FormData();
-
-    document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行
-        window.addEventListener('dragover',(e) => {
-            e.preventDefault();
-        },false);
-        window.addEventListener('drop',(e) => {
-            e.preventDefault();
-            SelectedImg(e.dataTransfer.files[0]);
-        },false);
-        $.getScript('https://inacho.github.io/bootstrap-markdown-editor/dist/js/bootstrap-markdown-editor.js',function(){
-            $('#desc').markdownEditor({
-                preview: true,
-                onPreview: function (content, callback) {
-                    callback( marked(content) );
-                }
-            });
-        });
-
-    });
-    
-    function SelectedImg(file){
-        new Compressor(file, { //使用compressor.js压缩图片
-            strict: true,
-            checkOrientation: true,
-            maxWidth: 3000,
-            maxHeight: 3000,
-            quality: 0.8,
-            success(result) {
-                $('#pic_preview').attr('src', URL.createObjectURL(result));
-                formData.set('pic', result, result.name); //设置本地压缩后的图片
-            },
-            error(err) {
-                console.log(err.message);
-            },
-        });
-    };
-    
-    function publish() {
-        //使用Ajax提交，实时返回结果。
-        var timelimit_ = parseInt($("#time_limit").val());
-        var options=$("#credit_required option:selected").index();
-        if (options == 1)
-            options = 80;
-        else if (options == 2)
-            options = 100;
-        else if (options == 3)
-            options = 120;
-
-        formData.set('iid',"<{$iid}>"); //用于编辑物品
-        formData.set('name',$("#item_name").val());
-        formData.set('timeLimit',isNaN(timelimit_) ? 0 : timelimit_);
-        formData.set('location',$("#location").val());
-        formData.set('creditRequired',options);
-        formData.set('number',$("#number").val());
-        formData.set('desc',$("#desc").val());
-
-        //https://blog.csdn.net/maxsky/article/details/80629766
-        //jQuery 提交 FormData 对象，前方有坑
-        $.ajax({ // $.post，告辞
-            type: 'post',
-            contentType: false, // 关关关！必须得 false
-                                // 这个不关会扔一个默认值 application/x-www-form-urlencoded 过去，后端拿不到数据的！
-                                // 而且你甚至不能传个字符串 'multipart/form-data'，后端一样拿不到数据！
-            processData: false, // 关关关！重点
-            url: '<{$MHS_DOMAIN}>/ajax/PublishItem',
-            data: formData,
-            success: function (result) {
-                $('#info').html("");
-                console.log(result); //显示bug
-                result=JSON.parse(result);
-                console.log(result);
-                if(result.ret==200){
-                    $('#info').append(
-                        "    <div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\">\n" +
-                        "        <strong>"+ result.desc + "</strong>\n" +
-                        "        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-                        "            <span aria-hidden=\"true\">&times;</span>\n" +
-                        "        </button>\n" +
-                        "    </div>");
-                    setTimeout(function(){
-                        location.href="<{$MHS_DOMAIN}>/item/detail/"+result.data.itemid;
-                    },1000);
-                }
-                else {
-                    $('#info').append(
-                        "    <div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" +
-                        "        <strong>"+ result.desc + "</strong>\n" +
-                        "        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-                        "            <span aria-hidden=\"true\">&times;</span>\n" +
-                        "        </button>\n" +
-                        "    </div>");
-                }
-            }
-        });
-
-    }
-    function deleteItem(iid){
-        $.post('<{$MHS_DOMAIN}>/ajax/DeleteItem',{iid:iid},function(data,status){
-            console.log(data,status);
-            location.href="<{$MHS_DOMAIN}>/user?tab=item";
-        })
-    }
 
 </script>
-@inlude('js.common.item');
 
 @endsection
