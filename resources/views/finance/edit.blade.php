@@ -48,14 +48,14 @@
             <div class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
                     <label id="invoice_tip" class="btn btn-danger" for="invoice"><i class="MDI file-pdf-box"></i> 点这里上传发票</label>
-                    <input type="file" class="form-control-file" name="invoice" id="invoice" aria-describedby="invoiceHelp" style="display: none">
+                    <input type="file" class="form-control-file" name="invoice" accept="application/pdf" id="invoice" aria-describedby="invoiceHelp" style="display: none">
                     <small id="invoiceHelp" class="form-text text-muted"> 请上传完整的pdf发票文件，纸质支票请直接送到指定地点不需要上传文件。</small>
                 </div>
             </div>
             <div class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
                     <label id="transaction_voucher_tip" class="btn btn-danger" for="transaction_voucher"><i class="MDI image"></i> 点这里上传交易凭证</label>
-                    <input type="file" class="form-control-file" name="transaction_voucher" id="transaction_voucher" aria-describedby="transaction_voucherHelp" style="display: none">
+                    <input type="file" class="form-control-file" name="transaction_voucher" accept="image/gif, image/jpeg"  id="transaction_voucher" aria-describedby="transaction_voucherHelp" style="display: none">
                     <img id="preview_transaction_voucher" class="img-fluid" src="" class="img-fluid hidden"><small id="preview_tag" class="form-text text-muted" style="display: none">预览</small><br>
                     <small id="transaction_voucherHelp" class="form-text text-muted"> 请上传清晰的jpg或png图片文件</small>
                 </div>
@@ -63,7 +63,7 @@
             <div class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
                     <label id="declaration_tip" class="btn btn-danger" for="declaration"><i class="MDI file-word-box"></i> 点这里上传申报单</label>
-                    <input type="file" class="form-control-file" name="declaration" id="declaration" aria-describedby="declarationHelp" style="display: none">
+                    <input type="file" class="form-control-file" name="declaration" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document" id="declaration" aria-describedby="declarationHelp" style="display: none">
                     <small id="declarationHelp" class="form-text text-muted"> 请上传docx文件</small>
                 </div>
             </div>

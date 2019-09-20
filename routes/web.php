@@ -78,6 +78,8 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('/details', 'FinanceController@details')->name('details');
         Route::post('/edit', 'FinanceController@edit')->name('edit');
         Route::post('/approval', 'FinanceController@approval')->name('approval');
+        Route::post('/hang', 'FinanceController@hang')->name('hang');
+        Route::post('/unhang', 'FinanceController@unhang')->name('unhang');
     });
 
     Route::group(['prefix' => 'course'], function () {

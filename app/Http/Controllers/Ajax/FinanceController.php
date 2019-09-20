@@ -251,4 +251,80 @@ class FinanceController extends Controller
         $rl->save();
         return ResponseModel::success();
     }
+
+    public function hang(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+        $r = Reimbursement::find($request->input('id'));
+        if(empty($r)) {
+            return ResponseModel::err(6000);
+        }
+        $user_id = Auth::user()->id;
+        $is_admin = !empty(
+            Privilege::where([
+                'uid'  => $user_id,
+                'type' => 'reimbursement',
+                'type_value' => $r->organization_id
+            ])->where('clearance','>','1')
+            ->first()
+        );
+        if($r->status != 0 && $r->status != 1){
+            return ResponseModel::err(6013);
+        }
+        if(!$is_admin) {
+            return ResponseModel::err(6012);
+        }
+        $before_status = $r->status;
+        //update
+        $r->status = 2;
+        $r->save();
+        //insert
+        $rl = new ReimbursementLog;
+        $rl->user_id = $user_id;
+        $rl->reimbursement_id = $r->id;
+        $rl->opr_type = 4;
+        $rl->before_status = $before_status;
+        $rl->save();
+        return ResponseModel::success(200,'Successful!');
+    }
+
+    public function unhang(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+        $r = Reimbursement::find($request->input('id'));
+        if(empty($r)) {
+            return ResponseModel::err(6000);
+        }
+        $user_id = Auth::user()->id;
+        $is_admin = !empty(
+            Privilege::where([
+                'uid'  => $user_id,
+                'type' => 'reimbursement',
+                'type_value' => $r->organization_id
+            ])->where('clearance','>','1')
+            ->first()
+        );
+        if(!$is_admin) {
+            return ResponseModel::err(6012);
+        }
+        if($r->status != 2){
+            return ResponseModel::err(6014);
+        }
+
+        //update
+        $r->status = 0;
+        $r->save();
+        //insert
+        $rl = new ReimbursementLog;
+        $rl->user_id = $user_id;
+        $rl->reimbursement_id = $r->id;
+        $rl->opr_type = 5;
+        $rl->before_status = 2;
+        $rl->save();
+        return ResponseModel::success(200,'Successful!');
+    }
 }

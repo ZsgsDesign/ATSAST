@@ -39,10 +39,10 @@ class FinanceController extends Controller
             $list = $list->where('status','<>','1');
         }
         if(isset($filter['hide_pass']) && $filter['hide_pass']) {
-            $list = $list->where('status','<>','2');
+            $list = $list->where('status','<>','3');
         }
         if(isset($filter['hide_hang']) && $filter['hide_hang']) {
-            $list = $list->where('status','<>','3');
+            $list = $list->where('status','<>','2');
         }
 
         //order

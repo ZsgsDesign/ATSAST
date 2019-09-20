@@ -129,7 +129,7 @@
     </div>
     @if(($is_approver || $is_admin) && $status == 0)
     <div id="approval-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" style="width:40%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-muted">报销审批</h5>
@@ -211,6 +211,56 @@ window.addEventListener("load",function() {
 
         }
     });
+
+    @if($is_admin && in_array($status,[0,1]))
+    $('#hang').on('click',() => {
+        if(ajaxing) return;
+        ajaxing = true;
+        $.ajax({
+            url : '/ajax/finance/hang',
+            type : 'POST',
+            data : {
+                id : id,
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success : function(result){
+                ajaxing = false;
+                if(result.ret == 200){
+                    window.location.reload();
+                }else{
+                    alert(result.desc);
+                }
+            }
+        });
+    });
+    @endif
+
+    @if($is_admin && $status == 2)
+    $('#unhang').on('click',() => {
+        if(ajaxing) return;
+        ajaxing = true;
+        $.ajax({
+            url : '/ajax/finance/unhang',
+            type : 'POST',
+            data : {
+                id : id,
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success : function(result){
+                ajaxing = false;
+                if(result.ret == 200){
+                    window.location.reload();
+                }else{
+                    alert(result.desc);
+                }
+            }
+        });
+    });
+    @endif
 
     @if(($is_approver || $is_admin) && $status == 0)
     $('#approval').on('click',() => {
