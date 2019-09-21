@@ -352,7 +352,7 @@ card.order-card > div {
     }
 
     function borrowImmediately(id) {
-        window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text();
+        window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text().trim;
     }
 </script>
 @endsection

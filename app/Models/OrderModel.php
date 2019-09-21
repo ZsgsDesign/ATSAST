@@ -8,4 +8,9 @@ use Illuminate\Support\Facades\DB;
 class OrderModel extends Model
 {
     protected $table='order';
+
+    public function create()
+    {
+        
+    }
 }

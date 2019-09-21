@@ -166,38 +166,38 @@ card.order-card > div {
 </style>
 
 
-<div class="container mundb-standard-container"> 
+<div class="container mundb-standard-container">
     <h3 class="mhs-title mb-3 mt-3">创建订单</h3>
         <card class="p-1">
-            <{foreach $order_item as $r}>
+            @foreach($order_item as $r)
             <div class="media">
-                <avatar><img class=" mt-2 mr-2 ml-1" src="<{$r['avatar']}>"></avatar>
+                <avatar><img class=" mt-2 mr-2 ml-1" src="{{$r->avatar}}"></avatar>
                 <div class="media-body">
-                    <h5 class="mt-3 text-primary mb-user">出借方：<{$r['real_name']}></h5>
-                    <{foreach $r['items'] as $seq => $q}>
-                    <div class="media item mt-item" iid="<{$q['item_id']}>" count="<{$q['count']}>">
+                    <h5 class="mt-3 text-primary mb-user">出借方：{{$r->real_name}}</h5>
+                    @foreach($r->items as $seq => $q)
+                    <div class="media item mt-item" iid="{{$q->item_id}}" count="{{$q->count}}">
                         <figure class="figure">
-                            <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="<{$MHS_DOMAIN}>/pic/<{$q['item_id']}>?size=200">
-                            <figcaption class="figure-caption text-right top-fc"><span class="badge badge-pill badge-primary">X <{$q['count']}></span></figcaption>
+                            <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="/static/img/handling/{{$q->item_id}}">
+                            <figcaption class="figure-caption text-right top-fc"><span class="badge badge-pill badge-primary">X {{$q->count}}</span></figcaption>
                         </figure>
                         <div class="media-body ml-3">
-                            <h4 class="mt-0 wb"><a href="<{$MHS_DOMAIN}>/item/detail/<{$q['item_id']}>"><{$q['name']}></a></h4>
-                            <i class="MDI sitemap"></i>位置：<{$q['location']}>
+                            <h4 class="mt-0 wb"><a href="/handling/item/detail/{{$q->item_id}}">{{$q->name}}</a></h4>
+                            <i class="MDI sitemap"></i>位置：{{$q->location}}
                         </div>
                     </div>
-                    <{/foreach}>
+                    @endforeach
                 </div>
             </div>
-            <{/foreach}>
+            @endforeach
         </card>
-    <h5 class="mt-3 text-primary">总计：<{$total_item}> 件物品，共 <{$total_count}> 个。</h5>
+    <h5 class="mt-3 text-primary">总计：{{$total_item}} 件物品，共 {{$total_count}} 个。</h5>
     <script>
         let submit=function(){
             NodeList.prototype.map=Array.prototype.map;
             document.querySelectorAll('.item').map(function(val,index,arr){
                 let iid=val.getAttribute('iid');
                 let count=val.getAttribute('count');
-                $.post('<{$MHS_DOMAIN}>/ajax/CreateOrder',{
+                $.post('/handling/ajax/CreateOrder',{
                     iid:iid,
                     count:count
                 },function(data,status){
@@ -205,10 +205,10 @@ card.order-card > div {
                     if(index+1 === arr.length){
                         if(arr.length === 1){
                             data=JSON.parse(data);
-                            window.location.href="<{$MHS_DOMAIN}>/order/view?oid="+data.data.oid;
+                            window.location.href="/handling/order/view?oid="+data.data.oid;
                         }
                         else{
-                            window.location.href="<{$MHS_DOMAIN}>/orders";
+                            window.location.href="/handling/orders";
                         }
                     }
                 })
@@ -217,8 +217,7 @@ card.order-card > div {
     </script>
     <br>
     </div>
-    <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="submit()"><i class="MDI clipboard-check"></i></button>    
-@inlude('js.common.item');
+    <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="submit()"><i class="MDI clipboard-check"></i></button>
 
 
 @endsection
