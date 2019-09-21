@@ -3,7 +3,7 @@
 @section('template')
 
 <style>
-card {
+paper-card {
     display: block;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
     border-radius: 20px;
@@ -18,7 +18,7 @@ card {
 statistic{
     display: block;
 }
-card:hover {
+paper-card:hover {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 100px;
 }
 badge{
@@ -44,10 +44,10 @@ badge{
     height: 10rem;
 }
 /* 这是展示物品的通用card 样式 */
-card.item-card {
+paper-card.item-card {
     overflow: hidden;
 }
-card.item-card > div{
+paper-card.item-card > div{
     padding: 0;
     text-align: center;
 }
@@ -72,10 +72,10 @@ a.card-link{
 }
 /* ======= */
 /* 这是订单、购物车用的card 样式*/
-card.order-card {
+paper-card.order-card {
     margin-bottom: 0.5rem;
 }
-card.order-card > div {
+paper-card.order-card > div {
     padding: 0;
 }
 .mhs-item-img-order {
@@ -119,7 +119,7 @@ card.order-card > div {
 }
 </style>
 <style>
-    card {
+    paper-card {
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
         border-radius: 4px;
@@ -160,19 +160,24 @@ card.order-card > div {
             width: 15rem;
         }
     }
-    
+
 </style>
 
 <div class="container mundb-standard-container">
     <h3 class="mhs-title mb-5 mt-5">发布物品</h3>
-    <div id="info">  
+    <div id="info">
     </div>
-    <card>
+
+    <paper-card>
         <div class="card-body row">
             <div class="col-md-3 col-sm-12 col-12 text-center" >
-                <div class="bg-light mb-4">
-                    <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="/static/img/-1.png">
-                </div>
+                <label for="image" style="cursor: pointer">
+                    <div class="bg-light mb-4">
+                        <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="/static/img/-1.png">
+                    </div>
+                    <small>点击选择或直接拖入图片</small>
+                </label>
+                <input type="file" id="image" name="image" style="display: none" onchange="selectImg(this.files[0])" accept="image/png,image/jpeg"/>
             </div>
             <div class="responsive col-md-9 col-sm-12 col-12">
                 <div class="form-group">
@@ -201,63 +206,67 @@ card.order-card > div {
         <div class="text-right">
             <button class="btn btn-outline-primary" onclick="publishItem()">发布物品</button>
         </div>
-    </card>
-    <div class="modal fade" id="update-itempic-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-alert" role="document">
-            <div class="modal-content sm-modal">
-                <div class="modal-header">
-                    <h5 class="modal-title">上传图片</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid text-center">
-                        <itempic-section>
-                            <img id="itempic-preview" src="/static/img/-1.png" alt="itempic">
-                        </itempic-section>
-                        <br />
-                        <input type="file" style="display:none" id="itempic-file" accept=".jpg,.png,.jpeg,.gif">
-                        <label for="itempic-file" id="choose-itempic" class="btn btn-primary" role="button"><i class="MDI upload"></i> 选择图片</label>
-                    </div>
-                    <div id="itempic-error-tip" style="opacity:0" class="text-center">
-                        <small id="tip-text" class="text-danger font-weight-bold">选择图片</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="itempic-submit" type="button" class="btn btn-danger">上传</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    </paper-card>
 </div>
 
 <script>
+    window.addEventListener("load",function() {
+        window.addEventListener('dragover',(e) => {
+            e.preventDefault();
+        },false);
+        window.addEventListener('drop',(e) => {
+            e.preventDefault();
+            selectImg(e.dataTransfer.files[0]);
+        },false);
+    });
+
+    var pic;
+    //image preview
+    function selectImg(file){
+        pic = file;
+        var filename = pic.name;
+        if(pic.type != 'image/png' && pic.type != 'image/jpeg'){
+            $('label[for="image"] small').text('只允许上传jpg和png类型的图片文件');
+            $('label[for="image"] small').removeClass('text-success').addClass('text-danger');
+        }else{
+            $('label[for="image"] small').text(filename);
+            $('label[for="image"] small').removeClass('text-danger').addClass('text-success');
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                $('label[for="image"] img').attr('src',reader.result).slideDown();
+            }
+        }
+    }
 
     function publishItem() {
-        var name = $('#item_name').val();
-        var count = $('#number').val();
-        var dec = $('#desc').val();
-        var pic = "/static/img/-1.png";
-        var location = $('#location').val();
-        var need_return = $('#need_return').val();
+        var data = new FormData();
+        data.set('name',$('#item_name').val());
+        data.set('count',$('#number').val());
+        data.set('dec',$('#desc').val());
+        data.set('pic',pic);
+        data.set('location', $('#location').val())
+        data.set('need_return', $('#need_return').val())
+
         $.ajax({
             type: 'POST',
             url: '/ajax/handling/publishItem',
-            data: {
-                name: name,
-                count: count,
-                dec: dec,
-                pic: pic,
-                location: location,
-                need_return: need_return,
-            },
-            dataType: 'json',
+            data: data,
+            contentType: false,
+            processData: false,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, success: function(ret){
-                console.log(ret);
-                alert("发布成功！","恭喜");
-                setTimeout(function(){
-                    window.location.href="/handling/detail/" + ret.data;
-                }, 1000);
+                if(ret.ret == 200){
+                    console.log(ret);
+                    alert("发布成功！","恭喜");
+                    setTimeout(function(){
+                        window.location.href="/handling/detail/" + ret.data;
+                    }, 1000);
+                }else{
+                    alert(JSON.stringify(ret),"不恭喜");
+                }
+
             }, error: function(xhr, type){
                 console.log(xhr);
                 switch(xhr.status) {

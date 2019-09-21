@@ -111,6 +111,7 @@ class ResponseModel extends Model
             '7005' => "请填写物品描述",
             '7006' => "请填写物品数量",
             '7007' => "物品已上架",
+            '7008' => "数量过大",
         ];
         return isset($errDesc[$errCode]) ? $errDesc[$errCode] : $errDesc['1000'];
     }

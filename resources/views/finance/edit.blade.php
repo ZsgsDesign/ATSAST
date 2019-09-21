@@ -68,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-right">
+        <div style="margin-top:5rem;" class="text-right">
             <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='/finance/details/{{$id}}'">返回</button>
             <button id="submit" type="button" class="btn btn-primary">确认编辑</button>
         </div>

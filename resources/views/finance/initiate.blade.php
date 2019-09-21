@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-right">
+        <div style="margin-top:5rem;" class="text-right">
             <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='/finance'">返回</button>
             <button id="initiate" type="button" class="btn btn-primary">发起报销</button>
         </div>
