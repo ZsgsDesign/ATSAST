@@ -173,9 +173,6 @@ card.order-card > div {
                 <div class="bg-light mb-4">
                     <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="/static/img/-1.png">
                 </div>
-                <div class="p-5 text-center responsive-text">
-                    <button type="button" class="btn btn-raised btn-primary" onclick="">上传图片</button>
-                </div>
             </div>
             <div class="responsive col-md-9 col-sm-12 col-12">
                 <div class="form-group">
@@ -202,12 +199,81 @@ card.order-card > div {
             </div>
         </div>
         <div class="text-right">
-            <button class="btn btn-outline-primary" onclick="publish()">发布物品</button>
+            <button class="btn btn-outline-primary" onclick="publishItem()">发布物品</button>
         </div>
     </card>
+    <div class="modal fade" id="update-itempic-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-alert" role="document">
+            <div class="modal-content sm-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">上传图片</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid text-center">
+                        <itempic-section>
+                            <img id="itempic-preview" src="/static/img/-1.png" alt="itempic">
+                        </itempic-section>
+                        <br />
+                        <input type="file" style="display:none" id="itempic-file" accept=".jpg,.png,.jpeg,.gif">
+                        <label for="itempic-file" id="choose-itempic" class="btn btn-primary" role="button"><i class="MDI upload"></i> 选择图片</label>
+                    </div>
+                    <div id="itempic-error-tip" style="opacity:0" class="text-center">
+                        <small id="tip-text" class="text-danger font-weight-bold">选择图片</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="itempic-submit" type="button" class="btn btn-danger">上传</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+
+    function publishItem() {
+        var name = $('#item_name').val();
+        var count = $('#number').val();
+        var dec = $('#desc').val();
+        var pic = "/static/img/-1.png";
+        var location = $('#location').val();
+        var need_return = $('#need_return').val();
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/publishItem',
+            data: {
+                name: name,
+                count: count,
+                dec: dec,
+                pic: pic,
+                location: location,
+                need_return: need_return,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("发布成功！","恭喜");
+                setTimeout(function(){
+                    window.location.href="/handling/detail/" + ret.data;
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to publishItem!');
+            }
+        });
+    }
 
 </script>
 

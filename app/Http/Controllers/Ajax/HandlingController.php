@@ -15,24 +15,30 @@ class HandlingController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'need_return' => 'required',
-            'location' => 'required',
             'count' => 'required',
-            'pic' => 'required'
+            'dec' => 'required',
+            'pic' => 'required',
+            'location' => 'required',
+            'need_return' => 'required',
         ]);
 
         $itemModel = new ItemModel;
 
         $itemModel->name = $request->input('name');
-        $itemModel->need_return = $request->input('need_return');
-        $itemModel->location = $request->input('location');
         $itemModel->count = $request->input('count');
-        $itemModel->pic = $request->file('pic')->store('handling_item_images');
+        $itemModel->dec = $request->input('dec');
+        $itemModel->pic = $request->input('pic');
+        $itemModel->location = $request->input('location');
+        $itemModel->need_return = $request->input('need_return')=='on' ? 1 : 0;
+        
         $itemModel->owner = Auth::id();
+        $itemModel->scode = 1;
+        $itemModel->create_time = date('Y-m-d h:i:s');
+        $itemModel->order_count = 0;
 
         $itemModel->save();
 
-        return ResponseModel::success();
+        return ResponseModel::success(200,null,$itemModel->id);
     }
 
     public function AddToCart(Request $request)

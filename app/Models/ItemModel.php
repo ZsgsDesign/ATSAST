@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 class ItemModel extends Model
 {
     protected $table = 'item';
-    const CREATED_AT = 'create_time';
+    // const CREATED_AT = 'create_time';
+    public $timestamps = false;
     protected $primaryKey = 'iid';
 
     //scode: -1=>下架; -2=>删除;
