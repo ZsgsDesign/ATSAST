@@ -216,20 +216,14 @@ card.order-card > div {
                     <th scope="row">出借笔数</th>
                     <td>{{$item_info->order_count}}</td>
                 </tr>
+                <tr>
+                    <th scope="row">简介</th>
+                    <td>{{$item_info->dec}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <card id="intro" class="p-3">
-        @if(strlen($item_info->dec)==0)
-        <h5 class="text-primary text-center">暂无物品简介</h5>
-        @else
-        <h5 class="text-primary text-center">简介</h5>
-        @endif
-        <article class="markdown-body" id="dec">
-            {{$item_info->dec}}
-        </article>
-    </card>
 </div>
 <br>
 <script>
