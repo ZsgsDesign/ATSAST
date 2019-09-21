@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class CartModel extends Model
 {
@@ -30,6 +31,9 @@ class CartModel extends Model
 
     public function list($uid)
     {
-        return DB::table('cart')->select(DB::raw("SELECT a.*,users.real_name FROM(select cart.*,item.`name`,item.`owner`,item.scode,item.count as item_count FROM cart JOIN item on cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE `user`=".Auth::user()->id.";"))->get();
+        return DB::table('cart as c')
+        ->select('c.*','i.name','i.owner','i.scode','i.count as item_count','i.pic')
+        ->join('item as i','c.item_id','=','i.iid')
+        ->get();
     }
 }

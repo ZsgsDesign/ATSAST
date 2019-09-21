@@ -140,6 +140,8 @@ card.order-card > div {
     <div class="input-group text-center">
         <div class="input-group-btn" style="margin:0 auto">
             <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='/handling/publish'">发布物品</button>
+            <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='/handling/cart'">购物车</button>
+            <button type="button" class="btn btn-raised btn-warning" aria-label="Left Align" onclick="window.location.href='/handling/order'">订单详情</button>
         </div>
     </div>
     @endif

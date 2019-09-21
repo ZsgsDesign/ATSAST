@@ -134,55 +134,51 @@ card.order-card > div {
 </style>
 <div class="container mundb-standard-container"> 
     <h2 class="mhs-title mb-3 mt-3">购物车</h2>
-    <{if count($cart_items) == 0}>
+    @if(count($cart_items) == 0)
     <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
     <div class="row atsast-empty">
-        <button type="button" class="btn btn-raised btn-info" onclick="location.href='<{$MHS_DOMAIN}>/'">返回首页</button>
+        <button type="button" class="btn btn-raised btn-info" onclick="location.href='/handling'">返回首页</button>
     </div>
-    <{else}>
+    @else
     <div>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
-        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),false)} if(index+1 === arr.length){location.reload()}});">删除所选</button>
+        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('item_id'),false)} if(index+1 === arr.length){location.reload()}});">删除所选</button>
     </div>
-    <{foreach $cart_items as $i => $item}>
+    @foreach($cart_items as $i => $item)
     <card class="order-card mb-3">
-            <div class="media">
-                <div class="form-group ml-2 mr-2">
-                    <div class="checkbox">
-                        <label for="agreement<{$item['item_id']}>"><input class="form-control" type="checkbox" name="agreement" id="agreement<{$item['item_id']}>" iid="<{$item['item_id']}>" <{if $item['scode'] != 1}> disabled <{/if}>></label>
-                    </div>
-                </div>
-                <img class="mhs-item-img-order" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
-                <div class="media-body ml-3 mt-3">
-                    <h5 class="text-left mundb-text-truncate-1 "><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h5>
-                    <p class="text-left mundb-text-truncate-1 ">出借方：<a href="<{$MHS_DOMAIN}>/user/<{$item['owner']}>"><{$item['real_name']}></a></p>
-                    <{if $item['scode'] == 1}>
-                    <div class="btn-group">
-                        <button id="minus<{$i}>" type="button" class="btn btn-sm btn-primary mhs-button-count" <{if $item['count'] < 2 }> disabled="disabled" <{/if}> onclick="minus(<{$i}>,<{$item['item_count']}>);addToCart(<{$item['item_id']}>,<{$i}>)">-</button>
-                        <button id="count<{$i}>" type="button" class="btn btn-sm btn-primary mhs-button-count"><{$item['count']}></button>
-                        <button id="add<{$i}>" type="button<{$i}>" class="btn btn-sm btn-primary mhs-button-count" onclick="add(<{$i}>,<{$item['item_count']}>);addToCart(<{$item['item_id']}>,<{$i}>)">+</button>
-                    </div>
-                    <{/if}>
-                    <button type="button" class="btn btn-danger" onclick="addToCart_delete(<{$item['item_id']}>)">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
-                    <{if $item['scode'] == -1}>
-                    <p class="text-warning">该物品已下架</p>
-                    <{else if $item['scode'] == 0}>
-                    <p class="text-warning">该物品无库存</p>
-                    <{/if}>
+        <div class="media">
+            <div class="form-group ml-2 mr-2">
+                <div class="checkbox">
+                    <label for="agreement{{$item->item_id}}"><input class="form-control" type="checkbox" name="agreement" id="agreement{{$item->item_id}}" item_id="{{$item->item_id}}" @if($item->scode != 1) disabled @endif></label>
                 </div>
             </div>
+            <img class="mhs-item-img-order" src="{{$item->pic}}">
+            <div class="media-body ml-3 mt-3">
+                <h5 class="text-left mundb-text-truncate-1 "><a href="/handling/detail/{{$item->item_id}}">{{$item->name}}</a></h5>
+                @if($item->scode == 1)
+                <div class="btn-group">
+                    <button id="minus{{$item->item_id}}" type="button" class="btn btn-sm btn-primary mhs-button-count" @if($item->count < 2) disabled="disabled" @endif onclick="minus({{$item->item_id}},{{$item->item_count}});addToCart({{$item->item_id}},-1)"><strong>-</strong></button>
+                    <button id="count{{$item->item_id}}" type="button" class="btn btn-sm btn-primary mhs-button-count">{{$item->count}}</button>
+                    <button id="add{{$item->item_id}}" type="button" class="btn btn-sm btn-primary mhs-button-count" @if($item->count >= $item->item_count) disabled="disabled" @endif onclick="add({{$item->item_id}},{{$item->item_count}});addToCart({{$item->item_id}},1)"><strong>+</strong></button>
+                </div>
+                @endif
+                <button type="button" class="btn btn-danger" onclick="addToCart_delete({{$item->item_id}})">删除</button><!--此处的js代码若需要cid 使用{{$item->cid}}即可 若需要 item_id 使用 {{$item->item_id}}-->
+                @if($item->scode == -1)
+                <p class="text-warning">该物品已下架</p>
+                @elseif($item->scode == 0)
+                <p class="text-warning">该物品无库存</p>
+                @endif
+            </div>
+        </div>
     </card>
-    <{/foreach}>
+    @endforeach
     <br>
-    <script>
-    <{include file="MHS_Item.js" }>
-    </script>
     <script>
 
         function addToCart_delete(id,reload=true) {
-            $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
-                iid:id,
+            $.post("/handling/ajax/AddToCart",{
+                item_id:id,
                 count:-1,
             },function(result) {
                 console.log(result);
@@ -207,7 +203,7 @@ card.order-card > div {
             }
             let items=document.querySelectorAll('.form-control').map(function(val,index){
                 if(val.checked===true){
-                    return val.getAttribute('iid')
+                    return val.getAttribute('item_id')
                 }
                 else{
                     return false;
@@ -222,16 +218,137 @@ card.order-card > div {
                 for(let i=1;i<items.length;i++){
                     args+="&item[]="+items[i];
                 }
-                window.location.href="<{$MHS_DOMAIN}>/order/create/"+args;
+                window.location.href="/handling/order/create/"+args;
             }
         }
 
     </script>
-    <{/if}>
+    @endif
 </div>
 
 <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="settlement()"><i class="MDI check"></i></button>
 
-@inlude('js.common.item');
+<script>
+    function removeItem(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/removeItem',
+            data: {
+                item_id:id,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("下架成功！","恭喜");
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to removeItem!');
+            }
+        });
+    }
+
+    function restoreItem(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/restoreItem',
+            data: {
+                item_id:id,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert("上架成功！","恭喜");
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to restoreItem!');
+            }
+        });
+    }
+
+    function minus(i,max=9999) {
+        var count = $('#count' + i).text();
+        if(count>1)
+            $('#count' + i).text(--count);
+        if(count<=1){
+            $('#minus' + i).attr('disabled',true); //防止减到1以下
+        }
+        if(count<max){
+            $('#add' + i).attr('disabled',false);
+        }
+    }
+
+    function add(i,max=9999) {
+        var count = $('#count' + i).text();
+        $('#count' + i).text(++count);
+        $('#minus' + i).attr('disabled',false);
+        if(count>=max||max===1){
+            $('#add' + i).attr('disabled',true);
+        }
+    }
+
+    function addToCart(id,count) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/addToCart',
+            data: {
+                iid:id,
+                count:count,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to addToCart!');
+            }
+        });
+    }
+
+    function borrowImmediately(id) {
+        window.location.href="/order/create/?item_id="+id+"&count="+$('#count' + id).text().trim;
+    }
+</script>
 
 @endsection

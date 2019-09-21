@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartModel;
 use App\Models\ItemModel;
 use Illuminate\Http\Request;
 use Auth;
@@ -34,10 +35,13 @@ class HandlingController extends Controller
     }
 
     public function cart(){
+        $cartmodel = new CartModel();
+        $cart_items = $cartmodel->list(Auth::user()->id);
         return view('handling.cart',[
             'page_title'=>"购物车",
             'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Handling"
+            'navigation'=>"Handling",
+            'cart_items'=>$cart_items
         ]);
     }
 
