@@ -8,6 +8,7 @@ use App\Models\CartModel;
 use App\Models\ResponseModel;
 use Illuminate\Http\Request;
 use Auth;
+use Storage;
 
 class HandlingController extends Controller
 {
@@ -17,20 +18,28 @@ class HandlingController extends Controller
             'name' => 'required',
             'count' => 'required',
             'dec' => 'required',
-            'pic' => 'required',
+            'pic' => 'required|file',
             'location' => 'required',
             'need_return' => 'required',
         ]);
+
+        $pic = $request->file('pic');
+        if($pic->isValid() && in_array($pic->extension(),['jpg','jpeg','png'])){
+            $url = Storage::url($pic->store('/handling/image','public'));
+        }
+        if($request->input('count') > 400000){
+            return ResponseModel::err(7008);
+        }
 
         $itemModel = new ItemModel;
 
         $itemModel->name = $request->input('name');
         $itemModel->count = $request->input('count');
         $itemModel->dec = $request->input('dec');
-        $itemModel->pic = $request->input('pic');
+        $itemModel->pic = $url;
         $itemModel->location = $request->input('location');
         $itemModel->need_return = $request->input('need_return')=='on' ? 1 : 0;
-        
+
         $itemModel->owner = Auth::id();
         $itemModel->scode = 1;
         $itemModel->create_time = date('Y-m-d h:i:s');
