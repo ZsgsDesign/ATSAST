@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\ItemModel;
 use App\Models\CartModel;
+use App\Models\OrderModel;
 use App\Models\ResponseModel;
 use Illuminate\Http\Request;
 use Auth;
@@ -142,5 +143,17 @@ class HandlingController extends Controller
             'oid' => 'required|integer',
             'operation' => 'required|string',
         ]);
+        $oid = $request->oid;
+        $operation = $request->operation;
+        if(!Auth::check()){
+            return ResponseModel::err(2009);
+        }
+        $ordermodel = new OrderModel();
+        $ret = $ordermodel->operateOrder($oid,$operation);
+        if($ret){
+            return ResponseModel::success(200,null,$ret);
+        }else{
+            return ResponseModel::err(1002);
+        }
     }
 }
