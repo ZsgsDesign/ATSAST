@@ -36,4 +36,14 @@ class CartModel extends Model
         ->join('item as i','c.item_id','=','i.iid')
         ->get();
     }
+
+    public function existIid($iid,$uid)
+    {
+        return DB::table('cart')->where('item_id','=',$iid)->where('user','=',$uid)->count();
+    }
+
+    public function deleteFromCart($iid,$uid)
+    {
+        return DB::table('cart')->where('item_id','=',$iid)->where('user','=',$uid)->delete();
+    }
 }

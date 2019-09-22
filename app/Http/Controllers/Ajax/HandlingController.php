@@ -117,4 +117,21 @@ class HandlingController extends Controller
         $ret = $itemModel->restoreItem($iid);
         return ResponseModel::success(200,null,$ret);
     }
+
+    public function deleteFromCart(Request $request)
+    {
+        $request->validate([
+            'iid' => 'required|integer',
+        ]);
+        $iid = $request->iid;
+        if(!Auth::check()){
+            return ResponseModel::err(2009);
+        }
+        $cartmodel = new CartModel();
+        if(!$cartmodel->existIid($iid,Auth::user()->id)){
+            return ResponseModel::err(7009);
+        }
+        $ret = $cartmodel->deleteFromCart($iid,Auth::user()->id);
+        return ResponseModel::success(200,null,$ret);
+    }
 }
