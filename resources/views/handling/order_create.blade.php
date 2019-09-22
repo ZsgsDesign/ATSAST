@@ -88,11 +88,11 @@ card.order-card > div {
     border-radius: 20px;
 }
 .mhs-item-img-detailed {
-     border-radius: 20px !important;
-     max-width: 20rem;
-     max-height: 20rem;
-     object-fit: cover;
- }
+    border-radius: 20px !important;
+    max-width: 20rem;
+    max-height: 20rem;
+    object-fit: cover;
+}
 .mhs-item-img-review {
     border-radius: 20px !important;
     max-width: 5rem;
@@ -128,8 +128,8 @@ card.order-card > div {
 
     .mhs-item-img-order-create {
         border-radius: 20px !important;
-        max-width: 6rem;
-        max-height: 6rem;
+        max-width: 8rem;
+        max-height: 8rem;
         object-fit: cover;
     }
     avatar{
@@ -157,9 +157,6 @@ card.order-card > div {
     .wb {
         word-break:break-all;
     }
-    .mt-item{
-        margin-top: -1.5rem;
-    }
     .mb-user{
         margin-bottom: 2.5rem;
     }
@@ -169,23 +166,15 @@ card.order-card > div {
 <div class="container mundb-standard-container">
     <h3 class="mhs-title mb-3 mt-3">创建订单</h3>
         <card class="p-1">
-            @foreach($order_item as $r)
-            <div class="media">
-                <avatar><img class=" mt-2 mr-2 ml-1" src="{{$r->avatar}}"></avatar>
-                <div class="media-body">
-                    <h5 class="mt-3 text-primary mb-user">出借方：{{$r->real_name}}</h5>
-                    @foreach($r->items as $seq => $q)
-                    <div class="media item mt-item" iid="{{$q->item_id}}" count="{{$q->count}}">
-                        <figure class="figure">
-                            <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="/static/img/handling/{{$q->item_id}}">
-                            <figcaption class="figure-caption text-right top-fc"><span class="badge badge-pill badge-primary">X {{$q->count}}</span></figcaption>
-                        </figure>
-                        <div class="media-body ml-3">
-                            <h4 class="mt-0 wb"><a href="/handling/item/detail/{{$q->item_id}}">{{$q->name}}</a></h4>
-                            <i class="MDI sitemap"></i>位置：{{$q->location}}
-                        </div>
-                    </div>
-                    @endforeach
+            @foreach($items as $q)
+            <div class="media item m-3" iid="{{$q->iid}}" count="{{$q->order_count_}}">
+                <figure class="figure">
+                    <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="/static/img/handling/{{$q->iid}}">
+                    <figcaption class="figure-caption text-right top-fc"><span class="badge badge-pill badge-primary">X {{$q->order_count_}}</span></figcaption>
+                </figure>
+                <div class="media-body ml-3">
+                    <h4 class="mt-0 wb"><a href="/handling/item/detail/{{$q->iid}}">{{$q->name}}</a></h4>
+                    <i class="MDI sitemap"></i>位置：{{$q->location}}
                 </div>
             </div>
             @endforeach
@@ -197,7 +186,7 @@ card.order-card > div {
             document.querySelectorAll('.item').map(function(val,index,arr){
                 let iid=val.getAttribute('iid');
                 let count=val.getAttribute('count');
-                $.post('/handling/ajax/CreateOrder',{
+                $.post('/ajax/handling/CreateOrder',{
                     iid:iid,
                     count:count
                 },function(data,status){

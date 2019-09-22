@@ -46,4 +46,8 @@ class CartModel extends Model
     {
         return DB::table('cart')->where('item_id','=',$iid)->where('user','=',$uid)->delete();
     }
+
+    public function getCount($iid,$uid){
+        return DB::table('cart')->where('item_id','=',$iid)->where('user','=',$uid)->get()->first()->count;
+    }
 }
