@@ -88,11 +88,11 @@ card.order-card > div {
     border-radius: 20px;
 }
 .mhs-item-img-detailed {
-     border-radius: 20px !important;
-     max-width: 20rem;
-     max-height: 20rem;
-     object-fit: cover;
- }
+    border-radius: 20px !important;
+    max-width: 20rem;
+    max-height: 20rem;
+    object-fit: cover;
+}
 .mhs-item-img-review {
     border-radius: 20px !important;
     max-width: 5rem;
@@ -117,21 +117,20 @@ card.order-card > div {
         bottom: 24px;
     }
 }
-</style>
-<style>
-  h5{
-      margin-bottom:0.25rem;
-  }
-  .form-control:disabled, .form-control[disabled]{
-      background-color: transparent;
-  }
-  input{
-      height: calc(2.4375rem + 2px);
-  }
-  .mhs-title{
-      color: #7a8e97;
-      text-align:center;
-  }
+
+h5{
+    margin-bottom:0.25rem;
+}
+.form-control:disabled, .form-control[disabled]{
+    background-color: transparent;
+}
+input{
+    height: calc(2.4375rem + 2px);
+}
+.mhs-title{
+    color: #7a8e97;
+    text-align:center;
+}
 </style>
 <div class="container mundb-standard-container">
     <h5 class="mhs-title mt-3"><i class="MDI gift"></i> SAST 物品借还系统</h5>
@@ -274,8 +273,8 @@ card.order-card > div {
     }
 
     function borrowImmediately(id) {
-        window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text().trim();
+        window.location.href= "{{route('handling.orderCreate')}}?iid="+id+"&count="+$('#count' + id).text().trim()
     }
-    
+
 </script>
 @endsection

@@ -88,11 +88,11 @@ card.order-card > div {
     border-radius: 20px;
 }
 .mhs-item-img-detailed {
-     border-radius: 20px !important;
-     max-width: 20rem;
-     max-height: 20rem;
-     object-fit: cover;
- }
+    border-radius: 20px !important;
+    max-width: 20rem;
+    max-height: 20rem;
+    object-fit: cover;
+}
 .mhs-item-img-review {
     border-radius: 20px !important;
     max-width: 5rem;
@@ -132,7 +132,7 @@ card.order-card > div {
         }
     }
 </style>
-<div class="container mundb-standard-container"> 
+<div class="container mundb-standard-container">
     <h2 class="mhs-title mb-3 mt-3">购物车</h2>
     @if(count($cart_items) == 0)
     <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
@@ -143,10 +143,10 @@ card.order-card > div {
     <div>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
-        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('item_id'),false)} if(index+1 === arr.length){location.reload()}});">删除所选</button>
+        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){deleteFromCart(value.getAttribute('item_id'),false)} if(index+1 === arr.length){location.reload()}});">删除所选</button>
     </div>
     @foreach($cart_items as $i => $item)
-    <card class="order-card mb-3">
+    <card id="card_{{$item->item_id}}" class="order-card mb-3">
         <div class="media">
             <div class="form-group ml-2 mr-2">
                 <div class="checkbox">
@@ -163,7 +163,7 @@ card.order-card > div {
                     <button id="add{{$item->item_id}}" type="button" class="btn btn-sm btn-primary mhs-button-count" @if($item->count >= $item->item_count) disabled="disabled" @endif onclick="add({{$item->item_id}},{{$item->item_count}});addToCart({{$item->item_id}},1)"><strong>+</strong></button>
                 </div>
                 @endif
-                <button type="button" class="btn btn-danger" onclick="addToCart_delete({{$item->item_id}})">删除</button><!--此处的js代码若需要cid 使用{{$item->cid}}即可 若需要 item_id 使用 {{$item->item_id}}-->
+                <button type="button" class="btn btn-danger" onclick="deleteFromCart({{$item->item_id}})">删除</button><!--此处的js代码若需要cid 使用{{$item->cid}}即可 若需要 item_id 使用 {{$item->item_id}}-->
                 @if($item->scode == -1)
                 <p class="text-warning">该物品已下架</p>
                 @elseif($item->scode == 0)
@@ -175,21 +175,6 @@ card.order-card > div {
     @endforeach
     <br>
     <script>
-
-        function addToCart_delete(id,reload=true) {
-            $.post("/handling/ajax/AddToCart",{
-                item_id:id,
-                count:-1,
-            },function(result) {
-                console.log(result);
-                //result = JSON.parse(result);
-                //console.log(result);
-                //$.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-            });
-            if(reload){
-                location.reload();
-            }
-        }
 
         let settlement=function(){
             NodeList.prototype.map=Array.prototype.map;
@@ -218,7 +203,7 @@ card.order-card > div {
                 for(let i=1;i<items.length;i++){
                     args+="&item[]="+items[i];
                 }
-                window.location.href="/handling/order/create/"+args;
+                window.location.href="{{route('handling.orderCreate')}}"+args;
             }
         }
 
@@ -229,22 +214,18 @@ card.order-card > div {
 <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="settlement()"><i class="MDI check"></i></button>
 
 <script>
-    function removeItem(id) {
+    function deleteFromCart(id) {
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/removeItem',
+            url: '/ajax/handling/deleteFromCart',
             data: {
-                item_id:id,
+                iid:id,
             },
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, success: function(ret){
-                console.log(ret);
-                alert("下架成功！","恭喜");
-                setTimeout(function(){
-                    window.location.reload();
-                }, 1000);
+                $("#card_"+id).remove()
             }, error: function(xhr, type){
                 console.log(xhr);
                 switch(xhr.status) {
@@ -258,39 +239,6 @@ card.order-card > div {
                         alert("Server Connection Error");
                 }
                 console.log('Ajax error while posting to removeItem!');
-            }
-        });
-    }
-
-    function restoreItem(id) {
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/handling/restoreItem',
-            data: {
-                item_id:id,
-            },
-            dataType: 'json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }, success: function(ret){
-                console.log(ret);
-                alert("上架成功！","恭喜");
-                setTimeout(function(){
-                    window.location.reload();
-                }, 1000);
-            }, error: function(xhr, type){
-                console.log(xhr);
-                switch(xhr.status) {
-                    case 422:
-                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
-                        break;
-                    case 429:
-                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
-                        break;
-                    default:
-                        alert("Server Connection Error");
-                }
-                console.log('Ajax error while posting to restoreItem!');
             }
         });
     }
@@ -347,7 +295,7 @@ card.order-card > div {
     }
 
     function borrowImmediately(id) {
-        window.location.href="/order/create/?item_id="+id+"&count="+$('#count' + id).text().trim;
+        window.location.href= "{{route('handling.orderCreate')}}?item_id="+id+"&count="+$('#count' + id).text().trim;
     }
 </script>
 

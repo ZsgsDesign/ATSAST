@@ -63,7 +63,7 @@ function borrowImmediately(id,i){
   //     count:$('#count' + i).text()
   // },(result) => {
       // showResult(result);
-      window.location.href="<{$MHS_DOMAIN}>/order/create/?iid="+id+"&count="+$('#count' + i).text();
+      
   // });
 }
 function removeItem(id) {

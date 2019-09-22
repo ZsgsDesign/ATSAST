@@ -61,6 +61,7 @@ class HandlingController extends Controller
         if (!Auth::check()) {
             return ResponseModel::err(2009);
         }
+
         $cartmodel = new CartModel();
         $itemModel = new ItemModel();
         if(!$itemModel->existIid($iid)){

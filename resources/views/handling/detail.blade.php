@@ -153,7 +153,7 @@ card.order-card > div {
         top: -1rem;
     }
 </style>
-<div class="container mundb-standard-container"> 
+<div class="container mundb-standard-container">
     <h3 class="mhs-title mb-3 mt-3">物品详情</h3>
     @if($item_info->scode==-1)
     <h5 class="mhs-title text-danger mb-3">抱歉，该物品已下架。</h5>
@@ -346,7 +346,7 @@ card.order-card > div {
     }
 
     function borrowImmediately(id) {
-        window.location.href="/order/create/?iid="+id+"&count="+$('#count' + id).text().trim;
+        window.location.href= "{{route('handling.orderCreate')}}?iid="+id+"&count="+$('#count' + id).text().trim;
     }
 </script>
 @endsection
