@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CartModel;
 use App\Models\ItemModel;
+use App\Models\OrderModel;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -58,10 +59,16 @@ class HandlingController extends Controller
     }
 
     public function order(){
+        $ordermodel = new OrderModel();
+        $ret = $ordermodel->list(Auth::user()->id);
+        $paginator = $ret['paginator'];
+        $list = $ret['list'];
         return view('handling.order',[
             'page_title'=>"我的订单",
             'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Handling"
+            'navigation'=>"Handling",
+            'paginator'=>$paginator,
+            'orders'=>$list,
         ]);
     }
 

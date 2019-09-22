@@ -124,53 +124,38 @@ card.order-card > div {
     <table class="table col-12 table-hover table">
         <thead>
         <tr class="row">
-            <th class="col-lg-4 col-md-4 col-6" scope="col">订单号 <i class="MDI arrow-up-bold"></i></th>
-            <th class="col-lg-4 col-md-5 col-6" scope="col">物品名称</th>
+            <th class="col-lg-3 col-md-4 col-6" scope="col">订单号 <i class="MDI arrow-up-bold"></i></th>
+            <th class="col-lg-3 col-md-2 col-6" scope="col">物品名称</th>
             <th class="col-lg-1 d-none d-lg-block" scope="col">数量</th>
             <th class="col-lg-1 d-none d-lg-block" scope="col">对方</th>
             <th class="col-lg-2 col-md-3 d-none d-md-block" scope="col">创建时间</th>
+            <th class="col-lg-2 col-md-3 d-none d-md-block" scope="col">归还时间</th>
         </tr>
         </thead>
         <tbody>
         @foreach($orders as $key => $r)
-        @if(in_array($r->oid,$typeA))
-        <tr class="row alert-success">
-            @elseif(in_array($r->oid,$typeB))
-        <tr class="row alert-warning">
-            @else
         <tr class="row">
-            @endif
-            <td class="col-lg-4 col-md-4 col-6" scope="row">
+            <td class="col-lg-3 col-md-4 col-6" scope="row">
                 @if($r->renter_id == Auth::user()->id)<span class="badge badge-pill badge-light">借用</span>@else<span class="badge badge-pill badge-dark">出借</span>@endif
                 @if($r->renter_id == Auth::user()->id)
-                @if($r->scode == 1)
+                @if($r->scode == 0)
+                <span class="badge badge-primary">订单已取消</span>
+                @elseif($r->scode == 1)
                 <span class="badge badge-info">等待取用</span>
                 @elseif($r->scode == 2)
-                <span class="badge badge-primary">等待归还</span>
+                <span class="badge badge-warning">等待归还</span>
                 @elseif($r->scode == 3)
-                @if(!strlen($r->renter_review))
-                <span class="badge badge-info">等待评价</span>
-                @else
-                <span class="badge badge-info">等待对方评价</span>
-                @endif
-                @elseif($r->scode == 4)
                 <span class="badge badge-success">订单完成</span>
-                @elseif($r->scode == 5)
-                <span class="badge badge-secondary">订单取消</span>
-                @elseif($r->scode == 6)
-                <span class="badge badge-warning">您已超时未归还</span>
                 @endif
                 @else
-                @if($r->scode == 1)
+                @if($r->scode == 0)
+                <span class="badge badge-primary">订单已取消</span>
+                @elseif($r->scode == 1)
                 <span class="badge badge-info">等待对方取用</span>
                 @elseif($r->scode == 2)
-                <span class="badge badge-primary">等待对方归还</span>
-                @elseif($r->scode == 4)
+                <span class="badge badge-warning">等待对方归还</span>
+                @elseif($r->scode == 3)
                 <span class="badge badge-success">订单完成</span>
-                @elseif($r->scode == 5)
-                <span class="badge badge-secondary">订单取消</span>
-                @elseif($r->scode == 6)
-                <span class="badge badge-warning">对方超时未归还</span>
                 @endif
                 @endif
                 <a href="/handling/order/view/{{$r->oid}}">{{$r->oid}}</a>
@@ -183,21 +168,21 @@ card.order-card > div {
                     <a class="dropdown-item text-danger" href="JavaScript:oid={{$r->oid}};$('#Cancel').modal('show');">取消订单</a>
                     @elseif($r->renter_id != Auth::user()->id && $r->scode == 2)
                     <a class="dropdown-item text-primary" href="JavaScript:oid={{$r->oid}};$('#Return').modal('show');">确认归还</a>
-                    @elseif($r->renter_id != Auth::user()->id && $r->scode == 6)
-                    <a class="dropdown-item text-primary" href="JavaScript:oid={{$r->oid}};$('#Return').modal('show');">确认归还</a>
                     @else
                     <a class="dropdown-item disabled" href="#" disabled="true">没有可用的操作</a>
                     @endif
                 </div>
             </td>
-            <td class="col-lg-4 col-md-5 col-6"><a href="/handling/item/detail/{{$r->iid}}">{{$r->name}}</a></td>
+            <td class="col-lg-3 col-md-2 col-6"><a href="/handling/detail/{{$r->iid}}">{{$r->name}}</a></td>
             <td class="col-lg-1 d-none d-lg-block">{{$r->count}}</td>
             <td class="col-lg-1 d-none d-lg-block">@if($r->renter_id == Auth::user()->id)
                 {{$r->real_name}}
                 @else
-                {{$r->renter_real_name}}@endif
+                {{$r->renter_real_name}}
+                @endif
             </td>
             <td class="col-lg-2 col-md-3 d-none d-md-block">{{$r->create_time}}</td>
+            <td class="col-lg-2 col-md-3 d-none d-md-block">{{$r->return_time}}</td>
         </tr>
         @endforeach
         </tbody>
@@ -218,27 +203,19 @@ card.order-card > div {
 <script>
     let oid = -1;
     function confirm(){
-        $.post("/handling/ajax/OperateOrder",{oid:oid,operation:'confirm'},function(data,status){
+        $.post("/ajax/handling/operateOrder",{oid:oid,operation:'confirm'},function(data,status){
             console.log(data,status);
             location.href = "/handling/order/view/"+oid;
         });
     }
     function cancel(){
-        $.post("/handling/ajax/OperateOrder",{oid:oid,operation:'cancel'},function(data,status){
+        $.post("/ajax/handling/operateOrder",{oid:oid,operation:'cancel'},function(data,status){
             console.log(data,status);
             location.href = "/handling/order/view/"+oid;
         });
     }
     function _return(){
-        $.post("/handling/ajax/OperateOrder",{oid:oid,operation:'return'},function(data,status){
-            console.log(data,status);
-            location.href = "/handling/order/view/"+oid;
-        });
-    }
-    function review(comment,text){
-        console.log(comment);
-        console.log(text);
-        $.post("/handling/ajax/ReviewOrder",{oid:oid,review:comment,content:text},function(data,status){
+        $.post("/ajax/handling/operateOrder",{oid:oid,operation:'return'},function(data,status){
             console.log(data,status);
             location.href = "/handling/order/view/"+oid;
         });

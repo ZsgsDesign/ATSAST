@@ -135,4 +135,12 @@ class HandlingController extends Controller
         $ret = $cartmodel->deleteFromCart($iid,Auth::user()->id);
         return ResponseModel::success(200,null,$ret);
     }
+
+    public function operateOrder(Request $request)
+    {
+        $request->validate([
+            'oid' => 'required|integer',
+            'operation' => 'required|string',
+        ]);
+    }
 }
