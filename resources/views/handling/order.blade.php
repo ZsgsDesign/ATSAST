@@ -164,10 +164,10 @@ card.order-card > div {
                 </button>
                 <div class="dropdown-menu">
                     @if($r->renter_id == Auth::user()->id && $r->scode == 1)
-                    <a class="dropdown-item text-primary" href="JavaScript:confirm({{$r->oid}})">确认取用</a>
-                    <a class="dropdown-item text-danger" href="JavaScript:cancel({{$r->oid}})">取消订单</a>
+                    <a class="dropdown-item text-primary" href="JavaScript:confirm_({{$r->oid}});">确认取用</a>
+                    <a class="dropdown-item text-danger" href="JavaScript:cancel_({{$r->oid}});">取消订单</a>
                     @elseif($r->renter_id != Auth::user()->id && $r->scode == 2)
-                    <a class="dropdown-item text-primary" href="JavaScript:return({{$r->oid}})">确认归还</a>
+                    <a class="dropdown-item text-primary" href="JavaScript:return_({{$r->oid}});">确认归还</a>
                     @else
                     <a class="dropdown-item disabled" href="#" disabled="true">没有可用的操作</a>
                     @endif
@@ -201,14 +201,14 @@ card.order-card > div {
 </div>
 
 <script>
-    function cancel(oid){
-        alert2({content:'您确定要取消该笔借用吗？',title:'取消订单'},function(deny){if(!deny){operate(oid,'cancel'))}});
+    function cancel_(oid){
+        confirm({content:'您确定要取消该笔借用吗？',title:'取消订单'},function(deny){if(!deny){operate(oid,'cancel')}});
     }
-    function confirm(oid){
-        alert2({content:'您确定取得物品了吗？',title:'确认取用'},function(deny){if(!deny){operate(oid,'confirm'))}});
+    function confirm_(oid){
+        confirm({content:'您确定取得物品了吗？',title:'确认取用'},function(deny){if(!deny){operate(oid,'confirm')}});
     }
-    function return(oid){
-        alert2({content:'您确定对方归还了物品吗？',title:'确认归还'},function(deny){if(!deny){operate(oid,'return'))}});
+    function return_(oid){
+        confirm({content:'您确定对方归还了物品吗？',title:'确认归还'},function(deny){if(!deny){operate(oid,'return')}});
     }
     function operate(oid,operation){
         $.ajax({

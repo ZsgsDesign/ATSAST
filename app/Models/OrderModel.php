@@ -35,17 +35,20 @@ class OrderModel extends Model
     {
         $ret = DB::table('order')->where('oid','=',$oid)->get()->first();
         if($ret->scode==1&&$operation=="confirm"){
-            return DB::table('order')->where('oid','=',$oid)->update([
+            DB::table('order')->where('oid','=',$oid)->update([
                 "scode"=>2
             ]);
+            return true;
         }elseif($ret->scode==1&&$operation=="cancel"){
-            return DB::table('order')->where('oid','=',$oid)->update([
-                "scode"=>1
+            DB::table('order')->where('oid','=',$oid)->update([
+                "scode"=>0
             ]);
+            return true;
         }elseif($ret->scode==2&&$operation=="return"){
-            return DB::table('order')->where('oid','=',$oid)->update([
+            DB::table('order')->where('oid','=',$oid)->update([
                 "scode"=>3 //留了后门，方便我还东西
             ]);
+            return true;
         }else{
             return null;
         }
