@@ -88,11 +88,11 @@ card.order-card > div {
     border-radius: 20px;
 }
 .mhs-item-img-detailed {
-     border-radius: 20px !important;
-     max-width: 20rem;
-     max-height: 20rem;
-     object-fit: cover;
- }
+    border-radius: 20px !important;
+    max-width: 20rem;
+    max-height: 20rem;
+    object-fit: cover;
+}
 .mhs-item-img-review {
     border-radius: 20px !important;
     max-width: 5rem;
@@ -164,10 +164,10 @@ card.order-card > div {
                 </button>
                 <div class="dropdown-menu">
                     @if($r->renter_id == Auth::user()->id && $r->scode == 1)
-                    <a class="dropdown-item text-primary" href="JavaScript:oid={{$r->oid}};$('#Confirm').modal('show');">确认取用</a>
-                    <a class="dropdown-item text-danger" href="JavaScript:oid={{$r->oid}};$('#Cancel').modal('show');">取消订单</a>
+                    <a class="dropdown-item text-primary" href="JavaScript:confirm({{$r->oid}})">确认取用</a>
+                    <a class="dropdown-item text-danger" href="JavaScript:cancel({{$r->oid}})">取消订单</a>
                     @elseif($r->renter_id != Auth::user()->id && $r->scode == 2)
-                    <a class="dropdown-item text-primary" href="JavaScript:oid={{$r->oid}};$('#Return').modal('show');">确认归还</a>
+                    <a class="dropdown-item text-primary" href="JavaScript:return({{$r->oid}})">确认归还</a>
                     @else
                     <a class="dropdown-item disabled" href="#" disabled="true">没有可用的操作</a>
                     @endif
@@ -201,23 +201,42 @@ card.order-card > div {
 </div>
 
 <script>
-    let oid = -1;
-    function confirm(){
-        $.post("/ajax/handling/operateOrder",{oid:oid,operation:'confirm'},function(data,status){
-            console.log(data,status);
-            location.href = "/handling/order/view/"+oid;
-        });
+    function cancel(oid){
+        alert2({content:'您确定要取消该笔借用吗？',title:'取消订单'},function(deny){if(!deny){operate(oid,'cancel'))}});
     }
-    function cancel(){
-        $.post("/ajax/handling/operateOrder",{oid:oid,operation:'cancel'},function(data,status){
-            console.log(data,status);
-            location.href = "/handling/order/view/"+oid;
-        });
+    function confirm(oid){
+        alert2({content:'您确定取得物品了吗？',title:'确认取用'},function(deny){if(!deny){operate(oid,'confirm'))}});
     }
-    function _return(){
-        $.post("/ajax/handling/operateOrder",{oid:oid,operation:'return'},function(data,status){
-            console.log(data,status);
-            location.href = "/handling/order/view/"+oid;
+    function return(oid){
+        alert2({content:'您确定对方归还了物品吗？',title:'确认归还'},function(deny){if(!deny){operate(oid,'return'))}});
+    }
+    function operate(oid,operation){
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/handling/operateOrder',
+            data: {
+                oid:oid,
+                operation:operation
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                window.location.reload();
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`您的操作过于频繁，请 ${xhr.getResponseHeader('Retry-After')} 秒后再试。`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+            }
         });
     }
 </script>

@@ -180,6 +180,10 @@ card.order-card > div {
             @endforeach
         </card>
     <h5 class="mt-3 text-primary">总计：{{$total_item}} 件物品，共 {{$total_count}} 个。</h5>
+    <br>
+    </div>
+    <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="submit()"><i class="MDI clipboard-check"></i></button>
+
     <script>
         let submit=function(){
             NodeList.prototype.map=Array.prototype.map;
@@ -203,10 +207,5 @@ card.order-card > div {
                 })
             });
         }
-    </script>
-    <br>
-    </div>
-    <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="submit()"><i class="MDI clipboard-check"></i></button>
-
-
+        </script>
 @endsection

@@ -184,6 +184,7 @@ card.order-card > div {
         padding: 1rem;
     }
 </style>
+
 <div class="container mundb-standard-container">
     <h3 class="mhs-title mb-3 mt-3">订单详情
         <small>
