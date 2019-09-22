@@ -62,7 +62,7 @@ Route::group(['prefix' => 'system'], function () {
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], function () {
     Route::group(['prefix' => 'account'], function () {
-        Route::post('updatePassword', 'AccountController@updatePassword')->middleware('auth')->name('account.updatepassword');
+        Route::post('updatePassword', 'AccountController@updatePassword')->name('account.updatepassword');
     });
 
     Route::group(['prefix' => 'pastebin'], function () {
