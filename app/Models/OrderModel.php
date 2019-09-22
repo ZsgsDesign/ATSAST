@@ -13,4 +13,16 @@ class OrderModel extends Model
     {
         
     }
+
+    public function list()
+    {
+        $paginator = DB::table('order as o')
+        ->join('item as i','o.item_id','=','i.iid')
+        ->paginate(20);
+        $list = $paginator->all();
+        return [
+            'paginator'=>$paginator,
+            'list'=>$list,
+        ];
+    }
 }

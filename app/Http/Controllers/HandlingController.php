@@ -65,7 +65,7 @@ class HandlingController extends Controller
         ]);
     }
 
-    public function orderCreate(Request $request){
+    public function orderCreate(Request $request){
         dd($request->iid);
         return view('handling.order_create',[
             'page_title'=>"创建订单",
