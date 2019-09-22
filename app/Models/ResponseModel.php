@@ -113,6 +113,7 @@ class ResponseModel extends Model
             '7007' => "物品已上架",
             '7008' => "数量过大",
             '7009' => "物品不在购物车中",
+            '7010' => "没有权限",
         ];
         return isset($errDesc[$errCode]) ? $errDesc[$errCode] : $errDesc['1000'];
     }

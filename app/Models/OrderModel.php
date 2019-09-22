@@ -30,4 +30,32 @@ class OrderModel extends Model
             'list'=>$list,
         ];
     }
+
+    public function operateOrder($oid,$operation)
+    {
+        $ret = DB::table('order')->where('oid','=',$oid)->get()->first();
+        if($ret->scode==1&&$operation=="confirm"){
+            return DB::table('order')->where('oid','=',$oid)->update([
+                "scode"=>2
+            ]);
+        }elseif($ret->scode==1&&$operation=="cancel"){
+            return DB::table('order')->where('oid','=',$oid)->update([
+                "scode"=>1
+            ]);
+        }elseif($ret->scode==2&&$operation=="return"){
+            return DB::table('order')->where('oid','=',$oid)->update([
+                "scode"=>3 //留了后门，方便我还东西
+            ]);
+        }else{
+            return null;
+        }
+    }
+
+    public function isOwner($oid,$uid){
+        return DB::table('order')->join('item','order.item_id','=','item.iid')->where('oid','=',$oid)->where('owner','=',$uid)->count();
+    }
+
+    public function isRenter($oid,$uid){
+        return DB::table('order')->where('oid','=',$oid)->where('renter_id','=',$uid)->count();
+    }
 }

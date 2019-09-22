@@ -149,6 +149,9 @@ class HandlingController extends Controller
             return ResponseModel::err(2009);
         }
         $ordermodel = new OrderModel();
+        if(!$ordermodel->isOwner($oid,Auth::user()->id) && !$ordermodel->isRenter($oid,Auth::user()->id)){
+            return ResponseModel::err(7010);
+        }
         $ret = $ordermodel->operateOrder($oid,$operation);
         if($ret){
             return ResponseModel::success(200,null,$ret);
