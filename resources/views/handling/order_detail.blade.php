@@ -88,11 +88,11 @@ card.order-card > div {
     border-radius: 20px;
 }
 .mhs-item-img-detailed {
-     border-radius: 20px !important;
-     max-width: 20rem;
-     max-height: 20rem;
-     object-fit: cover;
- }
+    border-radius: 20px !important;
+    max-width: 20rem;
+    max-height: 20rem;
+    object-fit: cover;
+}
 .mhs-item-img-review {
     border-radius: 20px !important;
     max-width: 5rem;
@@ -117,8 +117,6 @@ card.order-card > div {
         bottom: 24px;
     }
 }
-</style>
-<style>
     <{include file="MHS.css" }>
     avatar{
         display: block;
@@ -238,27 +236,6 @@ card.order-card > div {
     <{else if $order['scode'] == 4}>
     <div class="jumbotron alert-success">
         <h1><strong>订单已完成</strong></h1>
-        <p class="lead">
-            <br/>
-            <span style="font-size:30px;font-weight:bold">TA&nbsp;</span>给了您一个
-            <{if $userinfo['uid'] == $order['renter_id']}>
-                    <{if $order['owner_review'] == -1}>
-                        <strong>差评👎</strong>
-                    <{else if $order['owner_review'] == 0}>
-                        <strong>中评🤔</strong>
-                    <{else if $order['owner_review'] == 1}>
-                        <strong>好评👍</strong>
-                    <{/if}>
-            <{else}>
-                <{if $order['renter_review'] == -1}>
-                    <strong>差评👎</strong>
-                <{else if $order['renter_review'] == 0}>
-                    <strong>中评🤔</strong>
-                <{else if $order['renter_review'] == 1}>
-                    <strong>好评👍</strong>
-                <{/if}>
-            <{/if}>
-        </p>
         <p class="lead">该订单已完成，感谢您的使用。</p>
     </div>
     <{else if $order['scode'] == 3}>

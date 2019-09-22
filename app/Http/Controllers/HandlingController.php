@@ -73,11 +73,33 @@ class HandlingController extends Controller
     }
 
     public function orderCreate(Request $request){
-        dd($request->iid);
+        $itemModel = new ItemModel();
+        $cartModel = new CartModel();
+        //区分购物车结算和立即借用结算
+        if($request->has('item')){
+            $total_count = 0;
+            foreach($request->item as $i){
+                $item = $itemModel->detail($i);
+                $item->order_count_=$cartModel->getCount($i,Auth::id());
+                $items[]=$item;
+                $total_count += $item->order_count_;
+            }
+            $total_item = count($request->item);
+        }else{
+            $item = $itemModel->detail($request->iid);
+            $item->order_count_=$request->count;
+            $items[]=$item;
+            $total_item = 1;
+            $total_count = $request->count;
+        }
+
         return view('handling.order_create',[
             'page_title'=>"创建订单",
             'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Handling"
+            'navigation'=>"Handling",
+            'items'=>$items,
+            'total_item' => $total_item,
+            'total_count' => $total_count
         ]);
     }
 
