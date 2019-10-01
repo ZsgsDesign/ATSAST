@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::redirect('/home', '/', 301);
 
 Route::get('/', 'MainController@home')->name('home');
@@ -58,6 +60,10 @@ Route::group(['prefix' => 'pb'], function () {
 Route::group(['prefix' => 'system'], function () {
     Route::get('/logs', 'SystemController@logs')->middleware('auth')->name('system.logs');
     Route::get('/bugs', 'SystemController@bugs')->middleware('auth')->name('system.bugs');
+});
+
+Route::group(['prefix' => 'account'], function () {
+    Route::get('/profile', 'AccountController@profile')->middleware('auth')->name('account.profile');
 });
 
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], function () {
