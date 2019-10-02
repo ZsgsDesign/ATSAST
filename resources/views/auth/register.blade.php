@@ -94,6 +94,9 @@
             <div class="alert alert-primary text-left" role="alert">
                 由于后台系统重构，2019年8月前注册的用户请<a href="/account/update">点击这里</a>更新密码。
             </div>
+            <div class="alert alert-primary text-left" role="alert">
+                请使用NJUPT校内邮箱注册。
+            </div>
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs nav-justified nav-tabs-material" id="accountTab" role="tablist">

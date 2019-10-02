@@ -251,6 +251,10 @@
         border-radius: 0.125rem;
         background-color: #f5f5f5;
     }
+
+    #nav-container {
+        margin-bottom: 0px !important;
+    }
 </style>
 <img class="atsast-profile-focus" src="{{ $imgurl }}">
 <div class="container mundb-standard-container">
