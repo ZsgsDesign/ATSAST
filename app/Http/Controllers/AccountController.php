@@ -48,4 +48,20 @@ class AccountController extends Controller
             'detail'=>$detail,
         ]);
     }
+
+    public function contests(Request $request)
+    {
+        $accountmodel = new AccountModel();
+        $detail = $accountmodel->detail(Auth::user()->id);
+        $register_contest_result = $accountmodel->getRegisterContestResult(Auth::user()->id);
+        $attend_contest_result = $accountmodel->getAttendContestResult(Auth::user()->id);
+        return view('account.contests', [
+            'page_title'=>"报名活动",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Account",
+            'detail'=>$detail,
+            'register_contest_result'=>$register_contest_result,
+            'attend_contest_result'=>$attend_contest_result,
+        ]);
+    }
 }

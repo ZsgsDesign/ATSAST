@@ -21,6 +21,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/update', 'AccountController@update')->name('account.update');
     Route::get('/profile', 'AccountController@profile')->middleware('auth')->name('account.profile');
     Route::get('/settings', 'AccountController@settings')->middleware('auth')->name('account.settings');
+    Route::get('/contests', 'AccountController@contests')->middleware('auth')->name('account.contests');
 });
 
 Route::group(['prefix' => 'course'], function () {

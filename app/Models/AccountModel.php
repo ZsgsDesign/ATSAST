@@ -116,4 +116,56 @@ class AccountModel extends Model
     {
         return DB::table('users')->where('id','=',$uid)->update(['album'=>$album]);
     }
+
+    public function getRegisterContestResult($uid)
+    {
+        $ret = DB::table('contest_register as r')
+        ->select('r.contest_id','c.name','creator','desc','type','start_date','end_date','r.status','due_register','image','o.name as creator_name')
+        ->leftJoin('contest as c','r.contest_id','=','c.contest_id')
+        ->leftJoin('organization as o','c.creator','=','o.oid')
+        ->where('uid','=',$uid)
+        ->where('c.status','=','1')->get();
+        foreach ($ret as &$r) {
+            if ($r->start_date==$r->end_date) {
+                $r->parse_date=$r->start_date;
+            } else {
+                $r->parse_date=$r->start_date." ~ ".$r->end_date;
+            }
+            if ($r->status==1) {
+                $r->parse_status='<span class="wemd-green-text"><i class="MDI checkbox-marked-circle-outline"></i> 已成功报名</span>';
+            } elseif ($r->status==0) {
+                $r->parse_status='<span class="wemd-light-blue-text"><i class="MDI timer-sand"></i> 已提交报名</span>';
+            } elseif ($r->status==-1) {
+                $r->parse_status='<span class="wemd-red-text"><i class="MDI alert-circle-outline"></i> 报名已被拒绝</span>';
+            }
+        }
+        return $ret;
+    }
+
+    public function getAttendContestResult($uid)
+    {
+        $sid = DB::table('users')->where('id','=',$uid)->get()->first()->SID;
+        $ret = DB::table('contest_register as r')
+        ->select('r.contest_id','c.name','creator','desc','type','start_date','end_date','r.status','due_register','image','o.name as creator_name')
+        ->leftJoin('contest as c','r.contest_id','=','c.contest_id')
+        ->leftJoin('organization as o','c.creator','=','o.oid')
+        ->where('uid','<>',$uid)
+        ->where('info','LIKE','%"SID":"'.$sid.'"%')
+        ->where('c.status','=','1')->get();
+        foreach ($ret as &$r) {
+            if ($r->start_date==$r->end_date) {
+                $r->parse_date=$r->start_date;
+            } else {
+                $r->parse_date=$r->start_date." ~ ".$r->end_date;
+            }
+            if ($r->status==1) {
+                $r->parse_status='<span class="wemd-green-text"><i class="MDI checkbox-marked-circle-outline"></i> 已成功报名</span>';
+            } elseif ($r->status==0) {
+                $r->parse_status='<span class="wemd-light-blue-text"><i class="MDI timer-sand"></i> 已提交报名</span>';
+            } elseif ($r->status==-1) {
+                $r->parse_status='<span class="wemd-red-text"><i class="MDI alert-circle-outline"></i> 报名已被拒绝</span>';
+            }
+        }
+        return $ret;
+    }
 }
