@@ -87,4 +87,33 @@ class AccountModel extends Model
             'imgurl'=>$imgurl,
         ];
     }
+
+    public function detail($uid)
+    {
+        return DB::table('users')->where('id','=',$uid)->get()->first();
+    }
+
+    public function updateInfo($real_name,$name,$gender,$url,$uid)
+    {
+        if($url){
+            return DB::table('users')->where('id','=',$uid)->update(['real_name'=>$real_name,'name'=>$name,'gender'=>$gender,'avatar'=>$url]);
+        }else{
+            return DB::table('users')->where('id','=',$uid)->update(['real_name'=>$real_name,'name'=>$name,'gender'=>$gender]);
+        }
+    }
+
+    public function getPasswordbyUid($uid)
+    {
+        return DB::table('users')->where('id','=',$uid)->get()->first()->password;
+    }
+
+    public function changePassword($uid,$password)
+    {
+        return DB::table('users')->where('id','=',$uid)->update(['password'=>Hash::make($password)]);
+    }
+
+    public function applyAlbum($uid,$album)
+    {
+        return DB::table('users')->where('id','=',$uid)->update(['album'=>$album]);
+    }
 }

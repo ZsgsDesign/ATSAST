@@ -15,7 +15,7 @@ class ResponseModel extends Model
         }
         $output=[
              'ret' => $statusCode,
-            'desc' => is_null($desc) ? 'Successful!' : $desc,
+            'desc' => is_null($desc) ? '成功！' : $desc,
             'data' => $data
         ];
         return response()->json($output);

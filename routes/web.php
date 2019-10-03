@@ -19,6 +19,8 @@ Route::get('/', 'MainController@home')->name('home');
 
 Route::group(['prefix' => 'account'], function () {
     Route::get('/update', 'AccountController@update')->name('account.update');
+    Route::get('/profile', 'AccountController@profile')->middleware('auth')->name('account.profile');
+    Route::get('/settings', 'AccountController@settings')->middleware('auth')->name('account.settings');
 });
 
 Route::group(['prefix' => 'course'], function () {
@@ -62,13 +64,13 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/bugs', 'SystemController@bugs')->middleware('auth')->name('system.bugs');
 });
 
-Route::group(['prefix' => 'account'], function () {
-    Route::get('/profile', 'AccountController@profile')->middleware('auth')->name('account.profile');
-});
-
 Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('updatePassword', 'AccountController@updatePassword')->name('account.updatepassword');
+        Route::post('updateInfo', 'AccountController@updateInfo')->middleware('auth')->name('account.updateInfo');
+        Route::post('sendActivateEmail', 'AccountController@sendActivateEmail')->middleware('auth')->name('account.sendActivateEmail');
+        Route::post('changePassword', 'AccountController@changePassword')->name('account.changePassword');
+        Route::post('applyAlbum', 'AccountController@applyAlbum')->middleware('auth')->name('account.applyAlbum');
     });
 
     Route::group(['prefix' => 'pastebin'], function () {

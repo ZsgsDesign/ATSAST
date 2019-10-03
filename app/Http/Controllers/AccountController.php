@@ -36,4 +36,16 @@ class AccountController extends Controller
             'imgurl'=>$imgurl,
         ]);
     }
+
+    public function settings(Request $request)
+    {
+        $accountmodel = new AccountModel();
+        $detail = $accountmodel->detail(Auth::user()->id);
+        return view('account.settings', [
+            'page_title'=>"用户设置",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Account",
+            'detail'=>$detail,
+        ]);
+    }
 }
