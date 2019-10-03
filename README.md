@@ -60,6 +60,8 @@ php artisan migrate
     - [X] 课程反馈
     - [X] 视频地址
 - [ ] 活动
+    - [X] 首页
+    - [X] 活动详情
 - [X] PasteBin
 - [X] 报销
 - [ ] 借还

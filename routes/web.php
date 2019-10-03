@@ -35,6 +35,7 @@ Route::group(['prefix' => 'course'], function () {
 
 Route::group(['prefix' => 'contest'], function () {
     Route::get('/', 'ContestController@index')->name('contest');
+    Route::get('/{cid}/detail', 'ContestController@detail')->name('contest.detail');
 });
 
 Route::group(['prefix' => 'handling'], function () {
