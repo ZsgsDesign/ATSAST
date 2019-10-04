@@ -138,4 +138,35 @@ class CourseController extends Controller
             'feedback_submit_status'=>$feedback_submit_status,
         ]);
     }
+
+    public function manage(Request $request)
+    {
+        $cid = $request->cid;
+        $coursemodel = new CourseModel();
+        if(!Auth::Check() || !$coursemodel->existCid($cid)){
+            return Redirect::route('course');
+        }
+        $ret = $coursemodel->manage($cid);
+        if(!$ret){
+            return Redirect::route('course');
+        }
+        $result = $ret['result'];
+        $site = $ret['site'];
+        $detail = $ret['detail'];
+        $instructor = $ret['instructor'];
+        $syllabus = $ret['syllabus'];
+        $access_right = $ret['access_right'];
+        return view('courses.manage', [
+            'page_title'=>"课程管理",
+            'site_title'=>$site,
+            'navigation'=>"Courses",
+            'cid'=>$cid,
+            'result'=>$result,
+            'detail'=>$detail,
+            'instructor'=>$instructor,
+            'syllabus'=>$syllabus,
+            'access_right'=>$access_right,
+            'clearance'=>$access_right['clearance']
+        ]);
+    }
 }
