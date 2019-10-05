@@ -183,4 +183,33 @@ class CourseController extends Controller
             'navigation'=>"Courses",
         ]);
     }
+
+    public function viewSign(Request $request)
+    {
+        $cid = $request->cid;
+        $syid = $request->syid;
+        $coursemodel = new CourseModel();
+        $access_right = $coursemodel->accessRightViewSign(Auth::user()->id,$cid);
+        $existSyid = $coursemodel->existSyid($cid,$syid);
+        if (!$access_right || !$existSyid) {
+            return Redirect::route('course');
+        }
+        $ret = $coursemodel->viewSign($cid,$syid);
+        if(!$ret){
+            return Redirect::route('course');
+        }
+        $sign_details = $ret['sign_details'];
+        $result = $ret['result'];
+        $syllabus_info = $ret['syllabus_info'];
+        return view('courses.viewSign', [
+            'page_title'=>"查看签到情况",
+            'site_title'=>$syllabus_info['title'],
+            'navigation'=>"Courses",
+            'cid'=>$cid,
+            'syid'=>$syid,
+            'sign_details'=>$sign_details,
+            'result'=>$result,
+            'syllabus_info'=>$syllabus_info,
+        ]);
+    }
 }

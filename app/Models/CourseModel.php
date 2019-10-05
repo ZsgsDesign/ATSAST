@@ -298,4 +298,45 @@ class CourseModel extends Model
     {
         return DB::table('privilege')->where('uid','=',$uid)->where('type','=','system')->where('type_value','=','4')->count();
     }
+
+    public function accessRightViewSign($uid,$cid)
+    {
+        return DB::table('privilege')->where('uid','=',$uid)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->count();
+    }
+
+    public function viewSign($cid,$syid)
+    {
+        $this->cid=$cid;
+        $this->syid=$syid;
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = (array)$result;
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = (array)$access_right;
+        if (empty($access_right)) {
+            return null;
+        }
+        $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->all()[0];
+        $syllabus_info = (array)$syllabus_info;
+        $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
+        if (empty($result) || empty($syllabus_info)) {
+            return null;
+        }
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = (array)$creator;
+        $result['creator_name']=$creator['name'];
+        $result['creator_logo']=$creator['logo'];
+        $sign_details = DB::table('syllabus_sign as s')
+        ->leftJoin('users as u','s.uid','=','u.id')
+        ->where('s.cid','=',$cid)
+        ->where('s.syid','=',$syid)
+        ->orderBy('s.stime','asc')->get()->all();
+        foreach($sign_details as &$r){
+            $r = (array)$r;
+        }
+        return [
+            'sign_details'=>$sign_details,
+            'result'=>$result,
+            'syllabus_info'=>$syllabus_info
+        ];
+    }
 }
