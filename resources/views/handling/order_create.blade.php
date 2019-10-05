@@ -185,27 +185,39 @@ card.order-card > div {
     <button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="submit()"><i class="MDI clipboard-check"></i></button>
 
     <script>
-        let submit=function(){
+        function submit(){
             NodeList.prototype.map=Array.prototype.map;
             document.querySelectorAll('.item').map(function(val,index,arr){
                 let iid=val.getAttribute('iid');
                 let count=val.getAttribute('count');
-                $.post('/ajax/handling/CreateOrder',{
-                    iid:iid,
-                    count:count
-                },function(data,status){
-                    console.log(data,status);
-                    if(index+1 === arr.length){
-                        if(arr.length === 1){
-                            data=JSON.parse(data);
-                            window.location.href="/handling/order/view?oid="+data.data.oid;
-                        }
-                        else{
-                            window.location.href="/handling/orders";
+                $.ajax({
+                    type: 'POST',
+                    url: '/ajax/handling/createOrder',
+                    data: {
+                        iid:iid,
+                        count:count
+                    },
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }, success: function(ret){
+                        console.log(ret);
+                        //window.location.reload();
+                    }, error: function(xhr, type){
+                        console.log(xhr);
+                        switch(xhr.status) {
+                            case 422:
+                                alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                                break;
+                            case 429:
+                                alert(`您的操作过于频繁，请 ${xhr.getResponseHeader('Retry-After')} 秒后再试。`);
+                                break;
+                            default:
+                                alert("Server Connection Error");
                         }
                     }
-                })
+                });
             });
         }
-        </script>
+    </script>
 @endsection

@@ -159,4 +159,26 @@ class HandlingController extends Controller
             return ResponseModel::err(1002);
         }
     }
+
+    public function createOrder(Request $request){
+        $request->validate([
+            'iid' => 'required|integer',
+            'count' => 'required|integer',
+        ]);
+
+        $item = ItemModel::findOrFail($request->iid);
+        if($item->count > $request->count){
+            return ResponseModel::err(7011);
+        }
+        $orderModel = new OrderModel;
+        $orderModel->item_id = $request->iid;
+        $orderModel->scode = 1;
+        $orderModel->renter_id = Auth::id();
+        $orderModel->count = $request->count;
+        $orderModel->create_time = date('Y-m-d h:i:s');
+        $orderModel->save();
+        $item->count -= $request->count; // TODO 这里要加个🔒
+        $item->save();
+        return ResponseModel::success(200,null,$orderModel->oid);
+    }
 }
