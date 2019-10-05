@@ -212,4 +212,28 @@ class CourseController extends Controller
             'syllabus_info'=>$syllabus_info,
         ]);
     }
+
+    public function viewRegister(Request $request)
+    {
+        $cid = $request->cid;
+        $coursemodel = new CourseModel();
+        $access_right = $coursemodel->accessRightViewSign(Auth::user()->id,$cid);
+        if (!$access_right) {
+            return Redirect::route('course');
+        }
+        $ret = $coursemodel->viewRegister($cid);
+        if(!$ret){
+            return Redirect::route('course');
+        }
+        $register_details = $ret['register_details'];
+        $result = $ret['result'];
+        return view('courses.viewRegister', [
+            'page_title'=>"查看签到情况",
+            'site_title'=>$result['course_name'],
+            'navigation'=>"Courses",
+            'cid'=>$cid,
+            'register_details'=>$register_details,
+            'result'=>$result,
+        ]);
+    }
 }

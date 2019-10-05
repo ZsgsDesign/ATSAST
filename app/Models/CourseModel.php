@@ -339,4 +339,33 @@ class CourseModel extends Model
             'syllabus_info'=>$syllabus_info
         ];
     }
+
+    public function viewRegister($cid)
+    {
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = (array)$result;
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = (array)$access_right;
+        if (empty($access_right)) {
+            return null;
+        }
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = (array)$creator;
+        $result['creator_name']=$creator['name'];
+        $result['creator_logo']=$creator['logo'];
+        $course_register_details = DB::table('course_register as c')
+        ->leftJoin('users as u','c.uid','=','u.id')
+        ->where('c.cid','=',$cid)
+        ->orderBy('c.rid','asc')->get()->all();
+        foreach($course_register_details as &$r){
+            $r = (array)$r;
+        }
+        if(!empty($course_register_details) && $course_register_details[0]['uid']==0){
+            unset($course_register_details[0]); //这里有一个神奇的bug
+        }
+        return [
+            'register_details'=>$course_register_details,
+            'result'=>$result,
+        ];
+    }
 }
