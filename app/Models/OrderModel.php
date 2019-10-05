@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\DB;
 class OrderModel extends Model
 {
     protected $table='order';
-
+    protected $primaryKey = 'oid';
+    public $timestamps = false;
+    
     public function create()
     {
-        
+        DB::table('order')->insert([
+            "iid"
+        ]);
     }
 
     public function list($uid)

@@ -114,6 +114,7 @@ class ResponseModel extends Model
             '7008' => "数量过大",
             '7009' => "物品不在购物车中",
             '7010' => "没有权限",
+            '7011' => "物品数量超过现有库存",
         ];
         return isset($errDesc[$errCode]) ? $errDesc[$errCode] : $errDesc['1000'];
     }

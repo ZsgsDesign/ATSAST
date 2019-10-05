@@ -110,6 +110,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('removeItem', 'HandlingController@removeItem')->middleware('auth')->name('ajax.handling.removeitem');
         Route::post('restoreItem', 'HandlingController@restoreItem')->middleware('auth')->name('ajax.handling.restoreitem');
         Route::post('deleteFromCart', 'HandlingController@deleteFromCart')->middleware('auth')->name('ajax.handling.deleteFromCart');
+        Route::post('createOrder', 'HandlingController@createOrder')->middleware('auth')->name('ajax.handling.createOrder');
         Route::post('operateOrder', 'HandlingController@operateOrder')->middleware('auth')->name('ajax.handling.operateOrder');
     });
 });
