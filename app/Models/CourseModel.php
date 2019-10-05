@@ -293,4 +293,9 @@ class CourseModel extends Model
             'access_right'=>$access_right,
         ];
     }
+
+    public function accessRightAdd($uid)
+    {
+        return DB::table('privilege')->where('uid','=',$uid)->where('type','=','system')->where('type_value','=','4')->count();
+    }
 }

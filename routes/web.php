@@ -32,6 +32,7 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
     Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth')->name('course.feedback');
     Route::get('{cid}/manage', 'CourseController@manage')->name('course.manage');
+    Route::get('add', 'CourseController@add')->middleware('auth')->name('course.add');
 });
 
 Route::group(['prefix' => 'contest'], function () {

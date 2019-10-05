@@ -169,4 +169,18 @@ class CourseController extends Controller
             'clearance'=>$access_right['clearance']
         ]);
     }
+
+    public function add(Request $request)
+    {
+        $coursemodel = new CourseModel();
+        $access_right = $coursemodel->accessRightAdd(Auth::user()->id);
+        if (!$access_right) {
+            return Redirect::route('course');
+        }
+        return view('courses.add', [
+            'page_title'=>"新增课程",
+            'site_title'=>"SAST教学辅助平台",
+            'navigation'=>"Courses",
+        ]);
+    }
 }
