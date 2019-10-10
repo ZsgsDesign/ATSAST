@@ -368,4 +368,20 @@ class CourseModel extends Model
             'result'=>$result,
         ];
     }
+
+    public function addSyllabus($cid)
+    {
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = (array)$result;
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = (array)$access_right;
+        if (empty($access_right) || empty($result)) {
+            return null;
+        }
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = (array)$creator;
+        $result['creator_name']=$creator['name'];
+        $result['creator_logo']=$creator['logo'];
+        return $result;
+    }
 }

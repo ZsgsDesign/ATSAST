@@ -236,4 +236,25 @@ class CourseController extends Controller
             'result'=>$result,
         ]);
     }
+
+    public function addSyllabus(Request $request)
+    {
+        $cid = $request->cid;
+        $coursemodel = new CourseModel();
+        $access_right = $coursemodel->accessRightViewSign(Auth::user()->id,$cid);
+        if (!$access_right) {
+            return Redirect::route('course');
+        }
+        $ret = $coursemodel->addSyllabus($cid);
+        if(!$ret){
+            return Redirect::route('course');
+        }
+        return view('courses.addSyllabus', [
+            'page_title'=>"新增课时",
+            'site_title'=>$ret['course_name'],
+            'navigation'=>"Courses",
+            'cid'=>$cid,
+            'result'=>$ret,
+        ]);
+    }
 }

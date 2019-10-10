@@ -35,6 +35,7 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('add', 'CourseController@add')->middleware('auth')->name('course.add');
     Route::get('{cid}/view_sign/{syid}', 'CourseController@viewSign')->middleware('auth')->name('course.viewSign');
     Route::get('{cid}/view_register', 'CourseController@viewRegister')->middleware('auth')->name('course.viewRegister');
+    Route::get('{cid}/add_syllabus', 'CourseController@addSyllabus')->middleware('auth')->name('course.addSyllabus');
 });
 
 Route::group(['prefix' => 'contest'], function () {
