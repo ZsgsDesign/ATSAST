@@ -57,4 +57,40 @@ class CourseController extends Controller
         $ret = $coursemodel->submitFeedBack($cid, $syid, $rank, $desc, Auth::user()->id);
         return ResponseModel::success(200, null, $ret);
     }
+
+    public function addInstructor(Request $request)
+    {
+        $request->validate([
+            'cid' => 'required',
+            'email' => 'required'
+        ]);
+        $cid = $request->input('cid');
+        $email = $request->input('email');
+        $coursemodel = new CourseModel();
+        $ret = $coursemodel->addInstructor($cid,$email);
+        if($ret==0){
+            return ResponseModel::success(200, "添加讲师成功", $ret);
+        }elseif($ret==1){
+            return ResponseModel::success(200, "讲师权限提升成功", $ret);
+        }else{
+            return ResponseModel::err($ret);
+        }
+    }
+
+    public function removeInstructor(Request $request)
+    {
+        $request->validate([
+            'cid' => 'required',
+            'iid' => 'required'
+        ]);
+        $cid = $request->input('cid');
+        $iid = $request->input('iid');
+        $coursemodel = new CourseModel();
+        $ret = $coursemodel->removeInstructor($cid,$iid);
+        if($ret==0){
+            return ResponseModel::success(200, "讲师权限撤销成功", $ret);
+        }else{
+            return ResponseModel::err($ret);
+        }
+    }
 }

@@ -440,31 +440,68 @@
         var email=$("#add_instructor_email").val();
         $("#add_instructor_email").val("");
         $("#add_instructor_role").val("讲师");
-        $.post("/ajax/addInstructor",{
-            cid:{{$cid}},
-            email:email
-        },function(result){
-            result=JSON.parse(result);
-            alert(result.desc);
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/course/addInstructor',
+            data: {
+                cid:{{$cid}},
+                email:email,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert(ret.desc);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to addInstructor!');
+                ajaxing=false;
+            }
         });
     }
 
     function deleteInstructor(ele){
         var iid=$(ele).attr("data-iid");
-        $.post("/ajax/removeInstructor",{
-            cid:{{$cid}},
-            iid:iid
-        },function(result){
-            result=JSON.parse(result);
-            alert(result.desc);
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/course/removeInstructor',
+            data: {
+                cid:{{$cid}},
+                iid:iid
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert(ret.desc);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to removeInstructor!');
+                ajaxing=false;
+            }
         });
-    }
-
-    function alert(desc) {
-        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "提示";
-        $('#modeal_desc').html(desc);
-        $('#modeal_title').html(title);
-        $('#modal').modal();
     }
 </script>
 

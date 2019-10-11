@@ -250,14 +250,14 @@ class CourseModel extends Model
 
     public function manage($cid)
     {
-        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
-        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $result = (array)$result;
         if (empty($result) || empty($access_right)) {
             return null;
         }
-        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->first();
         $creator = (array)$creator;
         $details = DB::table('course_details')->where('cid','=',$cid)->get()->all();
         foreach($details as &$r){
@@ -308,20 +308,20 @@ class CourseModel extends Model
     {
         $this->cid=$cid;
         $this->syid=$syid;
-        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $result = (array)$result;
-        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
         if (empty($access_right)) {
             return null;
         }
-        $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->all()[0];
+        $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
         $syllabus_info = (array)$syllabus_info;
         $syllabus_info["time"] = date('Y年m月d日 H时i分 开始', strtotime($syllabus_info['time']));
         if (empty($result) || empty($syllabus_info)) {
             return null;
         }
-        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->first();
         $creator = (array)$creator;
         $result['creator_name']=$creator['name'];
         $result['creator_logo']=$creator['logo'];
@@ -342,14 +342,14 @@ class CourseModel extends Model
 
     public function viewRegister($cid)
     {
-        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $result = (array)$result;
-        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
         if (empty($access_right)) {
             return null;
         }
-        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->first();
         $creator = (array)$creator;
         $result['creator_name']=$creator['name'];
         $result['creator_logo']=$creator['logo'];
@@ -371,17 +371,96 @@ class CourseModel extends Model
 
     public function addSyllabus($cid)
     {
-        $result = DB::table('courses')->where('cid','=',$cid)->get()->all()[0];
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $result = (array)$result;
-        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->all()[0];
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
         if (empty($access_right) || empty($result)) {
             return null;
         }
-        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->all()[0];
+        $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->first();
         $creator = (array)$creator;
         $result['creator_name']=$creator['name'];
         $result['creator_logo']=$creator['logo'];
         return $result;
+    }
+
+    public function addInstructor($cid,$email){
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
+        $access_right = (array)$access_right;
+        if (empty($access_right) || $access_right["clearance"]<4) {
+            return 2003;
+        }
+        $email_user = DB::table('users')->where('email','=',$email)->get()->first();
+        $email_user = (array)$email_user;
+        if (empty($email_user)) {
+            return 2002;
+        }
+        $email_uid=$email_user["id"];
+        $email_user_instructor = DB::table('instructor')->where('uid','=',$email_uid)->where('cid','=',$cid)->get()->first();
+        $email_user_instructor = (array)$email_user_instructor;
+        $email_user_access_course = DB::table('privilege')->where('uid','=',$email_uid)->where('type','=','cid')->where('type_value','=',$cid)->get()->first();
+        $email_user_access_course = (array)$email_user_access_course;
+        $email_user_access = DB::table('privilege')->where('uid','=',$email_uid)->where('type','=','access')->where('type_value','=','1')->get()->first();
+        $email_user_access = (array)$email_user_access;
+        if ($email_user_instructor) {
+            return 2005;
+        }
+        DB::table('instructor')->insert([
+            'uid'=>$email_uid,
+            'cid'=>$cid,
+            'course_title'=>"讲师"
+        ]);
+        if (empty($email_user_access_course)) {
+            DB::table('privilege')->insertGetId([
+                'uid'=>$email_uid,
+                'type_value'=>$cid,
+                'type'=>"cid",
+                'clearance'=>1,
+            ]);
+            if (empty($email_user_access)) {
+                DB::table('privilege')->insertGetId([
+                    'uid'=>$email_uid,
+                    'type_value'=>1,
+                    'type'=>"access"
+                ]);
+            }
+            return 0;
+        } elseif ($email_user_access_course["clearance"]==0) {
+            DB::table('privilege')->where('uid','=',$email_uid)->where('type','=','cid')->where('type_value','=',$cid)->update(['clearance'=>1]);
+            if (empty($email_user_access)) {
+                DB::table('privilege')->insertGetId([
+                    'uid'=>$email_uid,
+                    'type_value'=>1,
+                    'type'=>"access"
+                ]);
+            }
+            return 1;
+        } else {
+            return 2005;
+        }
+    }
+
+    public function removeInstructor($cid,$iid)
+    {
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
+        $access_right = (array)$access_right;
+        if (empty($access_right) || $access_right["clearance"]<4) {
+            return 2003;
+        }
+        $instructor_info = DB::table('instructor')->where('iid','=',$iid)->get()->first();
+        $instructor_info = (array)$instructor_info;
+        if ($instructor_info["cid"]!=$cid) {
+            return 2003;
+        }
+        if (empty($instructor_info)) {
+            return 2002;
+        }
+        if ($instructor_info["uid"]==Auth::user()->id) {
+            return 2006;
+        }
+        DB::table('instructor')->where('iid','=',$iid)->delete();
+        DB::table('privilege')->where('uid','=',$instructor_info["uid"])->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->delete();
+        return 0;
     }
 }
