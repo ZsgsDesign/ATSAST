@@ -360,7 +360,7 @@
                     </div>
                     <div class="form-group">
                         <label for="time" class="bmd-label-floating">授课时间</label>
-                        <input type="text" class="form-control" name="time" value="2018-10-24 18:30:00" id="time" required>
+                        <input type="text" class="form-control" name="time" value="2019-10-24 18:30:00 ~ 2019-10-24 20:30:00" id="time" required>
                     </div>
                     <div class="form-group">
                         <label for="location" class="bmd-label-floating">授课地点</label>
@@ -369,7 +369,7 @@
             </div>
             <div class="text-right">
                 <button class="btn btn-default" onclick="location.href='/course/{{$cid}}/manage'">返回管理中心</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="update()">确定</button>
             </div>
         </card>
     </div>
@@ -377,19 +377,40 @@
 
 <script>
     function update(){        
-        $.post("/ajax/course/addSyllabusInfo",{
-            cid:{{$cid}},
-            title:$("#title").val(),
-            desc:$("#desc").val(),
-            location:$("#location").val(),
-            time:$("#time").val()
-        },function(result){
-            result=JSON.parse(result);
-            alert(result.desc);
-            if(result.ret==200){
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/course/addSyllabusInfo',
+            data: {
+                cid:{{$cid}},
+                title:$("#title").val(),
+                desc:$("#desc").val(),
+                location:$("#location").val(),
+                time:$("#time").val().split('~')[0],
+                endtime:$("#time").val().split('~')[1],
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert(ret.desc);
                 setTimeout(function(){
                     location.href="/course/{{$cid}}/manage";
                 }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to addSyllabusInfo!');
+                ajaxing=false;
             }
         });
     }

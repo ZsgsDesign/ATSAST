@@ -463,4 +463,60 @@ class CourseModel extends Model
         DB::table('privilege')->where('uid','=',$instructor_info["uid"])->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->delete();
         return 0;
     }
+
+    public function addSyllabusInfo($cid,$title,$desc,$location,$time,$endtime)
+    {
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
+        $access_right = (array)$access_right;
+        if (empty($access_right)) {
+            return 2003;
+        }
+        $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
+        $result = (array)$result;
+        if (empty($result)) {
+            return 3002;
+        }
+        $creator=$result['course_creator'];
+        $period='';
+        $signed=substr(md5(uniqid(microtime(true), true)), 0, 6);
+        $preg = '/^([12]\d\d\d)-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[0-1]) ([0-1]\d|2[0-4]):([0-5]\d)(:[0-5]\d)?$/';
+        if (!preg_match($preg, $time)) {
+            return 1004;
+        }
+        if (!preg_match($preg, $endtime)) {
+            return 1004;
+        }
+        if ($creator == 1) {
+            $locs = ['大学生活动中心 青柚汇客厅', '三牌楼教学楼（57人）', '三牌楼教学楼（105人）', '三牌楼教学楼（153人）', '三牌楼教学楼（200人）', '三牌楼教学楼（250人）', '仙林教学楼（57人）', '仙林教学楼（120人）', '仙林教学楼（172人）', '仙林教学楼（234人）', '大学生活动中心 会议室', '大学生活动中心 青柚创新汇', '大学生活动中心 208'];
+            if (!in_array($location, $locs)) {
+                return 1004;
+            }
+            if (substr($location, -3) == '）') { // 教学楼
+                if (!arg('period')) {
+                    return 1003;
+                }
+                $period = arg('period');
+                $periods = ['第一大节', '第二大节', '第三大节', '第四大节', '第五大节', '上午', '下午'];
+                if (!in_array($period, $periods)) {
+                    return 1004;
+                }
+            }
+        }
+        DB::table('syllabus')->insertGetId([
+            'cid'=>$cid,
+            'title'=>$title,
+            'desc'=>$desc,
+            'location'=>$location,
+            'time'=>$time,
+            'endtime'=>$endtime,
+            // 'period'=>$period,
+            'signed'=>$signed,
+            'script'=>0,
+            'homework'=>0,
+            'feedback'=>0,
+            // 'confirmed'=>0,
+            'video'=>0
+        ]);
+        return 0;
+    }
 }

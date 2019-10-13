@@ -93,4 +93,29 @@ class CourseController extends Controller
             return ResponseModel::err($ret);
         }
     }
+
+    public function addSyllabusInfo(Request $request)
+    {
+        $request->validate([
+            'cid' => 'required',
+            'title' => 'required',
+            'desc' => 'required',
+            'location' => 'required',
+            'time' => 'required',
+            'endtime' => 'required'
+        ]);
+        $cid = $request->input('cid');
+        $title = $request->input('title');
+        $desc = $request->input('desc');
+        $location = $request->input('location');
+        $time = $request->input('time');
+        $endtime = $request->input('endtime');
+        $coursemodel = new CourseModel();
+        $ret = $coursemodel->addSyllabusInfo($cid,$title,$desc,$location,$time,$endtime);
+        if($ret==0){
+            return ResponseModel::success(200, "新建成功", $ret);
+        }else{
+            return ResponseModel::err($ret);
+        }
+    }
 }
