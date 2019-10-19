@@ -118,4 +118,33 @@ class CourseController extends Controller
             return ResponseModel::err($ret);
         }
     }
+
+    public function addCourse(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'organization' => 'required',
+            'major' => 'required',
+            'desc' => 'required',
+            'color' => 'required',
+            'suitable' => 'required',
+            'type' => 'required',
+        ]);
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $organization = $request->input('organization');
+        $major = $request->input('major');
+        $desc = $request->input('desc');
+        $color = $request->input('color');
+        $suitable = $request->input('suitable');
+        $type = $request->input('type');
+        $coursemodel = new CourseModel();
+        $ret = $coursemodel->addCourse($name,$email,$organization,$major,$desc,$color,$suitable,$type);
+        if(is_array($ret)){
+            return ResponseModel::success(200, "新建成功", $ret[1]);
+        }else{
+            return ResponseModel::err($ret);
+        }
+    }
 }

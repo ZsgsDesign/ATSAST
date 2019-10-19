@@ -193,23 +193,42 @@
         if(!$("#necessary")[0].checked){
             return $.snackbar({content: "请勾选 符合课程开设相关必要因素 ",style:"toast text-center atsast-toast"});
         }
-        $.post("<{$ATSAST_DOMAIN}>/ajax/addCourse",{
-            name:$("#course_name").val(),
-            email:$("#course_email").val(),
-            organization:$("#course_organization").val(),
-            major:$("#course_major").val(),
-            desc:$("#course_desc").val(),
-            color:$("#course_color").val(),
-            suitable:$("#course_suitable").val(),
-            type:parseInt($('input[name="course_type"]:checked').val())
-        },function(result){
-            result=JSON.parse(result);
-            console.log(result);
-            $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-            if(result.ret==200){
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/course/addCourse',
+            data: {
+                name:$("#course_name").val(),
+                email:$("#course_email").val(),
+                organization:$("#course_organization").val(),
+                major:$("#course_major").val(),
+                desc:$("#course_desc").val(),
+                color:$("#course_color").val(),
+                suitable:$("#course_suitable").val(),
+                type:parseInt($('input[name="course_type"]:checked').val()),
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                console.log(ret);
+                alert(ret.desc);
                 setTimeout(function(){
-                    location.href="<{$ATSAST_DOMAIN}>/course/"+result.data.cid;
-                },1000);
+                    location.href="/course/"+ret.data;
+                }, 1000);
+            }, error: function(xhr, type){
+                console.log(xhr);
+                switch(xhr.status) {
+                    case 422:
+                        alert(xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0], xhr.responseJSON.message);
+                        break;
+                    case 429:
+                        alert(`Submit too often, try ${xhr.getResponseHeader('Retry-After')} seconds later.`);
+                        break;
+                    default:
+                        alert("Server Connection Error");
+                }
+                console.log('Ajax error while posting to addCourse!');
+                ajaxing=false;
             }
         });
     }

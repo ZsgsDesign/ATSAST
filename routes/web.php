@@ -104,6 +104,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('addInstructor', 'CourseController@addInstructor')->middleware('auth')->name('course.addInstructor');
         Route::post('removeInstructor', 'CourseController@removeInstructor')->middleware('auth')->name('course.removeInstructor');
         Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth')->name('course.addSyllabusInfo');
+        Route::post('addCourse', 'CourseController@addCourse')->middleware('auth')->name('course.addCourse');
     });
 
     Route::group(['prefix' => 'contest'], function () {

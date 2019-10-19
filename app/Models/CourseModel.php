@@ -519,4 +519,117 @@ class CourseModel extends Model
         ]);
         return 0;
     }
+
+    public function addCourse($name,$email,$organization,$major,$desc,$color,$suitable,$type)
+    {
+        if ($type!=1 && $type!=2) {
+            return 1004;
+        }
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)==false) {
+            return 1004;
+        }
+        $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','system')->where('type_value','=','4')->get()->first();
+        $access_right = (array)$access_right;
+        if (empty($access_right)) {
+           return 2003;
+        }
+        $email_user = DB::table('users')->where('email','=',$email)->get()->first();
+        $email_user = (array)$email_user;
+        if (empty($email_user)) {
+            return 2002;
+        }
+        $email_uid = $email_user['id'];
+        $org_info = DB::table('organization')->where('name','=',$organization)->get()->first();
+        $org_info = (array)$org_info;
+        if (empty($org_info)) {
+            return 5001;
+        }
+        $oid=$org_info["oid"];
+        $cid = DB::table('courses')->insertGetId([
+            "course_name"=>$name,
+            "course_creator"=>$oid,
+            "course_logo"=>$major,
+            "course_desc"=>$desc,
+            "course_type"=>$type,
+            "course_color"=>$color,
+            "course_suitable"=>$suitable
+        ]);
+        $email_user_access = DB::table('privilege')->where('uid','=',$email_uid)->where('type','=','access')->where('type_value','=','1')->get()->first();
+        DB::table('instructor')->insertGetId([
+            'uid'=>$email_uid,
+            'cid'=>$cid,
+            'course_title'=>"讲师"
+        ]);
+        DB::table('privilege')->insertGetId([
+            'uid'=>$email_uid,
+            'type_value'=>$cid,
+            'type'=>"cid",
+            'clearance'=>4,
+        ]);
+        if (empty($email_user_access)) {
+            DB::table('privilege')->insertGetId([
+                'uid'=>$email_uid,
+                'type_value'=>1,
+                'type'=>"access"
+            ]);
+        }
+        if ($type==2) {
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"clock",
+                'item_name'=>"授课时间",
+                'item_value'=>"正常为每周晚 点~点 ， 如有变动另行通知"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"near-me",
+                'item_name'=>"授课地点",
+                'item_value'=>"大学生活动中心 会议室"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"lightbulb-on-outline",
+                'item_name'=>"主修",
+                'item_value'=>"undefined"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"star-outline",
+                'item_name'=>"课程评价",
+                'item_value'=>"暂无"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"note-text",
+                'item_name'=>"课程作业",
+                'item_value'=>"有"
+            ]);
+        } else {
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"lightbulb-on-outline",
+                'item_name'=>"主修",
+                'item_value'=>"undefined"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"star-outline",
+                'item_name'=>"课程评价",
+                'item_value'=>"暂无"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"note-text",
+                'item_name'=>"课程作业",
+                'item_value'=>"无"
+            ]);
+            DB::table('course_details')->insertGetId([
+                'cid'=>$cid,
+                'icon'=>"television",
+                'item_name'=>"视频教学",
+                'item_value'=>"有"
+            ]);
+        }
+        return [0,$cid];
+    }
 }
