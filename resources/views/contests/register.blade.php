@@ -147,7 +147,7 @@
             <div class="col-md-8 col-sm-12">
                 @if($maxp > 1)
                     <card>
-                        <h5><i class="MDI account-multiple"></i> 团队信息</h5> 
+                        <h5><i class="MDI account-multiple"></i> 团队信息</h5>
                         <div class="form-group">
                             <label for="name" class="bmd-label-floating">队伍名*</label>
                             <input type="text" class="form-control" name="group_name" value="{{$group_name}}" id="group_name" required @if($registered) disabled @endif>
@@ -213,13 +213,17 @@
                     return;
                 }
             }
-            $.post("/ajax/contest/register", data, function (data, status) {
-                data = JSON.parse(data);
-                alert(data.desc);
-                if (data.data != null) setTimeout(function () { return location.href = data.data; }, 1000);
-                // 这段注释用来纪念刁老板被祭天
-            }).fail(function (req) {
-                alert("发生错误");
+            $.ajax({
+                type: 'POST',
+                url: '/ajax/contest/register',
+                data: data,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }, success: function(ret){
+                    alert(ret.desc);
+                    if (ret.data != null) setTimeout(function () { return location.href = ret.data; }, 1000);
+                }
             });
         }
         function edit() {
