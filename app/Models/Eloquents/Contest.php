@@ -21,6 +21,11 @@ class Contest extends Model
         return $this->hasMany('App\Models\Eloquents\ContestRegister','contest_id','contest_id');
     }
 
+    public function details()
+    {
+        return $this->hasMany('App\Models\Eloquents\ContestDetail','contest_id','contest_id');
+    }
+
     public function getParseDateAttribute()
     {
         if($this->start_date == $this->end_date) {

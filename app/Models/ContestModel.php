@@ -68,6 +68,7 @@ class ContestModel extends Model
         } else {
             $basic_info->parse_date=$basic_info->start_date." ~ ".$basic_info->end_date;
         }
+
         if (Auth::check()) {
             $result = DB::table('users')->where('id','=',Auth::user()->id)->get()->first();
             $sid=$result->SID;

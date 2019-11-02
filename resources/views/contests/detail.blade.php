@@ -3,7 +3,7 @@
 @section('template')
 
 <style>
-    
+
     contest,card,.carousel{
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
@@ -131,24 +131,24 @@
             <div class="col-md-4 col-sm-12">
                 <contest>
                     <div class="atsast-img-container-small">
-                        <img src="{{$basic_info->image}}">
+                        <img src="{{$contest->image}}">
                     </div>
                     <div class="atsast-content-container">
-                        <h3 class="mundb-text-truncate-2">{{$basic_info->name}}</h3>
-                        <p class="mundb-text-truncate-1">{{$basic_info->creator_name}} ·@if($basic_info->type==1) 线上活动@else 线下活动@endif</p>
-                        <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$basic_info->parse_date}} </p>
-                        @if(Auth::check())@if(!$basic_info->is_register)<a href="/contest/{{$basic_info->contest_id}}/register"><button class="btn btn-outline-info">立即报名</button></a>@else<a href="/contest/{{$basic_info->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>@endif @else<a href="/login"><button class="btn btn-outline-secondary"><i class="MDI account-circle"></i> 请先登录再报名</button></a>@endif
+                        <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>
+                        <p class="mundb-text-truncate-1">{{$contest->organization->name}} ·@if($contest->type==1) 线上活动@else 线下活动@endif</p>
+                        <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$contest->parse_date}} </p>
+                        @if(Auth::check())@if(!$contest->is_register)<a href="/contest/{{$contest->contest_id}}/register"><button class="btn btn-outline-info">立即报名</button></a>@else<a href="/contest/{{$contest->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>@endif @else<a href="/login"><button class="btn btn-outline-secondary"><i class="MDI account-circle"></i> 请先登录再报名</button></a>@endif
                     </div>
                 </contest>
             </div>
             <div class="col-md-8 col-sm-12">
                 <div id="mixed" class="carousel slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach($contest_detail_info as $c)
-                            @if($c->type==1)
+                        @foreach($details as $detail)
+                            @if($detail->type==1)
                             <div class="carousel-item">
-                                    <img class="d-block w-100" src="{{$c->content}}">
-                                </div>
+                                <img class="d-block w-100" src="{{$detail->content}}">
+                            </div>
                             @endif
                         @endforeach
                     </div>
@@ -163,12 +163,12 @@
                 </div>
                 <card>
                     <h5><i class="MDI information"></i> 基本信息</h5>
-                    @foreach($contest_detail_info as $c)
-                    @if($c->type==0)
-                    <div class="mb-1" id="markdown_container_{{$c->cdid}}">
-                        
-                    </div>
-                    @endif
+                    @foreach($details as $detail)
+                        @if($detail->type==0)
+                        <div class="mb-1" id="markdown_container_{{$detail->cdid}}">
+
+                        </div>
+                        @endif
                     @endforeach
                 </card>
             </div>
@@ -202,17 +202,17 @@
                         return hljs.highlightAuto(code).value;
                     }
                 });
-                @foreach($contest_detail_info as $c)
-                @if($c->type==0)
-                $("#markdown_container_{{ $c->cdid }}").html(marked("{!!$c->content_slashed!!}"),{
-                    sanitize:true,
-                    sanitizer:DOMPurify.sanitize,
-                    highlight: function (code) {
-                        return hljs.highlightAuto(code).value;
-                    }
-                });
-                $("#markdown_container_{{ $c->cdid }}").css("opacity","1");
-                @endif
+                @foreach($details as $detail)
+                    @if($detail->type==0)
+                    $("#markdown_container_{{ $detail->cdid }}").html(marked("{!!$detail->content!!}"),{
+                        sanitize:true,
+                        sanitizer:DOMPurify.sanitize,
+                        highlight: function (code) {
+                            return hljs.highlightAuto(code).value;
+                        }
+                    });
+                    $("#markdown_container_{{ $detail->cdid }}").css("opacity","1");
+                    @endif
                 @endforeach
                 //hljs.initHighlighting();
                 // 链式调用VSCODE

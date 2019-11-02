@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class ContestController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $contests = Contest::with('organization')->orderBy('contest_id','DESC')->paginate(8);
         return view('contests.index', [
@@ -23,24 +23,17 @@ class ContestController extends Controller
     public function detail(Request $request)
     {
         $cid = $request->cid;
-        $contestmodel = new ContestModel();
-        if(!$contestmodel->existCid($cid)){
+        $contest = Contest::with('details')->find($cid);
+        if(empty($contest)){
             return Redirect::route('contest');
         }
-        $ret = $contestmodel->detail($cid);
-        if(!$ret){
-            return Redirect::route('contest');
-        }
-        $contest_id = $ret['contest_id'];
-        $basic_info = $ret['basic_info'];
-        $contest_detail_info = $ret['contest_detail_info'];
+        $details = $contest->details()->where('status',1)->get();
         return view('contests.detail', [
-            'page_title'=>"活动详情",
-            'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Contests",
-            'contest_id'=>$contest_id,
-            'basic_info'=>$basic_info,
-            'contest_detail_info'=>$contest_detail_info,
+            'page_title' => "活动详情",
+            'site_title' => "SAST教学辅助平台",
+            'navigation' => "Contests",
+            'contest'    => $contest,
+            'details'    => $details
         ]);
     }
 
