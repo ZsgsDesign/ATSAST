@@ -3,7 +3,7 @@
 @section('template')
 
 <style>
-    
+
     contest{
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
@@ -95,28 +95,32 @@
     <section class="mb-5">
         <h1>活动</h1>
         <p>Activities</p>
-        @foreach($result as $r)
+        @foreach($contests as $contest)
         <contest>
             <div class="d-block d-lg-none atsast-img-container-small">
-                <img src="{{$r->image}}">
+                <img src="{{$contest->image}}">
             </div>
             <div class="d-none d-lg-block atsast-img-container">
-                <img src="{{$r->image}}">
+                <img src="{{$contest->image}}">
             </div>
             <div class="atsast-content-container">
-                <h3 class="mundb-text-truncate-2">{{$r->name}}</h3>
-                <p class="mundb-text-truncate-1">{{$r->creator_name}} ·@if($r->type==1) 线上活动@else 线下活动@endif</p>
-                <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$r->parse_date}} </p>
-                <a href="/contest/{{$r->contest_id}}/detail"><button class="btn btn-outline-info">了解更多</button></a>
+                <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>
+                <p class="mundb-text-truncate-1">{{$contest->organization->name}} ·@if($contest->type==1) 线上活动@else 线下活动@endif</p>
+                <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$contest->parse_date}} </p>
+                <a href="/contest/{{$contest->contest_id}}/detail"><button class="btn btn-outline-info">了解更多</button></a>
                 @if(Auth::check())
-                    @if(!$r->is_register)
-                <a href="/contest/{{$r->contest_id}}/register"><button class="btn btn-info">立即报名</button></a> @else <a href="/account/contests/"><button class="btn btn-success">已报名</button></a> @endif @endif
+                    @if(!$contest->userIsRegister(Auth::user()->id))
+                        <a href="/contest/{{$contest->contest_id}}/register"><button class="btn btn-info">立即报名</button></a>
+                    @else
+                        <a href="/account/contests/"><button class="btn btn-success">已报名</button></a>
+                    @endif
+                @endif
             </div>
         </contest>
         @endforeach
         <nav aria-label="Page navigation" class="atsast-pagination mt-5">
             <ul class="pagination justify-content-center">
-                {{$paginator->links()}}
+                {{$contests->links()}}
             </ul>
         </nav>
     </section>
