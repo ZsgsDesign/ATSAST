@@ -135,32 +135,33 @@
             <div class="col-md-4 col-sm-12">
                 <contest>
                     <div class="atsast-img-container-small">
-                        <img src="{{$basic_info['image']}}">
+                        <img src="{{$contest->image}}">
                     </div>
                     <div class="atsast-content-container">
-                        <h3 class="mundb-text-truncate-2">{{$basic_info['name']}}</h3>
-                        <p class="mundb-text-truncate-1">{{$basic_info['creator_name']}} ·@if($basic_info['type']==1) 线上活动@else 线下活动@endif</p>
-                        <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$basic_info['parse_date']}} </p>
+                        <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>
+                        <p class="mundb-text-truncate-1">{{$contest->organization->name}} ·@if($contest->type == 1) 线上活动@else 线下活动@endif</p>
+                        <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$contest->parse_date}} </p>
                     </div>
                 </contest>
             </div>
             <div class="col-md-8 col-sm-12">
-                @if($maxp > 1)
+                @if($contest->max_participants > 1)
                     <card>
                         <h5><i class="MDI account-multiple"></i> 团队信息</h5>
                         <div class="form-group">
                             <label for="name" class="bmd-label-floating">队伍名*</label>
-                            <input type="text" class="form-control" name="group_name" value="{{$group_name}}" id="group_name" required @if($registered) disabled @endif>
+                            <input type="text" class="form-control" name="group_name" value="{{empty($contest_register) ? '' : $contest_register->team_name}}" id="group_name" required @if(!empty($contest_register)) disabled @endif>
                         </div>
                     </card>
                 @endif
                 @foreach($members as $order=>$member)
                     <card>
-                        @if($maxp > 1) <h5><i class="MDI @if($order==0) account-star @else account @endif"></i>@if($order==0) 队长信息@else 队员信息@endif @if($order >= $minp)（选填）@endif</h5> @else <h5><i class="MDI account-circle"></i> 个人信息</h5> @endif
+                        @if($contest->max_participants > 1) <h5><i class="MDI @if($order==0) account-star @else account @endif"></i>@if($order==0) 队长信息@else 队员信息@endif @if($order >= $contest->min_participants)（选填）@endif</h5>
+                        @else <h5><i class="MDI account-circle"></i> 个人信息</h5> @endif
                         @foreach($fields as $field)
                         <div class="form-group">
-                            <label for="name" class="bmd-label-floating">{{$field['placeholder']}}@if($field['required'] && $order < $minp)*@endif</label>
-                            <input type="text" class="form-control" name="{{$field['name']}}_{{$order}}" value="{{$member[$field['name']]}}" id="{{$field['name']}}_{{$order}}"@if($field['required'] && $order < $minp) required @endif @if($field['fixed'] && $order == 0 || $registered) disabled @endif>
+                            <label for="name" class="bmd-label-floating">{{$field['placeholder']}}@if($field['required'] && $order < $contest->min_participants)*@endif</label>
+                            <input type="text" class="form-control" name="{{$field['name']}}_{{$order}}" value="{{$member[$field['name']]}}" id="{{$field['name']}}_{{$order}}"@if($field['required'] && $order < $contest->min_participants) required @endif @if($field['fixed'] && $order == 0 || !empty($contest_register)) disabled @endif>
                         </div>
                         @endforeach
                     </card>
@@ -168,9 +169,20 @@
                     <card>
                         <h5 class="text-center"><i class="MDI information"></i> 其他信息</h5>
                         <p class="text-center">请确认上述填写信息均为准确信息，然后点击下方的提交按钮。</p>
-                        <p class="text-center">{{$basic_info['tips']}}</p>
+                        <p class="text-center">{{$contest->tips}}</p>
                         <div class="text-center">
-                            <button onclick="@if($registered) @if($isleader) edit() @else @endif @else submit() @endif" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">@if($registered) @if($isleader) 修改报名信息 @else 修改报名信息请联系队长 @endif @else 提交 @endif<div class="ripple-container"></div></button>
+                            <button onclick="@if(!empty($contest_register))
+                                                @if($contest_register->leader->id == Auth::user()->id) edit()
+                                                @endif
+                                            @else submit()
+                                            @endif" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">
+                                            @if(!empty($contest_register))
+                                                @if($contest_register->leader->id == Auth::user()->id) 修改报名信息
+                                                @else 修改报名信息请联系队长
+                                                @endif
+                                            @else 提交
+                                            @endif
+                                            <div class="ripple-container"></div></button>
                         </div>
                     </card>
             </div>
@@ -197,7 +209,7 @@
     <script>
         function submit() {
             var $inputs = $("card input");
-            var data = { contest_id: {{$coid}} };
+            var data = { contest_id: {{$contest->contest_id}} };
             for (var i = 0; i < $inputs.length; ++i) {
                 var input = $inputs[i];
                 if (input.id == 'group_name') data['group_name'] = input.value;

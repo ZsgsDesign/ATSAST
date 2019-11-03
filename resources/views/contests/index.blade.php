@@ -109,7 +109,7 @@
                 <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$contest->parse_date}} </p>
                 <a href="/contest/{{$contest->contest_id}}/detail"><button class="btn btn-outline-info">了解更多</button></a>
                 @if(Auth::check())
-                    @if(!$contest->userIsRegister(Auth::user()->id))
+                    @if(empty($contest->userRegister(Auth::user()->id)))
                         <a href="/contest/{{$contest->contest_id}}/register"><button class="btn btn-info">立即报名</button></a>
                     @else
                         <a href="/account/contests/"><button class="btn btn-success">已报名</button></a>

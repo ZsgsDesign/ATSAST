@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ContestModel;
 use App\Models\Eloquents\Contest;
 use Illuminate\Http\Request;
+use Auth;
 
 class ContestController extends Controller
 {
@@ -40,38 +41,24 @@ class ContestController extends Controller
     public function register(Request $request)
     {
         $cid = $request->cid;
-        $contestmodel = new ContestModel();
-        if(!$contestmodel->existCid($cid)){
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        $user_id = Auth::user()->id;
+        $contest = Contest::find($cid);
+        if(empty($contest)){
             return Redirect::route('contest');
         }
-        $ret = $contestmodel->register($cid);
-        if(!$ret){
-            return Redirect::route('contest');
-        }
-        $coid=$ret['coid'];
-        $basic_info=$ret['basic_info'];
-        $contest_name=$ret['contest_name'];
-        $minp=$ret['minp'];
-        $maxp=$ret['maxp'];
-        $group_name=$ret['group_name'];
-        $fields=$ret['fields'];
-        $members=$ret['members'];
-        $registered=$ret['registered'];
-        $isleader=$ret['isleader'];
+        $contest_register = $contest->userRegister($user_id);
         return view('contests.register', [
-            'page_title'=>"活动报名",
-            'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Contests",
-            'coid'=>$coid,
-            'basic_info'=>$basic_info,
-            'contest_name'=>$contest_name,
-            'minp'=>$minp,
-            'maxp'=>$maxp,
-            'group_name'=>$group_name,
-            'fields'=>$fields,
-            'members'=>$members,
-            'registered'=>$registered,
-            'isleader'=>$isleader,
+            'page_title'       => "活动报名",
+            'site_title'       => "SAST教学辅助平台",
+            'navigation'       => "Contests",
+            'contest'          => $contest,
+            'members'          => empty($contest_register) ? $contest->userEmptyMembers($user_id)
+                                                           : $contest_register->members,
+            'fields'           => $contest->fields,
+            'contest_register' => $contest_register
         ]);
     }
 }
