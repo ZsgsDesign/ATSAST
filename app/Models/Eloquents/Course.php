@@ -30,6 +30,16 @@ class Course extends Model
         return $this->hasMany('App\Models\Eloquents\CourseDetail','cid','cid');
     }
 
+    public function feedbacks()
+    {
+        return $this->hasMany('App\Models\Eloquents\SyllabusFeedback','cid','cid');
+    }
+
+    public function registers()
+    {
+        return $this->hasMany('App\Models\Eloquents\CourseRegister','cid','cid');
+    }
+
     public function getInstructorEmailsAttribute()
     {
         $emails = [];

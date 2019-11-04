@@ -155,35 +155,35 @@
 <div class="atsast-course-header">
     <img src="/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-{{$result->course_color}}">
-            <i class="devicon-{{$result->course_logo}}-plain"></i>
+        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
+            <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
-        <p class="d-none d-lg-block">{{$result->creator_name}} ·@if($result->course_type==1) 线上课程@else 线下课程@endif</p>
-        <h1 class="d-none d-lg-block">{{$result->course_name}}</h1>
-        @if(Auth::check())<a href="/course/{{$cid}}/register"><button type="button" class="btn btn-@if($register_status)success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if($register_status)disabled @endif ><i class="MDI @if($register_status)check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if($register_status) 已报名@else 报名@endif</button></a>@endif
+        <p class="d-none d-lg-block">{{$course->organization->name}} ·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
+        <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
+        @if(Auth::check())<a href="/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if($register_status)success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if($register_status)disabled @endif ><i class="MDI @if($register_status)check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if($register_status) 已报名@else 报名@endif</button></a>@endif
     </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
-        <h1>{{$result->course_name}}</h1>
-        <p>{{$result->creator_name}}·@if($result->course_type==1) 线上课程@else 线下课程@endif</p>
+        <h1>{{$course->course_name}}</h1>
+        <p>{{$course->organization->name}}·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
     </div>
     <section class="mb-5">
-        <h2>{{$syllabus_info->title}} - 课堂反馈</h2>
+        <h2>{{$syllabus->title}} - 课堂反馈</h2>
     </section>
-    
+
     <section class="mb-5">
         <div>
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <card class="wemd-red-text @if($feedback_submit_status && $feedback_submit_status->rank==0) selected @endif" id="card0" onclick="selectRank(0)">
+                    <card class="wemd-red-text @if(!empty($feedback) && $feedback->rank==0) selected @endif" id="card0" onclick="selectRank(0)">
                         <h2><i class="MDI emoticon-sad"></i></h2>
                         <p>不满意</p>
                     </card>
                 </div>
-        
+
                 <div class="col-md-6 col-sm-12">
-                    <card class="wemd-green-text @if($feedback_submit_status && $feedback_submit_status->rank==1) selected @endif" id="card1" onclick="selectRank(1)">
+                    <card class="wemd-green-text @if(!empty($feedback) && $feedback->rank==1) selected @endif" id="card1" onclick="selectRank(1)">
                         <h2><i class="MDI emoticon-happy"></i></h2>
                         <p>满意</p>
                     </card>
@@ -191,11 +191,11 @@
             </div>
             <div class="form-group">
                 <label for="desc" class="bmd-label-floating">对本次课程的一些意见等等</label>
-                <textarea class="form-control" name="desc" id="desc" rows="5" required>@if($feedback_submit_status){{ $feedback_submit_status->desc }}@endif</textarea>
+                <textarea class="form-control" name="desc" id="desc" rows="5" required>@if(!empty($feedback)){{ $feedback->desc }}@endif</textarea>
             </div>
             <div class="text-right">
-                <a href="/course/{{$cid}}/"><button class="btn btn-default">取消</button></a>
-                <button type="submit" id="submit" class="btn btn-outline-primary" onclick="submit_feedback()">@if($feedback_submit_status) 修改反馈 @else 提交反馈 @endif</button>
+                <a href="/course/{{$course->cid}}/"><button class="btn btn-default">取消</button></a>
+                <button type="submit" id="submit" class="btn btn-outline-primary" onclick="submit_feedback()">@if(!empty($feedback)) 修改反馈 @else 提交反馈 @endif</button>
             </div>
         </div>
     </section>
@@ -219,8 +219,7 @@
     </div>
 </div>
 <script>
-
-    var rankVal=@if($feedback_submit_status) {{$feedback_submit_status->rank}} @else -1 @endif;
+    var rankVal=@if(!empty($feedback)) {{$feedback->rank}} @else -1 @endif;
 
     function selectRank(val){
         rankVal=val;
@@ -239,8 +238,8 @@
             type: 'POST',
             url: '/ajax/course/submitFeedBack',
             data: {
-                cid:{{$cid}},
-                syid:{{$syid}},
+                cid:{{$course->cid}},
+                syid:{{$syllabus->syid}},
                 rank:rankVal,
                 desc:$("#desc").val()
             },
@@ -251,7 +250,7 @@
                 console.log(ret);
                 alert(ret.desc);
                 setTimeout(function(){
-                    location.href="/course/{{$cid}}/detail";
+                    location.href="/course/{{$course->cid}}/detail";
                 }, 1000);
                 ajaxing=false;
             }, error: function(xhr, type){

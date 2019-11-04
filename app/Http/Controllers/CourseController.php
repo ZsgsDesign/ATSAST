@@ -116,27 +116,19 @@ class CourseController extends Controller
 
     public function feedback(Request $request)
     {
-        $cid = $request->cid;
-        $syid = $request->syid;
-        $coursemodel = new CourseModel();
-        if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existFeedback($cid,$syid)){
-            return Redirect::route('course');
-        }
-        $ret = $coursemodel->feedback($cid, $syid, Auth::user()->id);
-        $result = $ret['result'];
-        $register_status = $ret['register_status'];
-        $syllabus_info = $ret['syllabus_info'];
-        $feedback_submit_status = $ret['feedback_submit_status'];
+        $user = Auth::user();
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        $feedback = $request->feedback;
+        $register_status = $course->registers()->where('uid',$user->id)->count();
         return view('courses.feedback', [
-            'page_title'=>"课程反馈",
-            'site_title'=>$syllabus_info->title,
-            'navigation'=>"Courses",
-            'cid'=>$cid,
-            'syid'=>$syid,
-            'result'=>$result,
-            'register_status'=>$register_status,
-            'syllabus_info'=>$syllabus_info,
-            'feedback_submit_status'=>$feedback_submit_status,
+            'page_title'      => "课程反馈",
+            'site_title'      => $syllabus->title,
+            'navigation'      => "Courses",
+            'course'          => $course,
+            'syllabus'        => $syllabus,
+            'feedback'        => $feedback,
+            'register_status' => $register_status,
         ]);
     }
 
@@ -171,7 +163,7 @@ class CourseController extends Controller
         ]);
     }
 
-    public function add(Request $request)
+    public function add()
     {
         $coursemodel = new CourseModel();
         $access_right = $coursemodel->accessRightAdd(Auth::user()->id);

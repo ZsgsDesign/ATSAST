@@ -9,4 +9,9 @@ class Syllabus extends Model
     protected $table = 'syllabus';
     protected $primaryKey = 'syid';
     public $timestamps = false;
+
+    public function feedbacks()
+    {
+        return $this->hasMany('App\Models\Eloquents\SyllabusFeedback','syid','syid');
+    }
 }

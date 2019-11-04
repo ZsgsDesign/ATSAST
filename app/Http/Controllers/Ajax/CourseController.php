@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ResponseModel;
 use App\Models\CourseModel;
 use App\Models\Eloquents\Instructor;
+use App\Models\Eloquents\SyllabusFeedback;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -119,22 +120,19 @@ class CourseController extends Controller
             'rank'=>'required',
             'desc'=>'required',
         ]);
-        if(!Auth::check()){
-            return ResponseModel::err(2001);
-        }
-        $rank = $request->input('rank');
-        if($rank!=0 && $rank!=1){
-            return ResponseModel::err(1004);
-        }
-        $coursemodel = new CourseModel();
-        $cid = $request->input('cid');
-        if(!$coursemodel->isRegister($cid, Auth::user()->id)){
-            return ResponseModel::err(3001);
-        }
-        $syid = $request->input('syid');
-        $desc = $request->input('desc');
-        $ret = $coursemodel->submitFeedBack($cid, $syid, $rank, $desc, Auth::user()->id);
-        return ResponseModel::success(200, null, $ret);
+        $user     = Auth::user();
+        $course   = $request->course;
+        $syllabus = $request->syllabus;
+        SyllabusFeedback::updateOrInsert([
+            'cid'  => $course->cid,
+            'syid' => $syllabus->syid,
+            'uid'  => $user->id
+        ],[
+            'rank' => boolval($request->rank),
+            'desc' => $request->desc,
+            'feedback_time' => date('Y-m-d H:i:s')
+        ]);
+        return ResponseModel::success();
     }
 
     public function addInstructor(Request $request)

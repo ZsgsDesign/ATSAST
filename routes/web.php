@@ -32,7 +32,7 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/sign/{syid}', 'CourseController@sign')->middleware('auth')->name('course.sign');
     Route::get('{cid}/register', 'CourseController@register')->middleware('auth')->name('course.register');
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
-    Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth')->name('course.feedback');
+    Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth','course.exist','course.syllabus.exist','course.feedback')->name('course.feedback');
     Route::get('{cid}/manage', 'CourseController@manage')->name('course.manage');
     Route::get('{cid}/edit', 'CourseController@edit')->middleware('auth','course.exist','course.manage')->name('course.edit');
     Route::get('{cid}/edit_syllabus/{syid}', 'CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSyllabus');
@@ -105,7 +105,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
 
     Route::group(['prefix' => 'course'], function () {
         Route::post('sign', 'CourseController@sign')->middleware('auth')->name('ajax.course.sign');
-        Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth')->name('ajax.course.submitFeedBack');
+        Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth','course.exist','course.syllabus.exist','course.feedback')->name('ajax.course.submitFeedBack');
         Route::post('addInstructor', 'CourseController@addInstructor')->middleware('auth')->name('course.addInstructor');
         Route::post('removeInstructor', 'CourseController@removeInstructor')->middleware('auth')->name('course.removeInstructor');
         Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth')->name('course.addSyllabusInfo');

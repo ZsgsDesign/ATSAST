@@ -63,6 +63,9 @@ class Kernel extends HttpKernel
         'course.exist' => \App\Http\Middleware\Course\Exist::class,
         'course.manage' => \App\Http\Middleware\Course\Manage::class,
         'course.syllabus.exist' => \App\Http\Middleware\Course\SyllabusExist::class,
+        'course.feedback' => \App\Http\Middleware\Course\Feedback::class,
+        'course.register' => \App\Http\Middleware\Course\Register::class,
+
     ];
 
     /**
@@ -82,6 +85,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\Course\Exist::class,
         \App\Http\Middleware\Course\Manage::class,
         \App\Http\Middleware\Course\SyllabusExist::class,
-
+        \App\Http\Middleware\Course\Register::class,
+        \App\Http\Middleware\Course\Feedback::class,
     ];
 }

@@ -246,6 +246,7 @@ class CourseModel extends Model
                 "feedback_time"=>date("Y-m-d H:i:s"),
             ]);
         }
+
     }
 
     public function manage($cid)
