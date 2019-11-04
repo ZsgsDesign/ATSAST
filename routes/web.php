@@ -26,13 +26,15 @@ Route::group(['prefix' => 'account'], function () {
 
 Route::group(['prefix' => 'course'], function () {
     Route::get('/', 'CourseController@index')->name('course');
-    Route::get('/{cid}/detail', 'CourseController@detail')->name('course.detail');
+    Route::get('add', 'CourseController@add')->middleware('auth')->name('course.add');
+    Route::get('{cid}', 'CourseController@detail')->name('course.detail');
+    Route::get('{cid}/detail', 'CourseController@detail')->name('course.detail');
     Route::get('{cid}/sign/{syid}', 'CourseController@sign')->middleware('auth')->name('course.sign');
     Route::get('{cid}/register', 'CourseController@register')->middleware('auth')->name('course.register');
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
     Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth')->name('course.feedback');
     Route::get('{cid}/manage', 'CourseController@manage')->name('course.manage');
-    Route::get('add', 'CourseController@add')->middleware('auth')->name('course.add');
+    Route::get('{cid}/edit_sign/{syid}', 'CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSign');
     Route::get('{cid}/view_sign/{syid}', 'CourseController@viewSign')->middleware('auth')->name('course.viewSign');
     Route::get('{cid}/view_register', 'CourseController@viewRegister')->middleware('auth')->name('course.viewRegister');
     Route::get('{cid}/add_syllabus', 'CourseController@addSyllabus')->middleware('auth')->name('course.addSyllabus');
@@ -105,6 +107,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('removeInstructor', 'CourseController@removeInstructor')->middleware('auth')->name('course.removeInstructor');
         Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth')->name('course.addSyllabusInfo');
         Route::post('addCourse', 'CourseController@addCourse')->middleware('auth')->name('course.addCourse');
+        Route::post('editSign','CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSign');
     });
 
     Route::group(['prefix' => 'contest'], function () {

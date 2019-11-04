@@ -60,6 +60,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'course.exist' => \App\Http\Middleware\Course\Exist::class,
+        'course.manage' => \App\Http\Middleware\Course\Manage::class,
+        'course.syllabus.exist' => \App\Http\Middleware\Course\SyllabusExist::class,
     ];
 
     /**
@@ -76,5 +79,9 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\Course\Exist::class,
+        \App\Http\Middleware\Course\Manage::class,
+        \App\Http\Middleware\Course\SyllabusExist::class,
+
     ];
 }

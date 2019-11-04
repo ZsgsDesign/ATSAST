@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 use App\Models\CourseModel;
+use App\Models\Eloquents\Course;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -156,7 +157,7 @@ class CourseController extends Controller
         $instructor = $ret['instructor'];
         $syllabus = $ret['syllabus'];
         $access_right = $ret['access_right'];
-        return view('courses.manage', [
+        return view('courses.manage.index', [
             'page_title'=>"课程管理",
             'site_title'=>$site,
             'navigation'=>"Courses",
@@ -177,7 +178,7 @@ class CourseController extends Controller
         if (!$access_right) {
             return Redirect::route('course');
         }
-        return view('courses.add', [
+        return view('courses.manage.add', [
             'page_title'=>"新增课程",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Courses",
@@ -201,7 +202,7 @@ class CourseController extends Controller
         $sign_details = $ret['sign_details'];
         $result = $ret['result'];
         $syllabus_info = $ret['syllabus_info'];
-        return view('courses.viewSign', [
+        return view('courses.manage.sign.view', [
             'page_title'=>"查看签到情况",
             'site_title'=>$syllabus_info['title'],
             'navigation'=>"Courses",
@@ -227,7 +228,7 @@ class CourseController extends Controller
         }
         $register_details = $ret['register_details'];
         $result = $ret['result'];
-        return view('courses.viewRegister', [
+        return view('courses.manage.view.register', [
             'page_title'=>"查看签到情况",
             'site_title'=>$result['course_name'],
             'navigation'=>"Courses",
@@ -249,12 +250,25 @@ class CourseController extends Controller
         if(!$ret){
             return Redirect::route('course');
         }
-        return view('courses.addSyllabus', [
+        return view('courses.manage.syllabus.add', [
             'page_title'=>"新增课时",
             'site_title'=>$ret['course_name'],
             'navigation'=>"Courses",
             'cid'=>$cid,
             'result'=>$ret,
+        ]);
+    }
+
+    public function editSign(Request $request)
+    {
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        return view('courses.manage.sign.edit', [
+            'page_title' => "新增课时",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
         ]);
     }
 }

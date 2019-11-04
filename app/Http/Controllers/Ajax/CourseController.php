@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\ResponseModel;
 use App\Models\CourseModel;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
 use Auth;
 
 class CourseController extends Controller
@@ -30,6 +26,25 @@ class CourseController extends Controller
         $coursemodel = new CourseModel();
         $ret = $coursemodel->updateSignStatus($signed, $cid, $syid, Auth::user()->id);
         return ResponseModel::success(200, null, $ret);
+    }
+
+    public function editSign(Request $request)
+    {
+        $syllabus = $request->syllabus;
+        $sign_status = boolval($request->sign_status);
+        if($sign_status) {
+            $signed = $request->signed;
+            $pattern='/^(\w){6}$/';
+            if (!preg_match($pattern, $signed)) {
+                return ResponseModel::err(1004);
+            }
+            $syllabus->signed = $signed;
+            $syllabus->save();
+        }else{
+            $syllabus->signed = '0';
+            $syllabus->save();
+        }
+        return ResponseModel::success();
     }
 
     public function submitFeedBack(Request $request)

@@ -313,7 +313,7 @@
         <syllabus>
             <info class="d-block d-lg-inline-block"><i class="MDI clock"></i> {{ $r->time }}</info>
             <info class="d-block d-lg-inline-block"><i class="MDI near-me"></i> {{ $r->location }}</info>
-            
+
             <h3>{{ $r->title }}</h3>
             <p>{{ $r->desc }}</p>
             @if(Auth::check() && $register_status)
@@ -321,7 +321,7 @@
                     @if($r->signid)
                         <button type="button" class="btn" disabled><action class="d-block d-lg-inline-block atsast-finished"><i class="MDI account-check"></i> 已签到</action></button>
                     @else
-                        <a href="sign/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-check"></i> 签到</action></button></a>
+                        <a href="{{ $cid }}/sign/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-check"></i> 签到</action></button></a>
                     @endif
                 @endif
                 @if($r->script)<a href="script/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI script"></i> 授课笔记</action></button></a>@endif
