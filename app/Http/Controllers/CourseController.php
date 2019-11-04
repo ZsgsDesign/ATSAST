@@ -300,4 +300,17 @@ class CourseController extends Controller
             'syllabus'   => $syllabus,
         ]);
     }
+
+    public function editFeedback(Request $request)
+    {
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        return view('courses.manage.feedback.edit', [
+            'page_title' => "修改反馈设置",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
+        ]);
+    }
 }

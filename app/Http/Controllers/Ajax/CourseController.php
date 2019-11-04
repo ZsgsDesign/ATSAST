@@ -112,6 +112,15 @@ class CourseController extends Controller
         return ResponseModel::success();
     }
 
+    public function editFeedback(Request $request)
+    {
+        $syllabus = $request->syllabus;
+        $feedback_status = boolval($request->feedback_status);
+        $syllabus->feedback = $feedback_status;
+        $syllabus->save();
+        return ResponseModel::success();
+    }
+
     public function submitFeedBack(Request $request)
     {
         $request->validate([

@@ -282,7 +282,7 @@
         margin: 0;
     }
 
-        card {
+    card {
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
         border-radius: 4px;
@@ -323,6 +323,14 @@
     .form-control:disabled, .form-control[disabled]{
         background-color: transparent;
     }
+
+    #vscode_container{
+        opacity: 0;
+        transition: .2s ease-out .0s;
+    }
+    card h2{
+        margin-bottom:1.5rem;
+    }
 </style>
 <div class="atsast-course-header">
     <img src="/static/img/bg.jpg" class="atsast-focus-img">
@@ -354,34 +362,30 @@
             </div>
             <div class="text-right">
                 <button class="btn btn-default" onclick="location.href='{{route('course.detail',['cid' => $course->cid])}}">查看课时详情</button>
-                <button type="submit" class="btn btn-outline-primary" onclick="location.href='{{route('course.manage',['cid' => $course->cid])}}’">返回管理中心</button>
+                <button type="submit" class="btn btn-outline-primary" onclick="location.href='{{route('course.manage',['cid' => $course->cid])}}'">返回管理中心</button>
             </div>
         </card>
         <card class="mb-3">
-            <h5><i class="MDI pencil"></i> 设置签到</h5>
+            <h5><i class="MDI comment-text-outline"></i> 设置反馈</h5>
             <div>
-                <div class="form-group {{ $syllabus->signed === '0' ? 'd-none' : '' }}" id="sign_code">
-                    <label for="signed" class="bmd-label-floating">签到码</label>
-                    <input type="text" class="form-control" name="signed" value="{{ $syllabus->signed !== '0' ? $syllabus->signed : ''}}" id="signed" required>
-                </div>
                 <div class="form-group" style="padding-top: 2.75rem;">
-                    <label for="sign_status" class="bmd-label-floating">签到功能</label>
+                    <label for="feedback_status" class="bmd-label-floating">反馈功能</label>
 
                     <div class="radio">
                         <label>
-                            <input type="radio" name="sign_status" id="sign_status_1" value="1" {{$syllabus->signed !== '0' ? 'checked' : ''}} required>开启
+                            <input type="radio" name="feedback_status" id="feedback_status_1" value="1" {{$syllabus->feedback !== '0' ? 'checked' : ''}} required>开启
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="sign_status" id="sign_status_1" value="0" {{$syllabus->signed === '0' ? 'checked' : ''}} required>关闭
+                            <input type="radio" name="feedback_status" id="feedback_status_0" value="0" {{$syllabus->feedback === '0' ? 'checked' : ''}} required>关闭
                         </label>
                     </div>
                 </div>
             </div>
             <div class="text-right">
                 <button class="btn btn-default" onclick="location.reload()">放弃更改</button>
-                <button type="submit" class="btn btn-outline-primary" onclick="updateSignSettings()">更新</button>
+                <button type="submit" class="btn btn-outline-primary" onclick="updateFeedBackSettings()">更新</button>
             </div>
         </card>
     </div>
@@ -407,31 +411,14 @@
 </div>
 
 <script>
-    window.addEventListener("load",function() {
-        $(':radio').click(function(){
-            var value = $(this).val();
-            if(value==0) $("#sign_code").addClass("d-none");
-            else $("#sign_code").removeClass("d-none");
-        });
-    }, false);
-    function updateSignSettings(){
-        var sign_status = parseInt($('input[name="sign_status"]:checked').val());
-        var signed = $('#signed').val();
-        if(sign_status===1) {
-            var pattern=/^(\w){6}$/;
-            if (!pattern.test(signed)) {
-                return alert("签到码必须为6位，只能包含字母、数字及下划线");
-            }
-        }
-
+    function updateFeedBackSettings(){
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/editSign',
+            url: '/ajax/course/editFeedback',
             data: {
                 cid:{{$course->cid}},
                 syid:{{$syllabus->syid}},
-                sign_status:sign_status,
-                signed:signed
+                feedback_status:parseInt($('input[name="feedback_status"]:checked').val())
             },
             dataType: 'json',
             headers: {
@@ -449,4 +436,5 @@
         $('#modal').modal();
     }
 </script>
+
 @endsection
