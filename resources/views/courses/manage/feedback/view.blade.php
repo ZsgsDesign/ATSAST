@@ -305,58 +305,59 @@
         padding:0.5rem 1rem;
     }
 </style>
-<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/github.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
-    <img src="https://static.1cf.co/img/atsast/bg.jpg" class="atsast-focus-img">
+    <img src="/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-<{$result['course_color']}>">
-            <i class="devicon-<{$result['course_logo']}>-plain"></i>
+        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
+            <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
-        <p class="d-none d-lg-block"><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
-        <h1 class="d-none d-lg-block"><{$result['course_name']}></h1>
+        <p class="d-none d-lg-block">{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
+        <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
     </div>
 </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
-        <h1><{$result['course_name']}></h1>
-        <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
+        <h1>{{$course->course_name}}</h1>
+        <p>{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
     </div>
+
     <card class="mb-3">
         <h5><i class="MDI file-document"></i> 课时详情</h5>
         <div>
-            <h2><{$syllabus_info['title']}></h2>
-            <p><{$syllabus_info['desc']}></p>
-            <p>            <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> <{ $syllabus_info['time'] }></span>
-                <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> <{ $syllabus_info['location'] }></span></p>
+            <h2>{{$syllabus->title}}</h2>
+            <p>{{$syllabus->desc}}</p>
+            <p>
+                <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> {{ $syllabus->time }}</span>
+                <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> {{ $syllabus->location }}</span>
+            </p>
         </div>
         <div class="text-right">
-            <button class="btn btn-default" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail'">查看课时详情</button>
-            <button type="submit" class="btn btn-outline-primary" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
+            <button class="btn btn-default" onclick="location.href='{{route('course.detail',['cid' => $course->cid])}}">查看课时详情</button>
+            <button type="submit" class="btn btn-outline-primary" onclick="location.href='{{route('course.manage',['cid' => $course->cid])}}'">返回管理中心</button>
         </div>
     </card>
     <h5 class="atsast-title-h5">课程反馈</h5>
     <div id="accordion" class="mb-5">
-        <{foreach $feedback_submit as $h }>
+        @foreach($feedbacks as $feedback)
         <card class="p-0">
-            <div class="card-header" id="heading<{$h['uid']}>">
+            <div class="card-header" id="heading{{$feedback->uid}}">
                 <h5 class="mb-0">
-                    <button class="btn wemd-transparent" data-toggle="collapse" data-target="#collapse<{$h['uid']}>" aria-expanded="false" aria-controls="collapse<{$h['uid']}>">
-                        <i class="MDI <{ if $h['rank'] }>emoticon-happy<{else}>emoticon-sad<{/if}> <{ if $h['rank'] }>wemd-green-text<{else}>wemd-red-text<{/if}>"></i> <{$h['real_name']}> <{$h['SID']}>
+                    <button class="btn btn-block wemd-transparent text-right" data-toggle="collapse" data-target="#collapse{{$feedback->uid}}" aria-expanded="false" aria-controls="collapse{{$feedback->uid}}">
+                        <i class="MDI {{$feedback->rank ? 'emoticon-happy wemd-green-text' : 'emoticon-sad wemd-red-text'}}"></i> {{$feedback->user->real_name}} {{$feedback->user->SID}}
                     </button>
                 </h5>
             </div>
 
-            <div id="collapse<{$h['uid']}>" class="collapse" aria-labelledby="heading<{$h['uid']}>" data-parent="#accordion">
+            <div id="collapse{{$feedback->uid}}" class="collapse" aria-labelledby="heading{{$feedback->uid}}" data-parent="#accordion">
                 <div class="card-body">
-                        <p><strong>满意程度：</strong><{ if $h['rank'] }>满意<{else}>不满意<{/if}></p>
-                        <p><strong>反馈时间：</strong><{$h['feedback_time']}></p>
-                        <p><strong>反馈详情：</strong><{$h['desc']}></p>
+                        <p><strong>满意程度：</strong>{{$feedback->rank ? '满意' : '不满意'}}</p>
+                        <p><strong>反馈时间：</strong>{{$feedback->feedback_time}}</p>
+                        <p><strong>反馈详情：</strong>{{$feedback->desc}}</p>
                 </div>
             </div>
         </card>
-        <{/foreach}>
+        @endforeach
     </div>
 </div>
 

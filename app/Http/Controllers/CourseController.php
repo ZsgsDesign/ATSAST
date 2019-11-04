@@ -313,4 +313,20 @@ class CourseController extends Controller
             'syllabus'   => $syllabus,
         ]);
     }
+
+    public function viewFeedback(Request $request)
+    {
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        $feedbacks = $syllabus->feedbacks;
+        $feedbacks->load('user');
+        return view('courses.manage.feedback.view', [
+            'page_title' => "查看反馈",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
+            'feedbacks'  => $feedbacks
+        ]);
+    }
 }

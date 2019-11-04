@@ -11,4 +11,9 @@ class SyllabusFeedback extends Model
     public $timestamps = false;
 
     protected $fillable = ['cid','syid','uid','rank','desc','feedback_time'];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User','uid','id');
+    }
 }
