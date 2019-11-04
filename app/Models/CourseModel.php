@@ -533,6 +533,7 @@ class CourseModel extends Model
         if (empty($access_right)) {
            return 2003;
         }
+
         $email_user = DB::table('users')->where('email','=',$email)->get()->first();
         $email_user = (array)$email_user;
         if (empty($email_user)) {

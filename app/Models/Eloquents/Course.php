@@ -20,6 +20,26 @@ class Course extends Model
         return $this->hasMany('App\Models\Eloquents\Syllabus','cid','cid');
     }
 
+    public function instructors()
+    {
+        return $this->hasMany('App\Models\Eloquents\Instructor','cid','cid');
+    }
+
+    public function details()
+    {
+        return $this->hasMany('App\Models\Eloquents\CourseDetail','cid','cid');
+    }
+
+    public function getInstructorEmailsAttribute()
+    {
+        $emails = [];
+        $instructors = $this->instructors;
+        foreach ($instructors as $instructor) {
+            array_push($emails,$instructor->user->email);
+        }
+        return $emails;
+    }
+
     public function is_manager($user_id)
     {
         return true;

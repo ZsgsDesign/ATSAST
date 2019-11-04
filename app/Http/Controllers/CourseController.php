@@ -185,6 +185,17 @@ class CourseController extends Controller
         ]);
     }
 
+    public function edit(Request $request)
+    {
+        $course = $request->course;
+        return view('courses.manage.edit', [
+            'page_title' => "修改课程信息",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+        ]);
+    }
+
     public function viewSign(Request $request)
     {
         $cid = $request->cid;

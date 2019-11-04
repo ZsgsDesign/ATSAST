@@ -34,6 +34,7 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
     Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth')->name('course.feedback');
     Route::get('{cid}/manage', 'CourseController@manage')->name('course.manage');
+    Route::get('{cid}/edit', 'CourseController@edit')->middleware('auth','course.exist','course.manage')->name('course.manage');
     Route::get('{cid}/edit_sign/{syid}', 'CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSign');
     Route::get('{cid}/edit_video/{syid}', 'CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editVideo');
     Route::get('{cid}/view_sign/{syid}', 'CourseController@viewSign')->middleware('auth')->name('course.viewSign');

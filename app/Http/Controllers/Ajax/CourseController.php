@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\ResponseModel;
 use App\Models\CourseModel;
+use App\Models\Eloquents\Instructor;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -26,6 +27,32 @@ class CourseController extends Controller
         $coursemodel = new CourseModel();
         $ret = $coursemodel->updateSignStatus($signed, $cid, $syid, Auth::user()->id);
         return ResponseModel::success(200, null, $ret);
+    }
+
+    public function edit(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'major' => 'required',
+            'desc' => 'required',
+            'color' => 'required',
+            'suitable' => 'required',
+            'type' => 'required',
+        ]);
+        $course = $request->course;
+        $emails = explode(';',$request->email);
+        foreach ($emails as &$email) {
+            $user = User::where('email',$email)->first();
+            if(empty($user)){
+                return ResponseModel::err(2002,null,$email);
+            }else{
+                $email = [
+                    'email' => $email,
+                    'user_id' => $user
+                ];
+            }
+        }
+
     }
 
     public function editSign(Request $request)
