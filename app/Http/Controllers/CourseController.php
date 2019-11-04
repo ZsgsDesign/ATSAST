@@ -271,4 +271,17 @@ class CourseController extends Controller
             'syllabus'   => $syllabus,
         ]);
     }
+
+    public function editVideo(Request $request)
+    {
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        return view('courses.manage.video', [
+            'page_title' => "新增课时",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
+        ]);
+    }
 }

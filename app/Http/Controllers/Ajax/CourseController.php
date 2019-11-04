@@ -47,6 +47,25 @@ class CourseController extends Controller
         return ResponseModel::success();
     }
 
+    public function editVideo(Request $request)
+    {
+        $syllabus = $request->syllabus;
+        $video_status = boolval($request->video_status);
+        if($video_status) {
+            $video = $request->video;
+            $pattern='/^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/';
+            if (!preg_match($pattern, $video)) {
+                return ResponseModel::err(1004);
+            }
+            $syllabus->video = $video;
+            $syllabus->save();
+        }else{
+            $syllabus->signed = '0';
+            $syllabus->save();
+        }
+        return ResponseModel::success();
+    }
+
     public function submitFeedBack(Request $request)
     {
         $request->validate([
