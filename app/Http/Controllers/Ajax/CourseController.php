@@ -52,6 +52,7 @@ class CourseController extends Controller
                 ];
             }
         }
+        //todo...
 
     }
 
@@ -90,6 +91,23 @@ class CourseController extends Controller
             $syllabus->signed = '0';
             $syllabus->save();
         }
+        return ResponseModel::success();
+    }
+
+    public function editSyllabus(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'desc' => 'required',
+            'location' => 'required',
+            'time' => 'required|date',
+        ]);
+        $syllabus = $request->syllabus;
+        $syllabus->title    = $request->title;
+        $syllabus->desc     = $request->desc;
+        $syllabus->location = $request->location;
+        $syllabus->time     = date('Y-m-d H:i:s',strtotime($request->time));
+        $syllabus->save();
         return ResponseModel::success();
     }
 

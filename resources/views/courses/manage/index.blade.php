@@ -172,7 +172,7 @@
     .btn-raised[disabled]{
         pointer-events: none;
     }
-    
+
     syllabus{
         display: block;
     }
@@ -354,7 +354,7 @@
             <div>
                 <info class="d-block d-lg-inline-block"><i class="MDI clock"></i> {{ $r['time'] }}</info>
                 <info class="d-block d-lg-inline-block"><i class="MDI near-me"></i> {{ $r['location'] }}</info>
-                
+
                 <h3>{{ $r['title'] }}</h3>
                 <p>{{ $r['desc'] }}</p>
                 <button type="button" data-toggle="collapse" class="btn btn-info" data-target="#collapse{{$r['syid']}}" aria-expanded="false" aria-controls="collapse{{$r['syid']}}"><action class="d-block d-lg-inline-block text-info"><i class="MDI menu"></i> 所有操作</action></button>
@@ -364,7 +364,7 @@
                 <a href="view_sign/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI account-circle"></i> 查看签到情况</action></button></a>
                 <a href="view_homework/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI pen"></i> 查看作业提交</action></button></a>
                 <a href="view_feedback/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-primary"><i class="MDI comment-text-outline"></i> 查看课堂反馈</action></button></a>
-                <a href="edit_info/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI file-document"></i> 编辑课时信息</action></button></a>
+                <a href="edit_syllabus/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI file-document"></i> 编辑课时信息</action></button></a>
                 <a href="edit_sign/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI account-circle"></i> 设置签到信息</action></button></a>
                 <a href="edit_script/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI script"></i> 设置授课笔记</action></button></a>
                 <a href="edit_homework/{{ $r['syid'] }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block text-lalala"><i class="MDI pen"></i> 设置作业信息</action></button></a>

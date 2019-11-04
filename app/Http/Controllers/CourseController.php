@@ -295,4 +295,17 @@ class CourseController extends Controller
             'syllabus'   => $syllabus,
         ]);
     }
+
+    public function editSyllabus(Request $request)
+    {
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        return view('courses.manage.syllabus.edit', [
+            'page_title' => "修改课时信息",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
+        ]);
+    }
 }

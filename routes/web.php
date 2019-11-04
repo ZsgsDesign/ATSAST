@@ -34,7 +34,8 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
     Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth')->name('course.feedback');
     Route::get('{cid}/manage', 'CourseController@manage')->name('course.manage');
-    Route::get('{cid}/edit', 'CourseController@edit')->middleware('auth','course.exist','course.manage')->name('course.manage');
+    Route::get('{cid}/edit', 'CourseController@edit')->middleware('auth','course.exist','course.manage')->name('course.edit');
+    Route::get('{cid}/edit_syllabus/{syid}', 'CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSyllabus');
     Route::get('{cid}/edit_sign/{syid}', 'CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSign');
     Route::get('{cid}/edit_video/{syid}', 'CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editVideo');
     Route::get('{cid}/view_sign/{syid}', 'CourseController@viewSign')->middleware('auth')->name('course.viewSign');
@@ -111,6 +112,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('addCourse', 'CourseController@addCourse')->middleware('auth')->name('course.addCourse');
         Route::post('editSign','CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSign');
         Route::post('editVideo','CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editVideo');
+        Route::post('editSyllabus','CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSyllabus');
     });
 
     Route::group(['prefix' => 'contest'], function () {
