@@ -78,7 +78,8 @@ php artisan migrate
 - [ ] 活动
     - [X] 首页
     - [X] 活动详情
-    - [ ] 活动报名
+    - [X] 活动报名
+    - [ ] 添加活动
 - [X] PasteBin
 - [X] 报销
 - [X] 借还
