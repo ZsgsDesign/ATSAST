@@ -27,8 +27,8 @@ Route::group(['prefix' => 'account'], function () {
 Route::group(['prefix' => 'course'], function () {
     Route::get('/', 'CourseController@index')->name('course');
     Route::get('add', 'CourseController@add')->middleware('auth')->name('course.add');
-    Route::get('{cid}', 'CourseController@detail')->name('course.detail');
-    Route::get('{cid}/detail', 'CourseController@detail')->name('course.detail');
+    Route::get('{cid}', 'CourseController@detail')->middleware('auth','course.exist')->name('course.detail');
+    Route::get('{cid}/detail', 'CourseController@detail')->middleware('auth','course.exist')->name('course.detail');
     Route::get('{cid}/sign/{syid}', 'CourseController@sign')->middleware('auth')->name('course.sign');
     Route::get('{cid}/register', 'CourseController@register')->middleware('auth')->name('course.register');
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth','course.exist','course.manage','course.syllabus.exist','course.syllabus.script')->name('course.script');

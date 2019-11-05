@@ -15,6 +15,11 @@ class Syllabus extends Model
         return $this->hasMany('App\Models\Eloquents\SyllabusFeedback','syid','syid');
     }
 
+    public function signs()
+    {
+        return $this->hasMany('App\Models\Eloquents\SyllabusSign','syid','syid');
+    }
+
     public function syllabus_script()
     {
         return $this->hasOne('App\Models\Eloquents\SyllabusScript','syid','syid');

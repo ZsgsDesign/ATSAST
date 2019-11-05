@@ -234,65 +234,65 @@
 <div class="atsast-course-header">
     <img src="/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-{{$result->course_color}}">
-            <i class="devicon-{{$result->course_logo}}-plain"></i>
+        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
+            <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
-        <p class="d-none d-lg-block">{{$result->creator_name}} ·@if($result->course_type==1) 线上课程@else 线下课程@endif</p>
-        <h1 class="d-none d-lg-block">{{$result->course_name}}</h1>
-        @if(Auth::check())<a href="/course/{{$cid}}/register"><button type="button" class="btn btn-@if($register_status)success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if($register_status)disabled @endif ><i class="MDI @if($register_status)check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if($register_status) 已报名@else 报名@endif</button></a>@endif
+        <p class="d-none d-lg-block">{{$course->organization->name}} ·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
+        <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
+        @if(Auth::check())<a href="/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if(!empty($register)) disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
     </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
-        <h1>{{$result->course_name}}</h1>
-        <p>{{$result->creator_name}} ·@if($result->course_type==1) 线上课程@else 线下课程@endif</p>
-        @if(Auth::check())<a href="/course/{{$cid}}/register"><button type="button" class="btn btn-@if($register_status)success @else info @endif btn-raised d-inline-block d-lg-none" @if($register_status)disabled @endif ><i class="MDI @if($register_status)check-circle-outline @else checkbox-marked-circle-outline @endif"></i> @if($register_status) 已报名@else 报名@endif</button></a>@endif
+        <h1>{{$course->course_name}}</h1>
+        <p>{{$course->organization->name}} ·@if($course->course_type==1) 线上课程 @else 线下课程@endif</p>
+        @if(Auth::check())<a href="/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-raised d-inline-block d-lg-none" @if(!empty($register))disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i> @if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
     </div>
     <section class="mb-5">
 
         <p>
-            <strong>关于此课程：</strong>{{$result->course_desc}}
+            <strong>关于此课程：</strong>{{$course->course_desc}}
         </p>
         <p>
-            <strong>此课程适用人群：</strong>{{$result->course_suitable}}
+            <strong>此课程适用人群：</strong>{{$course->course_suitable}}
         </p>
 
         <hr class="atsast-line">
 
         <p>
-            <strong>课程提供：</strong>{{$result->creator_name}}
+            <strong>课程提供：</strong>{{$course->organization->name}}
         </p>
 
-        <img class="atsast-course-creator" src="{{$result->creator_logo}}">
+        <img class="atsast-course-creator" src="{{$course->organization->logo}}">
 
         <hr class="atsast-line">
 
         <div class="row mb-3">
-            @if(!$instructor)
+            @if(empty($course->instructors))
             <div class="col-sm-12">
                 <p class="atsast-tooltip"><span class="badge badge-secondary">暂无讲师信息</span></p>
             </div>
             @else
-            @foreach($instructor as $r)
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <instructor>
-                    <a href="/user/{{ $r->uid }}"><img src="{{ $r->avatar }}"></a>
-                    <div>
-                        <p><strong>{{ $r->course_title }}：</strong>@if($r->real_name){{$r->real_name}}@else{{$r->SID}}@endif</p>
-                        <small>{{ $r->title }}</small>
-                    </div>
-                </instructor>
-            </div>
-            @endforeach
+                @foreach($course->instructors as $instructor)
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <instructor>
+                        <a href="/user/{{ $instructor->uid }}"><img src="{{ $instructor->user->avatar }}"></a>
+                        <div>
+                            <p><strong>{{ $instructor->course_title }}：</strong>@if($instructor->user->real_name){{$instructor->user->real_name}}@else{{$instructor->user->SID}}@endif</p>
+                            <small>{{ $instructor->user->title }}</small>
+                        </div>
+                    </instructor>
+                </div>
+                @endforeach
             @endif
         </div>
         <small>课程信息</small>
         <table class="table table-borderless table-hover">
             <tbody>
-                @foreach($detail as $r)
+                @foreach($course->details as $detail)
                 <tr>
-                    <th scope="row"><i class="MDI {{ $r->icon }}"></i> {{ $r->item_name }}</th>
-                    <td>{{ $r->item_value }}</td>
+                    <th scope="row"><i class="MDI {{ $detail->icon }}"></i> {{ $detail->item_name }}</th>
+                    <td>{{ $detail->item_value }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -304,30 +304,30 @@
         <h2>授课大纲 - 你能学习到的</h2>
         <p>syllabus</p>
         <hr class="atsast-line">
-        @if(empty($syllabus))
+        @if(empty($course->syllabus))
         <div class="atsast-empty">
             <badge>本课程暂未提供授课大纲</badge>
         </div>
         @else
-        @foreach($syllabus as $r)
+        @foreach($course->syllabus as $syllabus)
         <syllabus>
-            <info class="d-block d-lg-inline-block"><i class="MDI clock"></i> {{ $r->time }}</info>
-            <info class="d-block d-lg-inline-block"><i class="MDI near-me"></i> {{ $r->location }}</info>
+            <info class="d-block d-lg-inline-block"><i class="MDI clock"></i> {{ $syllabus->time }}</info>
+            <info class="d-block d-lg-inline-block"><i class="MDI near-me"></i> {{ $syllabus->location }}</info>
 
-            <h3>{{ $r->title }}</h3>
-            <p>{{ $r->desc }}</p>
-            @if(Auth::check() && $register_status)
-                @if($r->signed)
-                    @if($r->signid)
+            <h3>{{ $syllabus->title }}</h3>
+            <p>{{ $syllabus->desc }}</p>
+            @if(Auth::check() && !empty($register))
+                @if($syllabus->signed)
+                    @if(!empty($syllabus->signs()->where('uid',Auth::user()->id)->first()))
                         <button type="button" class="btn" disabled><action class="d-block d-lg-inline-block atsast-finished"><i class="MDI account-check"></i> 已签到</action></button>
                     @else
-                        <a href="{{ $cid }}/sign/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-check"></i> 签到</action></button></a>
+                        <a href="{{ $course->cid }}/sign/{{ $syllabus->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-check"></i> 签到</action></button></a>
                     @endif
                 @endif
-                @if($r->script)<a href="{{route('course.script',['cid' => $result->cid, 'syid' => $r->syid])}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI script"></i> 授课笔记</action></button></a>@endif
-                @if($r->homework)<a href="homework/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI pen"></i> 查看作业</action></button></a>@endif
-                @if($r->feedback)<a href="{{route('course.feedback',['cid' => $result->cid, 'syid' => $r->syid])}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
-                @if($r->video)<a href="{{ $r->video }}" target="_blank"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI video"></i> 视频地址</action></button></a>@endif
+                @if($syllabus->script)<a href="{{route('course.script',['cid' => $course->cid, 'syid' => $syllabus->syid])}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI script"></i> 授课笔记</action></button></a>@endif
+                @if($syllabus->homework)<a href="homework/{{ $syllabus->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI pen"></i> 查看作业</action></button></a>@endif
+                @if($syllabus->feedback)<a href="{{route('course.feedback',['cid' => $course->cid, 'syid' => $syllabus->syid])}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
+                @if($syllabus->video)<a href="{{ $syllabus->video }}" target="_blank"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI video"></i> 视频地址</action></button></a>@endif
             @elseif(Auth::check())
             <a href="register"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
             @else

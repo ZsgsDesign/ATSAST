@@ -28,29 +28,16 @@ class CourseController extends Controller
 
     public function detail(Request $request)
     {
-        $cid = $request->cid;
-        $coursemodel = new CourseModel();
-        if(!$coursemodel->existCid($cid)){
-            return Redirect::route('course');
-        }
-        $ret = $coursemodel->detail($cid);
-        $creator = $ret['creator'];
-        $detail = $ret['detail'];
-        $result = $ret['result'];
-        $register_status = $ret['register_status'];
-        $instructor = $ret['instructor'];
-        $syllabus = $ret['syllabus'];
+        $course = $request->course;
+        $course->load('syllabus.signs','instructors.user','details');
+        $user = Auth::user();
+        $register = $course->registers()->where('uid',$user->id)->first();
         return view('courses.detail', [
-            'page_title'=>"课程",
-            'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Courses",
-            'creator'=>$creator,
-            'detail'=>$detail,
-            'result'=>$result,
-            'register_status'=>$register_status,
-            'cid'=>$cid,
-            'instructor'=>$instructor,
-            'syllabus'=>$syllabus,
+            'page_title' => "课程",
+            'site_title' => "SAST教学辅助平台",
+            'navigation' => "Courses",
+            'course'     => $course,
+            'register'   => $register
         ]);
     }
 
