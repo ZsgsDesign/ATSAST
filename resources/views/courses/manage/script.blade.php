@@ -3,7 +3,7 @@
 @section('template')
 
 <style>
-    nav.navbar {
+    nav.navbar,#nav-container {
         margin-bottom: 0 !important;
     }
 
@@ -331,59 +331,79 @@
     card h2{
         margin-bottom:1.5rem;
     }
+
+    markdown-editor{
+        display: block;
+    }
+
+    markdown-editor .CodeMirror {
+        height: 20rem;
+    }
+
+    markdown-editor ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    markdown-editor ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    markdown-editor .editor-toolbar.disabled-for-preview a:not(.no-disable){
+        opacity: 0.5;
+    }
 </style>
-<link rel="stylesheet" href="<{$ATSAST_CDN}>/css/github.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="<{$ATSAST_CDN}>/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="/static/library/simplemde/dist/simplemde.min.css">
+
 <div class="atsast-course-header">
-    <img src="https://static.1cf.co/img/atsast/bg.jpg" class="atsast-focus-img">
+    <img src="/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-<{$result['course_color']}>">
-            <i class="devicon-<{$result['course_logo']}>-plain"></i>
+        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
+            <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
-        <p class="d-none d-lg-block"><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
-        <h1 class="d-none d-lg-block"><{$result['course_name']}></h1>
+        <p class="d-none d-lg-block">{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
+        <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
     </div>
 </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
-        <h1><{$result['course_name']}></h1>
-        <p><{$result['creator_name']}>·<{if $result['course_type']==1}>线上<{else}>线下<{/if}>课程</p>
+        <h1>{{$course->course_name}}</h1>
+        <p>{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
     </div>
 
     <div class="mb-5">
         <card class="mb-3">
             <h5><i class="MDI file-document"></i> 课时详情</h5>
             <div>
-                <h2><{$syllabus_info['title']}></h2>
-                <p><{$syllabus_info['desc']}></p>
-                <p>            <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> <{ $syllabus_info['time'] }></span>
-                    <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> <{ $syllabus_info['location'] }></span></p>
+                <h2>{{$syllabus->title}}</h2>
+                <p>{{$syllabus->desc}}</p>
+                <p>
+                    <span class="d-block d-lg-inline-block"><i class="MDI clock"></i> {{ $syllabus->time }}</span>
+                    <span class="d-block d-lg-inline-block"><i class="MDI near-me"></i> {{ $syllabus->location }}</span>
+                </p>
             </div>
             <div class="text-right">
-                <button class="btn btn-default" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/detail'">查看课时详情</button>
-                <button type="submit" class="btn btn-outline-primary" onclick="location.href='<{$ATSAST_DOMAIN}>/course/<{$cid}>/manage'">返回管理中心</button>
+                <button class="btn btn-default" onclick="location.href='{{route('course.detail',['cid' => $course->cid])}}">查看课时详情</button>
+                <button type="submit" class="btn btn-outline-primary" onclick="location.href='{{route('course.manage',['cid' => $course->cid])}}'">返回管理中心</button>
             </div>
         </card>
         <card class="mb-3">
             <h5><i class="MDI script"></i> 编辑授课笔记</h5>
             <div>
-                <div id="vscode_container">
-                    <div id="vscode" style="width:100%;height:30rem;border:1px solid grey"></div>
-                </div>
+                <markdown-editor class="mt-3 mb-3">
+                    <textarea id="markdown_editor"></textarea>
+                </markdown-editor>
                 <div class="form-group" style="padding-top: 2.75rem;">
                     <label for="script_status" class="bmd-label-floating">授课笔记功能</label>
 
                     <div class="radio">
                         <label>
-                            <input type="radio" name="script_status" id="script_status_1" value="1" <{ if $syllabus_info[ 'script']!=="0" }>checked
-                            <{/if}> required>开启
+                            <input type="radio" name="script_status" id="script_status_1" value="1" {{$syllabus->script !== '0' ? 'checked' : ''}} required>开启
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="script_status" id="script_status_0" value="0" <{ if $syllabus_info[ 'script']==="0" }>checked
-                            <{/if}> required>关闭
+                            <input type="radio" name="script_status" id="script_status_0" value="0" {{$syllabus->script === '0' ? 'checked' : ''}} required>关闭
                         </label>
                     </div>
                 </div>
@@ -415,68 +435,110 @@
     </div>
 </div>
 
+<script type="text/javascript" src="/static/library/simplemde/dist/simplemde.min.js"></script>
+<script type="text/javascript" src="/static/library/marked/marked.min.js"></script>
+<script type="text/javascript" src="/static/library/dompurify/dist/purify.min.js"></script>
 <script>
-
-    var editor,jsCnt=0;
-
-    window.addEventListener("load",function() {
-        loadJsAsync("<{$ATSAST_CDN}>/vscode/vs/loader.js");
-    },false);
-
-    function loadJsAsync(url){
-        var body = document.getElementsByTagName('body')[0];
-        var jsNode = document.createElement('script');
-
-        jsNode.setAttribute('type', 'text/javascript');
-        jsNode.setAttribute('src', url);
-        body.appendChild(jsNode);
-
-        jsNode.onload = function() {
-            jsCnt++;
-            if(jsCnt==1){
-                require.config({ paths: { 'vs': '<{$ATSAST_CDN}>/vscode/vs' }});
-
-                // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
-                // the default worker url location (used when creating WebWorkers). The problem here is that
-                // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
-                // a web worker through a same-domain script
-
-                window.MonacoEnvironment = {
-                getWorkerUrl: function(workerId, label) {
-                    return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-                    self.MonacoEnvironment = {
-                        baseUrl: '<{$ATSAST_CDN}>/vscode/'
-                    };
-                    importScripts('<{$ATSAST_CDN}>/vscode/vs/base/worker/workerMain.js');`
-                    )}`;
+    var simplemde = new SimpleMDE({
+        autosave: {
+            enabled: true,
+            uniqueId: "script_edit_{{$syllabus->syid}}",
+            delay: 1000,
+        },
+        element: document.querySelector('#markdown_editor'),
+        hideIcons: ["guide", "heading","side-by-side","fullscreen"],
+        spellChecker: false,
+        tabSize: 4,
+        renderingConfig: {
+            codeSyntaxHighlighting: true
+        },
+        previewRender: function (plainText) {
+            return marked(plainText, {
+                sanitize: true,
+                sanitizer: DOMPurify.sanitize,
+                highlight: function (code) {
+                    return hljs.highlightAuto(code).value;
                 }
-                };
-
-                require(["vs/editor/editor.main"], function () {
-                    editor = monaco.editor.create(document.getElementById('vscode'), {
-                        value: "<{ if isset($syllabus_script['script_slashed'])}><{$syllabus_script['script_slashed'] nofilter}><{/if}>",
-                        language: "markdown"
-                    });
-                    $("#vscode_container").css("opacity",1);
-                });
-            }
-        }
-
-    }
+            });
+        },
+        status:false,
+        toolbar: [{
+                name: "bold",
+                action: SimpleMDE.toggleBold,
+                className: "MDI format-bold",
+                title: "Bold",
+            },
+            {
+                name: "italic",
+                action: SimpleMDE.toggleItalic,
+                className: "MDI format-italic",
+                title: "Italic",
+            },
+            "|",
+            {
+                name: "quote",
+                action: SimpleMDE.toggleBlockquote,
+                className: "MDI format-quote",
+                title: "Quote",
+            },
+            {
+                name: "unordered-list",
+                action: SimpleMDE.toggleUnorderedList,
+                className: "MDI format-list-bulleted",
+                title: "Generic List",
+            },
+            {
+                name: "ordered-list",
+                action: SimpleMDE.toggleOrderedList,
+                className: "MDI format-list-numbers",
+                title: "Numbered List",
+            },
+            "|",
+            {
+                name: "code",
+                action: SimpleMDE.toggleCodeBlock,
+                className: "MDI code-tags",
+                title: "Create Code",
+            },
+            {
+                name: "link",
+                action: SimpleMDE.drawLink,
+                className: "MDI link-variant",
+                title: "Insert Link",
+            },
+            {
+                name: "image",
+                action: SimpleMDE.drawImage,
+                className: "MDI image-area",
+                title: "Insert Image",
+            },
+            "|",
+            {
+                name: "preview",
+                action: SimpleMDE.togglePreview,
+                className: "MDI eye no-disable",
+                title: "Toggle Preview",
+            },
+        ],
+    });
 
     function updateScript(){
-        editor.updateOptions({ readOnly: true });
-        $.post("<{$ATSAST_DOMAIN}>/ajax/updateScript",{
-            cid:<{$cid}>,
-            syid:<{$syid}>,
-            script_status:parseInt($('input[name="script_status"]:checked').val()),
-            script:editor.getValue()
-        },function(result){
-            result=JSON.parse(result);
-            alert(result.desc);
-            editor.updateOptions({ readOnly: false });
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/course/editScript',
+            data: {
+                cid: {{$course->cid}},
+                syid:{{$syllabus->syid}},
+                script_status:parseInt($('input[name="script_status"]:checked').val()),
+                script:simplemde.value()
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(ret){
+                alert(ret.desc);
+            }
         });
-
     }
 
     function alert(desc) {

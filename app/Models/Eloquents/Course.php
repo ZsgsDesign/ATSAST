@@ -40,6 +40,11 @@ class Course extends Model
         return $this->hasMany('App\Models\Eloquents\CourseRegister','cid','cid');
     }
 
+    public function privileges()
+    {
+        return $this->hasMany('App\Models\Eloquents\Privilege','type_value','cid')->where('type','cid');
+    }
+
     public function getInstructorEmailsAttribute()
     {
         $emails = [];
@@ -52,6 +57,7 @@ class Course extends Model
 
     public function is_manager($user_id)
     {
-        return true;
+        $privilege = $this->privileges()->where('uid',$user_id)->first();
+        return !empty($privilege);
     }
 }

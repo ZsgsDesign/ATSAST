@@ -33,12 +33,13 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/register', 'CourseController@register')->middleware('auth')->name('course.register');
     Route::get('{cid}/script/{syid}', 'CourseController@script')->middleware('auth')->name('course.script');
     Route::get('{cid}/feedback/{syid}', 'CourseController@feedback')->middleware('auth','course.exist','course.syllabus.exist','course.feedback')->name('course.feedback');
-    Route::get('{cid}/manage', 'CourseController@manage')->name('course.manage');
+    Route::get('{cid}/manage', 'CourseController@manage')->middleware('auth','course.exist','course.manage')->name('course.manage');
     Route::get('{cid}/edit', 'CourseController@edit')->middleware('auth','course.exist','course.manage')->name('course.edit');
     Route::get('{cid}/edit_syllabus/{syid}', 'CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSyllabus');
     Route::get('{cid}/edit_sign/{syid}', 'CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSign');
     Route::get('{cid}/edit_feedback/{syid}', 'CourseController@editFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editFeedback');
     Route::get('{cid}/edit_video/{syid}', 'CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editVideo');
+    Route::get('{cid}/edit_script/{syid}', 'CourseController@editScript')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editScript');
     Route::get('{cid}/view_sign/{syid}', 'CourseController@viewSign')->middleware('auth')->name('course.viewSign');
     Route::get('{cid}/view_register', 'CourseController@viewRegister')->middleware('auth')->name('course.viewRegister');
     Route::get('{cid}/view_feedback/{syid}', 'CourseController@viewFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.viewFeedback');
@@ -116,6 +117,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], funct
         Route::post('editVideo','CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editVideo');
         Route::post('editFeedback','CourseController@editFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editFeedback');
         Route::post('editSyllabus','CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSyllabus');
+        Route::post('editScript','CourseController@editScript')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editScript');
     });
 
     Route::group(['prefix' => 'contest'], function () {

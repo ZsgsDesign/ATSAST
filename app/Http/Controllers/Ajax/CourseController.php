@@ -7,6 +7,7 @@ use App\Models\ResponseModel;
 use App\Models\CourseModel;
 use App\Models\Eloquents\Instructor;
 use App\Models\Eloquents\SyllabusFeedback;
+use App\Models\Eloquents\SyllabusScript;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -90,6 +91,32 @@ class CourseController extends Controller
             $syllabus->save();
         }else{
             $syllabus->signed = '0';
+            $syllabus->save();
+        }
+        return ResponseModel::success();
+    }
+
+    public function editScript(Request $request)
+    {
+        $course   = $request->course;
+        $syllabus = $request->syllabus;
+        $script_status = boolval($request->script_status);
+        if($script_status) {
+            $syllabus->script = true;
+            if(empty($syllabus->syllabus_script)){
+                SyllabusScript::updateOrInsert([
+                    'cid'     => $course->cid,
+                    'syid'    => $syllabus->syid
+                ],[
+                    'content' => $request->script
+                ]);
+            }else{
+                $syllabus->syllabus_script->content = $request->script;
+                $syllabus->syllabus_script->save();
+            }
+            $syllabus->save();
+        }else{
+            $syllabus->script = false;
             $syllabus->save();
         }
         return ResponseModel::success();

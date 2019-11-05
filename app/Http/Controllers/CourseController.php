@@ -280,7 +280,20 @@ class CourseController extends Controller
         $course = $request->course;
         $syllabus = $request->syllabus;
         return view('courses.manage.video', [
-            'page_title' => "新增课时",
+            'page_title' => "设置教学视频",
+            'site_title' => $course->course_name,
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
+        ]);
+    }
+
+    public function editScript(Request $request)
+    {
+        $course = $request->course;
+        $syllabus = $request->syllabus;
+        return view('courses.manage.script', [
+            'page_title' => "编辑课堂讲义",
             'site_title' => $course->course_name,
             'navigation' => "Courses",
             'course'     => $course,

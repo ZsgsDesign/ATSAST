@@ -326,7 +326,7 @@
                 @endif
                 @if($r->script)<a href="script/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI script"></i> 授课笔记</action></button></a>@endif
                 @if($r->homework)<a href="homework/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI pen"></i> 查看作业</action></button></a>@endif
-                @if($r->feedback)<a href="feedback/{{ $r->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
+                @if($r->feedback)<a href="{{route('course.feedback',['cid' => $result->cid, 'syid' => $r->syid])}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
                 @if($r->video)<a href="{{ $r->video }}" target="_blank"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI video"></i> 视频地址</action></button></a>@endif
             @elseif(Auth::check())
             <a href="register"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
