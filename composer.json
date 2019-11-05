@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "ZsgsDesign/ATSAST",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "ATSAST - Auxiliary Teaching for SAST.",
     "keywords": [
         "framework",
         "laravel"
