@@ -94,23 +94,14 @@ class CourseController extends Controller
 
     public function script(Request $request)
     {
-        $cid = $request->cid;
-        $syid = $request->syid;
-        $coursemodel = new CourseModel();
-        if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existSyidInScript($cid,$syid)){
-            return Redirect::route('course');
-        }
-        $ret = $coursemodel->script($cid,$syid);
-        $result = $ret['result'];
-        $script = $ret['script'];
-        $title = $ret['title'];
+        $course = $request->course;
+        $syllabus = $request->syllabus;
         return view('courses.script', [
-            'page_title'=>$title,
-            'site_title'=>"SAST教学辅助平台",
-            'navigation'=>"Courses",
-            'cid'=>$cid,
-            'result'=>$result,
-            'script'=>$script,
+            'page_title' => $course->course_name,
+            'site_title' => "SAST教学辅助平台",
+            'navigation' => "Courses",
+            'course'     => $course,
+            'syllabus'   => $syllabus,
         ]);
     }
 

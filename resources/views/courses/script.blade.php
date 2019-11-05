@@ -198,26 +198,30 @@
     #nav-container {
         margin-bottom: 0px !important;
     }
+
+    #markdown_container img{
+        max-width: 100%
+    }
 </style>
 <link rel="stylesheet" href="/static/css/github.min.css">
 <div class="atsast-course-header">
     <img src="/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-{{$result->course_color}}">
-            <i class="devicon-{{$result->course_logo}}-plain"></i>
+        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
+            <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
-        <p class="d-none d-lg-block">{{$result->creator_name}} ·@if($result->course_type==1) 线上课程@else 线下课程@endif</p>
-        <h1 class="d-none d-lg-block">{{$result->course_name}}</h1>
+        <p class="d-none d-lg-block">{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
+        <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
     </div>
 </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
-        <h1>{{$result->course_name}}</h1>
-        <p>{{$result->creator_name}} ·@if($result->course_type==1) 线上课程@else 线下课程@endif</p>
+        <h1>{{$course->course_name}}</h1>
+        <p>{{$course->organization->name}} ·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
     </div>
     <section class="mb-5" id="markdown_container">
-        
+
     </section>
 </div>
 <script src="/static/js/purify.min.js"></script>
@@ -249,17 +253,16 @@ function loadJsAsync(url){
                         return hljs.highlightAuto(code).value;
                     }
                 });
-                
-                        $("#markdown_container").html(marked("{!!$script->content_slashed!!}",{
-                            sanitize:true,
-                            sanitizer:DOMPurify.sanitize,
-                            highlight: function (code) {
-                                return hljs.highlightAuto(code).value;
-                            }
-                        }));
-                        // hljs.initHighlighting();
-                        $("table").addClass("table");
 
+                $("#markdown_container").html(marked(decodeURIComponent("{!! rawurlencode($syllabus->syllabus_script->slash_content) !!}"),{
+                    sanitize:true,
+                    sanitizer:DOMPurify.sanitize,
+                    highlight: function (code) {
+                        return hljs.highlightAuto(code).value;
+                    }
+                }));
+
+                $("table").addClass("table");
             });
         }
     }

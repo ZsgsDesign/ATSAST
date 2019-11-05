@@ -17,6 +17,6 @@ class Syllabus extends Model
 
     public function syllabus_script()
     {
-        return $this->hasOne('App\Models\Eloquents\SyllabusScript','syid','scid');
+        return $this->hasOne('App\Models\Eloquents\SyllabusScript','syid','syid');
     }
 }

@@ -3,7 +3,7 @@
 @section('template')
 
 <style>
-    nav.navbar，#nav-container {
+    nav.navbar,#nav-container {
         margin-bottom: 0 !important;
     }
 
