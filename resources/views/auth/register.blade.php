@@ -111,7 +111,7 @@
                 </div>
                 <div class="tab-content" id="accountTabContent">
                     <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
-                        <form class="needs-validation" method="POST" action="{{ route('register',null,false) }}" id="register_form" novalidate>
+                        <form class="needs-validation" method="POST" action="{{ $ATSAST_DOMAIN.route('register',null,false) }}" id="register_form" novalidate>
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
