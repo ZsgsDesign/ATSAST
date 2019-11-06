@@ -165,7 +165,7 @@
             <div class="col-md-4 col-sm-12" style="text-align: center">
                 <label for="image" style="cursor: pointer">
                     <div class="atsast-img-container">
-                        <img id="avatar" src="{{$detail->avatar}}">
+                        <img id="avatar" src="{{$ATSAST_DOMAIN.$detail->avatar}}">
                     </div>
                     <small>点击选择或直接拖入图片</small>
                 </label>

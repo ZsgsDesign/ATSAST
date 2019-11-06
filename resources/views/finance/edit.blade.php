@@ -100,7 +100,7 @@ window.addEventListener("load",function() {
                 if(result['transaction_voucher'] != null){
                     $('#transaction_voucherHelp').text('已上传');
                     $('#transaction_voucher_tip').removeClass('btn-danger').addClass('btn-success');
-                    $('#preview_transaction_voucher').attr('src',result['transaction_voucher']).slideDown();
+                    $('#preview_transaction_voucher').attr('src','{{$ATSAST_DOMAIN}}' + result['transaction_voucher']).slideDown();
                     $('#preview_tag').fadeIn();
                 }
                 if(result['declaration'] != null){

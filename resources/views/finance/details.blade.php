@@ -195,8 +195,8 @@ window.addEventListener("load",function() {
                 }
                 if(result['transaction_voucher'] != null){
                     $('#transaction-voucher').show();
-                    $('#transaction-voucher img').attr('src',result['transaction_voucher']);
-                    $('#transaction-voucher a').attr('href',result['transaction_voucher']);
+                    $('#transaction-voucher img').attr('src','{{$ATSAST_DOMAIN}}' + result['transaction_voucher']);
+                    $('#transaction-voucher a').attr('href','{{$ATSAST_DOMAIN}}' + result['transaction_voucher']);
                 }
                 if(result['declaration'] != null){
                     $('#declaration').show();
