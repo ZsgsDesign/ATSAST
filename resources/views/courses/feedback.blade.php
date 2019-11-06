@@ -236,7 +236,7 @@
         $("#submit").css("pointer-events","none");
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/submitFeedBack',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/submitFeedBack',
             data: {
                 cid:{{$course->cid}},
                 syid:{{$syllabus->syid}},

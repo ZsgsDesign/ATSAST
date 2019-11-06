@@ -195,7 +195,7 @@
         }
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/addCourse',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/addCourse',
             data: {
                 name:$("#course_name").val(),
                 email:$("#course_email").val(),

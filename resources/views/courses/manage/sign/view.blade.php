@@ -360,8 +360,8 @@
             </p>
         </div>
         <div class="text-right">
-            <button class="btn btn-default" onclick="location.href='/course/{{$cid}}/detail'">查看课时详情</button>
-            <button type="submit" class="btn btn-outline-primary" onclick="location.href='/course/{{$cid}}/manage'">返回管理中心</button>
+            <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail'">查看课时详情</button>
+            <button type="submit" class="btn btn-outline-primary" onclick="location.href='{{$ATSAST_DOMAIN}}/course/{{$cid}}/manage'">返回管理中心</button>
         </div>
     </card>
     <h5 class="atsast-title-h5">签到情况</h5>

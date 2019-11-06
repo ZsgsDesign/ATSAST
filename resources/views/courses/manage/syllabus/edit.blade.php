@@ -393,7 +393,7 @@
     function update(){
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/editSyllabus',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/editSyllabus',
             data: {
                 cid:{{$course->cid}},
                 syid:{{$syllabus->syid}},

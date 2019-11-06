@@ -121,9 +121,9 @@
             </div>
         </div>
         <div class="text-right">
-            <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='/finance'">返回</button>
+            <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='{{$ATSAST_DOMAIN}}/finance'">返回</button>
             @if($is_admin && $status != 2 || $status == 0 || $status == 1)
-            <button id="edit" type="button" class="btn btn-danger" onclick="window.location='/finance/edit/{{$id}}'">编辑</button>
+            <button id="edit" type="button" class="btn btn-danger" onclick="window.location='{{$ATSAST_DOMAIN}}/finance/edit/{{$id}}'">编辑</button>
             @endif
         </div>
     </div>
@@ -171,7 +171,7 @@ window.addEventListener("load",function() {
     var id = $('#r_id').val();
     ajaxing = true;
     $.ajax({
-        url : '/ajax/finance/details',
+        url : '{{$ATSAST_DOMAIN}}/ajax/finance/details',
         type : 'POST',
         data : {
             id : id
@@ -206,7 +206,7 @@ window.addEventListener("load",function() {
                     $('#edit').remove();
                 }
             }else{
-                window.location = '/finance';
+                window.location = '{{$ATSAST_DOMAIN}}/finance';
             }
 
         }
@@ -217,7 +217,7 @@ window.addEventListener("load",function() {
         if(ajaxing) return;
         ajaxing = true;
         $.ajax({
-            url : '/ajax/finance/hang',
+            url : '{{$ATSAST_DOMAIN}}/ajax/finance/hang',
             type : 'POST',
             data : {
                 id : id,
@@ -242,7 +242,7 @@ window.addEventListener("load",function() {
         if(ajaxing) return;
         ajaxing = true;
         $.ajax({
-            url : '/ajax/finance/unhang',
+            url : '{{$ATSAST_DOMAIN}}/ajax/finance/unhang',
             type : 'POST',
             data : {
                 id : id,
@@ -281,7 +281,7 @@ window.addEventListener("load",function() {
         }
         ajaxing = true;
         $.ajax({
-            url : '/ajax/finance/approval',
+            url : '{{$ATSAST_DOMAIN}}/ajax/finance/approval',
             type : 'POST',
             data : {
                 id : id,

@@ -525,7 +525,7 @@
     function updateScript(){
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/editScript',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/editScript',
             data: {
                 cid: {{$course->cid}},
                 syid:{{$syllabus->syid}},

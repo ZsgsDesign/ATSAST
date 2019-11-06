@@ -104,7 +104,7 @@
         @else
         <card class="mb-3">
             <div class="row atsast-empty">
-                <badge onclick="location.href='/login'"><i class="MDI magnify"></i> 并没有找到您要的剪切板哦</badge>
+                <badge onclick="location.href='{{$ATSAST_DOMAIN}}/login'"><i class="MDI magnify"></i> 并没有找到您要的剪切板哦</badge>
             </div>
         </div>
         @endif

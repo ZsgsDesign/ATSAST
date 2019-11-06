@@ -216,13 +216,13 @@
                 @endforeach
                 //hljs.initHighlighting();
                 // 链式调用VSCODE
-                // loadJsAsync("/static/vscode/vs/loader.js");
+                // loadJsAsync("{{$ATSAST_DOMAIN}}/static/vscode/vs/loader.js");
             }
         }
     }
     window.addEventListener("load",function() {
-        loadJsAsync2("/static/js/marked.min.js");
-        loadJsAsync2("/static/js/highlight.min.js");
+        loadJsAsync2("{{$ATSAST_DOMAIN}}/static/js/marked.min.js");
+        loadJsAsync2("{{$ATSAST_DOMAIN}}/static/js/highlight.min.js");
         $('.carousel').carousel();
         $('.carousel-item:first-of-type').addClass("active");
     }, false);

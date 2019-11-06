@@ -227,7 +227,7 @@
             }
             $.ajax({
                 type: 'POST',
-                url: '/ajax/contest/register',
+                url: '{{$ATSAST_DOMAIN}}/ajax/contest/register',
                 data: data,
                 dataType: 'json',
                 headers: {

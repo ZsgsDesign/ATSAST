@@ -337,7 +337,7 @@
         else {
             $.ajax({
                 type: 'POST',
-                url: '/ajax/account/updateInfo',
+                url: '{{$ATSAST_DOMAIN}}/ajax/account/updateInfo',
                 data: data,
                 contentType: false,
                 processData: false,
@@ -380,7 +380,7 @@
         var confirm_password = $('#confirm_password').val();
         $.ajax({
             type: 'POST',
-            url: '/ajax/account/changePassword',
+            url: '{{$ATSAST_DOMAIN}}/ajax/account/changePassword',
             data: {
                 old_password: old_password,
                 new_password: new_password,
@@ -430,7 +430,7 @@
     function applyAlbum(){
         $.ajax({
             type: 'POST',
-            url: '/ajax/account/applyAlbum',
+            url: '{{$ATSAST_DOMAIN}}/ajax/account/applyAlbum',
             data: {
                 album:album
             },

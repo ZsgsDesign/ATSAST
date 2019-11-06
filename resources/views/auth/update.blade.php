@@ -155,7 +155,7 @@
         ajaxing=true;
         $.ajax({
             type: 'POST',
-            url: '/ajax/account/updatePassword',
+            url: '{{$ATSAST_DOMAIN}}/ajax/account/updatePassword',
             data: {
                 email: email,
                 old_password: old_password,

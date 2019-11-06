@@ -250,7 +250,7 @@ paper-card.order-card > div {
 
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/publishItem',
+            url: '{{$ATSAST_DOMAIN}}/ajax/handling/publishItem',
             data: data,
             contentType: false,
             processData: false,

@@ -195,7 +195,7 @@ card.order-card > div {
     @else
     <div class="text-center">
         <p class="text-primary mt-5 mb-3">这里空空如也，快去借吧～</p>
-        <button type="button" class="btn btn-raised btn-info" onclick="location.href='/handling/'">返回首页</button>
+        <button type="button" class="btn btn-raised btn-info" onclick="location.href='{{$ATSAST_DOMAIN}}/handling/'">返回首页</button>
     </div>
     @endif
 </div>
@@ -213,7 +213,7 @@ card.order-card > div {
     function operate(oid,operation){
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/operateOrder',
+            url: '{{$ATSAST_DOMAIN}}/ajax/handling/operateOrder',
             data: {
                 oid:oid,
                 operation:operation

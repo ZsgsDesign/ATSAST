@@ -368,7 +368,7 @@
                     </div>
             </div>
             <div class="text-right">
-                <button class="btn btn-default" onclick="location.href='/course/{{$cid}}/manage'">返回管理中心</button>
+                <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN}}/course/{{$cid}}/manage'">返回管理中心</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="update()">确定</button>
             </div>
         </card>
@@ -379,7 +379,7 @@
     function update(){
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/addSyllabusInfo',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/addSyllabusInfo',
             data: {
                 cid:{{$cid}},
                 title:$("#title").val(),

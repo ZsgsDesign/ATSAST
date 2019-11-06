@@ -1,5 +1,5 @@
 <script>
-function notify(title,body,icon="/static/img/icon_white.png",tag="default"){
+function notify(title,body,icon="{{request()->ATSAST_DOMAIN}}/static/img/icon_white.png",tag="default"){
     if (window.Notification) {
         showMess(title,body,icon,tag);
     } else {

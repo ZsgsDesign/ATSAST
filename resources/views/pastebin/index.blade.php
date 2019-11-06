@@ -178,7 +178,7 @@
         @else
         <card class="mb-3">
             <div class="row atsast-empty">
-                <badge onclick="location.href='/login'"><i class="MDI account-circle"></i> 请先登录</badge>
+                <badge onclick="location.href='{{$ATSAST_DOMAIN}}/login'"><i class="MDI account-circle"></i> 请先登录</badge>
             </div>
         </div>
         @endif
@@ -241,7 +241,7 @@
         else generate_processing=true;
         $.ajax({
             type: 'POST',
-            url: '/ajax/pastebin/generate',
+            url: '{{$ATSAST_DOMAIN}}/ajax/pastebin/generate',
             data: {
                 syntax: targ_lang,
                 expiration:targ_expire,

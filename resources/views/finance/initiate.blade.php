@@ -62,7 +62,7 @@
             </div>
         </div>
         <div style="margin-top:5rem;" class="text-right">
-            <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='/finance'">返回</button>
+            <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='{{$ATSAST_DOMAIN}}/finance'">返回</button>
             <button id="initiate" type="button" class="btn btn-primary">发起报销</button>
         </div>
     </div>
@@ -164,7 +164,7 @@ window.addEventListener("load",function() {
         if(declaration != undefined)          data.append('declaration',declaration);
 
         $.ajax({
-            url : '/ajax/finance/initiate',
+            url : '{{$ATSAST_DOMAIN}}/ajax/finance/initiate',
             type : 'POST',
             data : data,
             processData : false,
@@ -174,7 +174,7 @@ window.addEventListener("load",function() {
             },
             success : function(result){
                 if(result.ret == 200){
-                    window.location = '/finance/details/' + result.data.id;
+                    window.location = '{{$ATSAST_DOMAIN}}/finance/details/' + result.data.id;
                 }else{
                     alert(result.desc);
                 }

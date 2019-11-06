@@ -69,7 +69,7 @@
             </div>
         </div>
         <div style="margin-top:5rem;" class="text-right">
-            <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='/finance/details/{{$id}}'">返回</button>
+            <button id="cancel" type="button" class="btn btn-secondary" onclick="window.location='{{$ATSAST_DOMAIN}}/finance/details/{{$id}}'">返回</button>
             <button id="submit" type="button" class="btn btn-primary">确认编辑</button>
         </div>
     </div>
@@ -78,7 +78,7 @@
 window.addEventListener("load",function() {
     var id = $('#r_id').val();
     $.ajax({
-        url : '/ajax/finance/details',
+        url : '{{$ATSAST_DOMAIN}}/ajax/finance/details',
         type : 'POST',
         data : {
             id : id
@@ -108,7 +108,7 @@ window.addEventListener("load",function() {
                     $('#declaration_tip').removeClass('btn-danger').addClass('btn-success');
                 }
             }else{
-                window.location = '/finance';
+                window.location = '{{$ATSAST_DOMAIN}}/finance';
             }
         }
     });
@@ -202,7 +202,7 @@ window.addEventListener("load",function() {
         if(declaration != undefined)          data.append('declaration',declaration);
 
         $.ajax({
-            url : '/ajax/finance/edit',
+            url : '{{$ATSAST_DOMAIN}}/ajax/finance/edit',
             type : 'POST',
             data : data,
             processData : false,
@@ -212,7 +212,7 @@ window.addEventListener("load",function() {
             },
             success : function(result){
                 if(result.ret == 200) {
-                    window.location = '/finance/details/' + id;
+                    window.location = '{{$ATSAST_DOMAIN}}/finance/details/' + id;
                 }else{
                     alert(result.desc);
                 }

@@ -192,7 +192,7 @@ card.order-card > div {
                 let count=val.getAttribute('count');
                 $.ajax({
                     type: 'POST',
-                    url: '/ajax/handling/createOrder',
+                    url: '{{$ATSAST_DOMAIN}}/ajax/handling/createOrder',
                     data: {
                         iid:iid,
                         count:count

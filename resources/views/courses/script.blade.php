@@ -268,8 +268,8 @@ function loadJsAsync(url){
     }
 }
 window.addEventListener("load",function() {
-    loadJsAsync("/static/js/marked.min.js");
-    loadJsAsync("/static/js/highlight.min.js");
+    loadJsAsync("{{$ATSAST_DOMAIN}}/static/js/marked.min.js");
+    loadJsAsync("{{$ATSAST_DOMAIN}}/static/js/highlight.min.js");
 }, false);
 </script>
 

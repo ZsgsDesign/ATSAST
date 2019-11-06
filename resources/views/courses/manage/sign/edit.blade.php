@@ -426,7 +426,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/editSign',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/editSign',
             data: {
                 cid:{{$course->cid}},
                 syid:{{$syllabus->syid}},

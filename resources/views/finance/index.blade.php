@@ -143,7 +143,7 @@ window.addEventListener("load",function() {
             query_str += key + '=' + query[key] + '&';
         }
         query_str = query_str.slice(0,-1);
-        window.location = '/finance' + query_str;
+        window.location = '{{$ATSAST_DOMAIN}}/finance' + query_str;
     }
 
     function get_query() {

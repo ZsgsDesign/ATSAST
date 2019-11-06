@@ -137,7 +137,7 @@ card.order-card > div {
     @if(count($cart_items) == 0)
     <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
     <div class="row atsast-empty">
-        <button type="button" class="btn btn-raised btn-info" onclick="location.href='/handling'">返回首页</button>
+        <button type="button" class="btn btn-raised btn-info" onclick="location.href='{{$ATSAST_DOMAIN}}/handling'">返回首页</button>
     </div>
     @else
     <div>
@@ -217,7 +217,7 @@ card.order-card > div {
     function deleteFromCart(id) {
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/deleteFromCart',
+            url: '{{$ATSAST_DOMAIN}}/ajax/handling/deleteFromCart',
             data: {
                 iid:id,
             },
@@ -267,7 +267,7 @@ card.order-card > div {
     function addToCart(id,count) {
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/addToCart',
+            url: '{{$ATSAST_DOMAIN}}/ajax/handling/addToCart',
             data: {
                 iid:id,
                 count:count,

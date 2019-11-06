@@ -138,9 +138,9 @@ input{
     <br>
     <div class="input-group text-center">
         <div class="input-group-btn" style="margin:0 auto">
-            <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='/handling/publish'">发布物品</button>
-            <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='/handling/cart'">购物车</button>
-            <button type="button" class="btn btn-raised btn-warning" aria-label="Left Align" onclick="window.location.href='/handling/order'">订单详情</button>
+            <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='{{$ATSAST_DOMAIN}}/handling/publish'">发布物品</button>
+            <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='{{$ATSAST_DOMAIN}}/handling/cart'">购物车</button>
+            <button type="button" class="btn btn-raised btn-warning" aria-label="Left Align" onclick="window.location.href='{{$ATSAST_DOMAIN}}/handling/order'">订单详情</button>
         </div>
     </div>
     @endif
@@ -161,7 +161,7 @@ input{
                     <button class="btn btn-primary mhs-button" @if($l->count==0) disabled="disabled" @endif onclick="addToCart({{$l->iid}})"><i class="MDI cart"></i></button>
                     <button class="btn btn-primary mhs-button" @if($l->count==0) disabled="disabled" @endif onclick="borrowImmediately({{$l->iid}})">立即借</button>
                     @else
-                    <button type="button" class="btn btn-primary mhs-button" onclick="location.href='/handing/edit/{{$l->iid}}'">编辑</button>
+                    <button type="button" class="btn btn-primary mhs-button" onclick="location.href='{{$ATSAST_DOMAIN}}/handing/edit/{{$l->iid}}'">编辑</button>
                     <button type="button" class="btn btn-warning mhs-button" onclick="alert2({content:'您确定要下架「{{$l->name}}」吗？',title:'下架物品'},function(deny){if(!deny){removeItem({{$l->iid}})}})"><i class="MDI close-box"></i>下架</button>
                     @endif
                     <div class="row">
@@ -190,7 +190,7 @@ input{
     function removeItem(id) {
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/removeItem',
+            url: '{{$ATSAST_DOMAIN}}/ajax/handling/removeItem',
             data: {
                 iid:id,
             },
@@ -244,7 +244,7 @@ input{
     function addToCart(id) {
         $.ajax({
             type: 'POST',
-            url: '/ajax/handling/addToCart',
+            url: '{{$ATSAST_DOMAIN}}/ajax/handling/addToCart',
             data: {
                 iid:id,
                 count:$('#count' + id).text(),

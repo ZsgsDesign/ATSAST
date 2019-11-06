@@ -375,7 +375,7 @@
         <hr class="atsast-line">
         @endforeach
         <div class="text-center">
-            <button type="button" class="btn btn-outline-warning atsast-important-button" onclick="location.href='/course/{{$cid}}/add_syllabus'"><action class="d-block d-lg-inline-block text-warning"><i class="MDI plus"></i> 新增课时</action></button>
+            <button type="button" class="btn btn-outline-warning atsast-important-button" onclick="location.href='{{$ATSAST_DOMAIN}}/course/{{$cid}}/add_syllabus'"><action class="d-block d-lg-inline-block text-warning"><i class="MDI plus"></i> 新增课时</action></button>
         </div>
     </section>
 </div>
@@ -442,7 +442,7 @@
         $("#add_instructor_role").val("讲师");
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/addInstructor',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/addInstructor',
             data: {
                 cid:{{$cid}},
                 email:email,
@@ -475,7 +475,7 @@
         var iid=$(ele).attr("data-iid");
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/removeInstructor',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/removeInstructor',
             data: {
                 cid:{{$cid}},
                 iid:iid

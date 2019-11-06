@@ -414,7 +414,7 @@
     function updateFeedBackSettings(){
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/editFeedback',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/editFeedback',
             data: {
                 cid:{{$course->cid}},
                 syid:{{$syllabus->syid}},

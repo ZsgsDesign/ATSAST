@@ -543,7 +543,7 @@
         return;
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/edit',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/edit',
             data: {
                 name:$("#course_name").val(),
                 email:$("#course_email").val(),

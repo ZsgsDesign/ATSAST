@@ -51,7 +51,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/ajax/system/SubmitBugs',
+            url: '{{$ATSAST_DOMAIN}}/ajax/system/SubmitBugs',
             data: {
                 title:$("#title").val(),
                 desc:$("#desc").val()
@@ -64,7 +64,7 @@
                 if(ret.ret==200){
                     alert2({content:"我们已收到您的反馈！",title:"成功！"},function(deny){
                         if(!deny){
-                            location.href = '/system/logs';
+                            location.href = '{{$ATSAST_DOMAIN}}/system/logs';
                         }
                     });
                 }else{

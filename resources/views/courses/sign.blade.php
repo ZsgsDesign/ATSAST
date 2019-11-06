@@ -64,7 +64,7 @@
         ajaxing=true;
         $.ajax({
             type: 'POST',
-            url: '/ajax/course/sign',
+            url: '{{$ATSAST_DOMAIN}}/ajax/course/sign',
             data: {
                 signed: password,
                 cid: {{$cid}},
