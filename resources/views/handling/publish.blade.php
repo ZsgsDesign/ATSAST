@@ -173,7 +173,7 @@ paper-card.order-card > div {
             <div class="col-md-3 col-sm-12 col-12 text-center" >
                 <label for="image" style="cursor: pointer">
                     <div class="bg-light mb-4">
-                        <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="/static/img/-1.png">
+                        <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="{{$ATSAST_DOMAIN}}/static/img/-1.png">
                     </div>
                     <small>点击选择或直接拖入图片</small>
                 </label>
@@ -261,7 +261,7 @@ paper-card.order-card > div {
                     console.log(ret);
                     alert("发布成功！","恭喜");
                     setTimeout(function(){
-                        window.location.href="/handling/detail/" + ret.data;
+                        window.location.href="{{$ATSAST_DOMAIN}}/handling/detail/" + ret.data;
                     }, 1000);
                 }else{
                     alert(JSON.stringify(ret),"不恭喜");

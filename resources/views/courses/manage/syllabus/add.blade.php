@@ -327,10 +327,10 @@
         margin-bottom: 0px !important;
     }
 </style>
-<link rel="stylesheet" href="/static/css/github.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="/static/library/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="{{$ATSAST_DOMAIN}}/static/css/github.min.css">
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="{{$ATSAST_DOMAIN}}/static/library/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
-    <img src="/static/img/bg.jpg" class="atsast-focus-img">
+    <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$result['course_color']}}">
             <i class="devicon-{{$result['course_logo']}}-plain"></i>
@@ -345,7 +345,7 @@
         <h1>{{$result['course_name']}}</h1>
         <p>{{$result['creator_name']}} ·@if($result['course_type']==1) 线上课程@else 线下课程@endif</p>
     </div>
-    
+
     <div class="mb-5">
         <card class="mb-3">
             <h5><i class="MDI note-plus"></i> 新建课时</h5>
@@ -376,7 +376,7 @@
 </div>
 
 <script>
-    function update(){        
+    function update(){
         $.ajax({
             type: 'POST',
             url: '/ajax/course/addSyllabusInfo',
@@ -395,7 +395,7 @@
                 console.log(ret);
                 alert(ret.desc);
                 setTimeout(function(){
-                    location.href="/course/{{$cid}}/manage";
+                    location.href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/manage";
                 }, 1000);
             }, error: function(xhr, type){
                 console.log(xhr);

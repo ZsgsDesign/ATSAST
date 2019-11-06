@@ -306,7 +306,7 @@
     }
 </style>
 <div class="atsast-course-header">
-    <img src="/static/img/bg.jpg" class="atsast-focus-img">
+    <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$course->course_color}}">
             <i class="devicon-{{$course->course_logo}}-plain"></i>

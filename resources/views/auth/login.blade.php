@@ -101,7 +101,7 @@
                 <p>Auxiliary Teaching for SAST</p>
             </div>
             <div class="alert alert-primary text-left" role="alert">
-                由于后台系统重构，2019年8月前注册的用户请<a href="/account/update">点击这里</a>更新密码。
+                由于后台系统重构，2019年8月前注册的用户请<a href="{{$ATSAST_DOMAIN}}/account/update">点击这里</a>更新密码。
             </div>
             <div class="card">
                 <div class="card-header">
@@ -162,7 +162,7 @@
         })
         $('#register-tab').on('click', function (e) {
             e.preventDefault();
-            location.href="/register";
+            location.href="{{$ATSAST_DOMAIN}}/register";
         })
 
         $('input:-webkit-autofill').each(function(){

@@ -285,7 +285,7 @@
     {{foreach $homework as $h}}
     <section class="mb-5">
         <div class="mb-1" id="markdown_container_{{$h['hid']}}">
-            
+
         </div>
         {{ if $h['type']==0}}
         <!-- Silence is Golden -->
@@ -410,7 +410,7 @@
             jsNode.setAttribute('type', 'text/javascript');
             jsNode.setAttribute('src', url);
             body.appendChild(jsNode);
-            
+
             jsNode.onload = function() {
                 jsCnt2++;
                 if(jsCnt2==2){
@@ -440,7 +440,7 @@
                     //hljs.initHighlighting();
                     // 链式调用VSCODE
                     loadJsAsync("{{$ATSAST_CDN}}/vscode/vs/loader.js");
-                    
+
                     {{foreach $homework as $h}}
                     {{ if $h['type']==2}}
                     $("#markdwon_submit_section_{{$h['hid']}}").css("opacity",1);
@@ -529,7 +529,7 @@
         }
 
 
-        function SubmitFile(ele) { 
+        function SubmitFile(ele) {
             var hid=$(ele).attr("data-hid");
             if(!ele.files[0]) return;
             var form = document.getElementById('file_uploade_form_'+hid);
@@ -539,7 +539,7 @@
             data.append("hid", hid);
             data.append("action", "submit");
             var files = ele.files;
-            
+
             $.ajax({
                 url: "{{$ATSAST_DOMAIN}}/ajax/SubmitFile",
                 type: "POST",

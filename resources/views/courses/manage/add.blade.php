@@ -213,7 +213,7 @@
                 console.log(ret);
                 alert(ret.desc);
                 setTimeout(function(){
-                    location.href="/course/"+ret.data;
+                    location.href="{{$ATSAST_DOMAIN}}/course/"+ret.data;
                 }, 1000);
             }, error: function(xhr, type){
                 console.log(xhr);

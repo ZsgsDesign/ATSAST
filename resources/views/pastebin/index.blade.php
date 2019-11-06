@@ -136,7 +136,7 @@
         <h5 class="pb-title mb-5 mt-5"><i class="MDI content-paste"></i> SAST PasteBin</h5>
         @if(Auth::check())
         <card class="mb-3">
-            
+
 
             <div class="mb-4">
                 <div class="row">
@@ -180,7 +180,7 @@
             <div class="row atsast-empty">
                 <badge onclick="location.href='/login'"><i class="MDI account-circle"></i> 请先登录</badge>
             </div>
-        </div>        
+        </div>
         @endif
     </div>
 </div>
@@ -189,7 +189,7 @@
 @section('additionJS')
 
 @if(Auth::check())
-<script src="/static/library/monaco-editor/min/vs/loader.js"></script>
+<script src="{{$ATSAST_DOMAIN}}/static/library/monaco-editor/min/vs/loader.js"></script>
 <script>
     var aval_lang=[];
     var generate_processing=false;
@@ -254,7 +254,7 @@
             }, success: function(ret){
                 console.log(ret);
                 if(ret.ret==200){
-                    location.href="/pb/"+ret.data.code;
+                    location.href="{{$ATSAST_DOMAIN}}/pb/"+ret.data.code;
                 }else{
                     alert(ret.desc,"糟糕！");
                 }

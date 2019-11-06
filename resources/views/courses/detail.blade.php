@@ -232,21 +232,21 @@
     }
 </style>
 <div class="atsast-course-header">
-    <img src="/static/img/bg.jpg" class="atsast-focus-img">
+    <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$course->course_color}}">
             <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
         <p class="d-none d-lg-block">{{$course->organization->name}} ·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
         <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
-        @if(Auth::check())<a href="/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if(!empty($register)) disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
+        @if(Auth::check())<a href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if(!empty($register)) disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
     </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
         <h1>{{$course->course_name}}</h1>
         <p>{{$course->organization->name}} ·@if($course->course_type==1) 线上课程 @else 线下课程@endif</p>
-        @if(Auth::check())<a href="/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-raised d-inline-block d-lg-none" @if(!empty($register))disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i> @if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
+        @if(Auth::check())<a href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-raised d-inline-block d-lg-none" @if(!empty($register))disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i> @if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
     </div>
     <section class="mb-5">
 
@@ -276,7 +276,7 @@
                 @foreach($course->instructors as $instructor)
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <instructor>
-                        <a href="/user/{{ $instructor->uid }}"><img src="{{ $instructor->user->avatar }}"></a>
+                        <a href="{{$ATSAST_DOMAIN}}/user/{{ $instructor->uid }}"><img src="{{ $instructor->user->avatar }}"></a>
                         <div>
                             <p><strong>{{ $instructor->course_title }}：</strong>@if($instructor->user->real_name){{$instructor->user->real_name}}@else{{$instructor->user->SID}}@endif</p>
                             <small>{{ $instructor->user->title }}</small>
@@ -331,7 +331,7 @@
             @elseif(Auth::check())
             <a href="register"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
             @else
-            <a href="/login"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-circle"></i> 请在登录后查看课时详情</action></button></a>
+            <a href="{{$ATSAST_DOMAIN}}/login"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-circle"></i> 请在登录后查看课时详情</action></button></a>
             @endif
         </syllabus>
         <hr class="atsast-line">

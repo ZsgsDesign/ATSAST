@@ -155,7 +155,7 @@ card.order-card > div {
             </div>
             <img class="mhs-item-img-order" src="{{$item->pic}}">
             <div class="media-body ml-3 mt-3">
-                <h5 class="text-left mundb-text-truncate-1 "><a href="/handling/detail/{{$item->item_id}}">{{$item->name}}</a></h5>
+                <h5 class="text-left mundb-text-truncate-1 "><a href="{{$ATSAST_DOMAIN}}/handling/detail/{{$item->item_id}}">{{$item->name}}</a></h5>
                 @if($item->scode == 1)
                 <div class="btn-group">
                     <button id="minus{{$item->item_id}}" type="button" class="btn btn-sm btn-primary mhs-button-count" @if($item->count < 2) disabled="disabled" @endif onclick="minus({{$item->item_id}},{{$item->item_count}});addToCart({{$item->item_id}},-1)"><strong>-</strong></button>

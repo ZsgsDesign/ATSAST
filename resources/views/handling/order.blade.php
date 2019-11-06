@@ -158,7 +158,7 @@ card.order-card > div {
                 <span class="badge badge-success">订单完成</span>
                 @endif
                 @endif
-                <a href="/handling/order/view/{{$r->oid}}">{{$r->oid}}</a>
+                <a href="{{$ATSAST_DOMAIN}}/handling/order/view/{{$r->oid}}">{{$r->oid}}</a>
                 <button type="button" class="btn btn-sm btn-info dropdown-toggle mt-0 mb-0 float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     操作
                 </button>
@@ -173,7 +173,7 @@ card.order-card > div {
                     @endif
                 </div>
             </td>
-            <td class="col-lg-3 col-md-2 col-6"><a href="/handling/detail/{{$r->iid}}">{{$r->name}}</a></td>
+            <td class="col-lg-3 col-md-2 col-6"><a href="{{$ATSAST_DOMAIN}}/handling/detail/{{$r->iid}}">{{$r->name}}</a></td>
             <td class="col-lg-1 d-none d-lg-block">{{$r->count}}</td>
             <td class="col-lg-1 d-none d-lg-block">@if($r->renter_id == Auth::user()->id)
                 {{$r->real_name}}

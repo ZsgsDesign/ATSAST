@@ -36,7 +36,7 @@
         <div class="row">
             @foreach($result as $r)
             <div class="col-lg-4 col-md-6 col-sm-12">
-                <a class="attsast-course" href="/course/{{$r->cid}}/detail">
+                <a class="attsast-course" href="{{$ATSAST_DOMAIN}}/course/{{$r->cid}}/detail">
                     <div class="btn card text-white wemd-{{$r->course_color}} mb-3 text-center">
                         <div class="card-body">
                             <i class="devicon-{{$r->course_logo}}-plain"></i>

@@ -326,7 +326,7 @@
         color: #7a8e97;
         padding:0.5rem 1rem;
     }
-    
+
     badge{
         display: inline-block;
         padding: 0.25rem 0.75em;
@@ -357,10 +357,10 @@
         margin-bottom: 0px !important;
     }
 </style>
-<link rel="stylesheet" href="/static/css/github.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="/static/library/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="{{$ATSAST_DOMAIN}}/static/css/github.min.css">
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="{{$ATSAST_DOMAIN}}/static/library/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
-    <img src="/static/img/bg.jpg" class="atsast-focus-img">
+    <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$result['course_color']}}">
             <i class="devicon-{{$result['course_logo']}}-plain"></i>
@@ -376,7 +376,7 @@
         <p>{{$result['creator_name']}} ·@if($result['course_type']==1) 线上课程@else 线下课程@endif</p>
     </div>
     <h5 class="atsast-title-h5">报名情况</h5>
-    
+
     <div class="mb-5 @if(empty($register_details))atsast-empty @endif">
         @if(empty($register_details))
             <badge>暂无报名哦</badge>
@@ -390,7 +390,7 @@
                 <h5 class="mundb-text-truncate-1 text-info">{{$s['real_name']}} {{$s['SID']}}</h5>
                 <p class="">{{$s['email']}}</p>
             </div>
-        </user-card>        
+        </user-card>
         @endforeach
         @endif
     </div>

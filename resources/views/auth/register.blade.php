@@ -92,7 +92,7 @@
                 <p>Auxiliary Teaching for SAST</p>
             </div>
             <div class="alert alert-primary text-left" role="alert">
-                由于后台系统重构，2019年8月前注册的用户请<a href="/account/update">点击这里</a>更新密码。
+                由于后台系统重构，2019年8月前注册的用户请<a href="{{$ATSAST_DOMAIN}}/account/update">点击这里</a>更新密码。
             </div>
             <div class="alert alert-primary text-left" role="alert">
                 请使用NJUPT校内邮箱注册。
@@ -165,7 +165,7 @@
     window.addEventListener("load",function() {
         $('#login-tab').on('click', function (e) {
             e.preventDefault();
-            location.href="/login";
+            location.href="{{$ATSAST_DOMAIN}}/login";
         })
         $('#register-tab').on('click', function (e) {
             e.preventDefault();

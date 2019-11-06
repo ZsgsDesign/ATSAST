@@ -52,7 +52,7 @@
                         <button type="button" class="btn btn-danger" onclick="sign()">签到</button>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
@@ -83,9 +83,9 @@
                     $('.card-text').html("签到成功");
                     $('.form-group').remove();
                     $('.text-right').remove();
-                    $('.card-body').append(`<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
+                    $('.card-body').append(`<a href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
                     setTimeout(function(){
-                        location.href="/course/{{$cid}}/detail";
+                        location.href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail";
                     }, 1000);
                 } else if(ret.data==0) {
                     $('.card-img-top').removeClass('bg-info');
@@ -96,9 +96,9 @@
                     $('.card-text').html("已经签到过了哦，请返回。");
                     $('.form-group').remove();
                     $('.text-right').remove();
-                    $('.card-body').append(`<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
+                    $('.card-body').append(`<a href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
                     setTimeout(function(){
-                        location.href="/course/{{$cid}}/detail";
+                        location.href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail";
                     }, 1000);
                 } else {
                     $('.card-img-top').removeClass('bg-info');
@@ -109,9 +109,9 @@
                     $('.card-text').html("签到码错误，请返回。");
                     $('.form-group').remove();
                     $('.text-right').remove();
-                    $('.card-body').append(`<a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
+                    $('.card-body').append(`<a href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>`);
                     setTimeout(function(){
-                        location.href="/course/{{$cid}}/detail";
+                        location.href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail";
                     }, 1000);
                 }
                 ajaxing=false;
@@ -144,7 +144,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title">@if($sign_status>0) 签到成功 @else 签到失败 @endif</h5>
                     <p class="card-text">@if($sign_status==1) 签到成功@elseif($sign_status==-1) 已经签到过了哦@else 签到码错误@endif，请返回。 </p>
-                    <a href="/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>
+                    <a href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail" class="btn btn-primary">点击返回</a>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
 </div>
 <script>
     setTimeout(function(){
-        location.href="/course/{{$cid}}/detail";
+        location.href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/detail";
     }, 1000);
 </script>
 @endif

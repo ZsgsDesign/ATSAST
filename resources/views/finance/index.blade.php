@@ -41,7 +41,7 @@
         <p>报销列表</p>
         <div id="filter">
             <div id="opr">
-                <a class="btn btn-info" href="/finance/initiate" role="button">发起报销</a>
+                <a class="btn btn-info" href="{{$ATSAST_DOMAIN}}/finance/initiate" role="button">发起报销</a>
             </div>
             <div class="btn-group">
                 @if(isset($is_approver) && $is_approver)

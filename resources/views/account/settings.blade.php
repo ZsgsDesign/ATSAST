@@ -142,10 +142,10 @@
     <hr class="atsast-line mb-5">
     <notify>
         <div class="d-block d-lg-none atsast-img-container-small">
-            <img src="/static/img/atsast/encryption.jpg">
+            <img src="{{$ATSAST_DOMAIN}}/static/img/atsast/encryption.jpg">
         </div>
         <div class="d-none d-lg-block atsast-img-container">
-            <img src="/static/img/atsast/encryption.jpg">
+            <img src="{{$ATSAST_DOMAIN}}/static/img/atsast/encryption.jpg">
         </div>
         <div class="atsast-content-container">
             <h5><i class="MDI email-secure"></i> 激活邮箱</h5>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="form-group" style="padding-top: 2.75rem;">
                     <label for="gender" class="bmd-label-floating">性别</label>
-        
+
                     <div class="radio">
                         <label>
                             <input type="radio" name="gender" id="gender_0" value="0" @if($detail->gender==0)checked
@@ -249,13 +249,13 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <card class="img-card @if($detail->album=='bing')album-selected @endif" data-album="bing" onclick="changeAlbum(this)">
-                        <img src="/static/img/bing.png">
+                        <img src="{{$ATSAST_DOMAIN}}/static/img/bing.png">
                         <div>必应&trade;精选美图</div>
                     </card>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <card class="img-card @if($detail->album=='njupt')album-selected @endif" data-album="njupt" onclick="changeAlbum(this)">
-                        <img src="/static/img/njupt.jpg">
+                        <img src="{{$ATSAST_DOMAIN}}/static/img/njupt.jpg">
                         <div>南邮印象</div>
                     </card>
                 </div>

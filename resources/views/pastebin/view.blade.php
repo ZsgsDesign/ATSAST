@@ -106,14 +106,14 @@
             <div class="row atsast-empty">
                 <badge onclick="location.href='/login'"><i class="MDI magnify"></i> 并没有找到您要的剪切板哦</badge>
             </div>
-        </div>        
+        </div>
         @endif
     </div>
 </div>
 @endsection
 
 @section('additionJS')
-<script src="/static/library/monaco-editor/min/vs/loader.js"></script>
+<script src="{{$ATSAST_DOMAIN}}/static/library/monaco-editor/min/vs/loader.js"></script>
 <script>
     require.config({ paths: { 'vs': '{{env('APP_URL')}}/static/library/monaco-editor/min/vs' }});
 

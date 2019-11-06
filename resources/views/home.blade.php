@@ -2,7 +2,7 @@
 
 @section('template')
 
-<link rel="stylesheet" href="/static/fonts/Raleway/raleway.css">
+<link rel="stylesheet" href="{{$ATSAST_DOMAIN}}/static/fonts/Raleway/raleway.css">
 <style>
     body{
     /*background: url(<{$imgurl}>) 0 / cover fixed;*/
@@ -97,17 +97,17 @@
                     <div>
                         <h5 class="card-title mundb-text-truncate-2">@SAST正式启用啦</h5>
                         <p class="card-text d-none d-md-block mundb-text-truncate-2">@SAST是校科协辅助教学平台，由后端组开发。提供多样化的辅助教学功能。</p>
-                        <a href="/course/1/detail"><button class="btn btn-outline-light">相关课程</button></a>
+                        <a href="{{$ATSAST_DOMAIN}}/course/1/detail"><button class="btn btn-outline-light">相关课程</button></a>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="/static/img/coding.jpeg" alt="First slide">
+                <img class="d-block w-100" src="{{$ATSAST_DOMAIN}}/static/img/coding.jpeg" alt="First slide">
                 <div class="carousel-caption">
                     <div>
                         <h5 class="card-title mundb-text-truncate-2">新生杯开始报名啦</h5>
                         <p class="card-text d-none d-md-block mundb-text-truncate-2">新生杯是科技节期间校科协专门面向新生开展的计算机基础知识大赛，我们欢迎你的参加哦！</p>
-                        <a href="/contest/1/detail"><button class="btn btn-outline-light">了解更多</button></a>
+                        <a href="{{$ATSAST_DOMAIN}}/contest/1/detail"><button class="btn btn-outline-light">了解更多</button></a>
                     </div>
                 </div>
             </div>

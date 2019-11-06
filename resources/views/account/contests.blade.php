@@ -174,8 +174,8 @@
                             <h3 class="mundb-text-truncate-2">{{$c->name}}</h3>
                             <p class="mundb-text-truncate-1">{{$c->creator_name}} ·@if($c->type==1) 线上活动@else 线下活动@endif</p>
                             <p class="mundb-text-truncate-1 atsast-basic-info"> {!!$c->parse_status!!} <i class="MDI clock"></i> {{$c->parse_date}} </p>
-                            <a href="/contest/{{$c->contest_id}}/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
-                            <a href="/contest/{{$c->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
+                            <a href="{{$ATSAST_DOMAIN}}/contest/{{$c->contest_id}}/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
+                            <a href="{{$ATSAST_DOMAIN}}/contest/{{$c->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
                         </div>
                     </contest>
                 </div>
@@ -199,8 +199,8 @@
                             <h3 class="mundb-text-truncate-2">{{$c->name}}</h3>
                             <p class="mundb-text-truncate-1">{{$c->creator_name}} ·@if($c->type==1) 线上活动@else 线下活动@endif</p>
                             <p class="mundb-text-truncate-1 atsast-basic-info"> {!!$c->parse_status!!} <i class="MDI clock"></i> {{$c->parse_date}} </p>
-                            <a href="/contest/{{$c->contest_id}}/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
-                            <a href="/contest/{{$c->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
+                            <a href="{{$ATSAST_DOMAIN}}/contest/{{$c->contest_id}}/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
+                            <a href="{{$ATSAST_DOMAIN}}/contest/{{$c->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
                         </div>
                     </contest>
                 </div>

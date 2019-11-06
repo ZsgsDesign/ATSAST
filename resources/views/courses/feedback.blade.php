@@ -150,17 +150,17 @@
         margin-bottom: 0px !important;
     }
 </style>
-<link rel="stylesheet" href="/static/css/github.min.css">
-<link rel="stylesheet" data-name="vs/editor/editor.main" href="/static/library/vscode/vs/editor/editor.main.css">
+<link rel="stylesheet" href="{{$ATSAST_DOMAIN}}/static/css/github.min.css">
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="{{$ATSAST_DOMAIN}}/static/library/vscode/vs/editor/editor.main.css">
 <div class="atsast-course-header">
-    <img src="/static/img/bg.jpg" class="atsast-focus-img">
+    <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$course->course_color}}">
             <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
         <p class="d-none d-lg-block">{{$course->organization->name}} ·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
         <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
-        @if(Auth::check())<a href="/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if($register_status)success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if($register_status)disabled @endif ><i class="MDI @if($register_status)check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if($register_status) 已报名@else 报名@endif</button></a>@endif
+        @if(Auth::check())<a href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if($register_status)success @else info @endif btn-lg btn-raised d-none d-lg-inline-block" @if($register_status)disabled @endif ><i class="MDI @if($register_status)check-circle-outline @else checkbox-marked-circle-outline @endif"></i>@if($register_status) 已报名@else 报名@endif</button></a>@endif
     </div>
 </div>
 <div class="container mundb-standard-container">
@@ -194,7 +194,7 @@
                 <textarea class="form-control" name="desc" id="desc" rows="5" required>@if(!empty($feedback)){{ $feedback->desc }}@endif</textarea>
             </div>
             <div class="text-right">
-                <a href="/course/{{$course->cid}}/"><button class="btn btn-default">取消</button></a>
+                <a href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/"><button class="btn btn-default">取消</button></a>
                 <button type="submit" id="submit" class="btn btn-outline-primary" onclick="submit_feedback()">@if(!empty($feedback)) 修改反馈 @else 提交反馈 @endif</button>
             </div>
         </div>
@@ -250,7 +250,7 @@
                 console.log(ret);
                 alert(ret.desc);
                 setTimeout(function(){
-                    location.href="/course/{{$course->cid}}/detail";
+                    location.href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/detail";
                 }, 1000);
                 ajaxing=false;
             }, error: function(xhr, type){

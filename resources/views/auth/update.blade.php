@@ -169,7 +169,7 @@
                 console.log(ret);
                 if (ret.ret==200) {
                     alert("更新成功！");
-                    location.href="/login";
+                    location.href="{{$ATSAST_DOMAIN}}/login";
                 } else {
                     alert(ret.desc);
                 }

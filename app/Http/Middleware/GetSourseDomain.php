@@ -22,13 +22,9 @@ class GetSourseDomain
             'http://47.101.177.238'
         ];
         if(in_array($domain,$allow_domain)){
-            $request->merge([
-                'ATSAST_DOMAIN' => $domain
-            ]);
+            view()->share('ATSAST_DOMAIN',$domain);
         }else{
-            $request->merge([
-                'ATSAST_DOMAIN' => ''
-            ]);
+            view()->share('ATSAST_DOMAIN','');
         }
         return $next($request);
     }

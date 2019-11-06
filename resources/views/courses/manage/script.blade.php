@@ -352,10 +352,10 @@
         opacity: 0.5;
     }
 </style>
-<link rel="stylesheet" href="/static/library/simplemde/dist/simplemde.min.css">
+<link rel="stylesheet" href="{{$ATSAST_DOMAIN}}/static/library/simplemde/dist/simplemde.min.css">
 
 <div class="atsast-course-header">
-    <img src="/static/img/bg.jpg" class="atsast-focus-img">
+    <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
         <div class="atsast-course-avatar wemd-{{$course->course_color}}">
             <i class="devicon-{{$course->course_logo}}-plain"></i>
@@ -435,9 +435,9 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/static/library/simplemde/dist/simplemde.min.js"></script>
-<script type="text/javascript" src="/static/library/marked/marked.min.js"></script>
-<script type="text/javascript" src="/static/library/dompurify/dist/purify.min.js"></script>
+<script type="text/javascript" src="{{$ATSAST_DOMAIN}}/static/library/simplemde/dist/simplemde.min.js"></script>
+<script type="text/javascript" src="{{$ATSAST_DOMAIN}}/static/library/marked/marked.min.js"></script>
+<script type="text/javascript" src="{{$ATSAST_DOMAIN}}/static/library/dompurify/dist/purify.min.js"></script>
 <script>
     var simplemde = new SimpleMDE({
         autosave: {
