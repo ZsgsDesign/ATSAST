@@ -77,13 +77,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewarePriority = [
+        \App\Http\Middleware\GetSourseDomain::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
-        \App\Http\Middleware\GetSourseDomain::class,
         \App\Http\Middleware\Course\Exist::class,
         \App\Http\Middleware\Course\Manage::class,
         \App\Http\Middleware\Course\SyllabusExist::class,
