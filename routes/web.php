@@ -80,7 +80,7 @@ Route::group(['prefix' => 'system'], function () {
     Route::get('/bugs', 'SystemController@bugs')->middleware('auth')->name('system.bugs');
 });
 
-Route::group(['prefix' => 'ajax', 'namespace' => 'ajax', 'as' => 'ajax.'], function () {
+Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax', 'as' => 'ajax.'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('updatePassword', 'AccountController@updatePassword')->name('account.updatepassword');
         Route::post('updateInfo', 'AccountController@updateInfo')->middleware('auth')->name('account.updateInfo');
