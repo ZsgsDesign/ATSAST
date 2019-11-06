@@ -225,7 +225,7 @@ class ContestController extends Controller
         }
         $image_path = Storage::url($request->image->store('/contest/image','public'));
 
-        Contest::create([
+        $contest = Contest::create([
             'name'    => $request->name,
             'creator' => $request->organization->oid,
             'desc' => $request->desc,
@@ -239,6 +239,11 @@ class ContestController extends Controller
             'max_participants' => $request->maxp,
             'status' => 1,
             'tips' => $request->tips
+        ]);
+        $contest->details()->create([
+            'type' => 0,
+            'content' => $request->desc,
+            'status' => 1
         ]);
         return ResponseModel::success();
     }

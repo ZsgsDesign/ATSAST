@@ -204,13 +204,13 @@
                 });
                 @foreach($details as $detail)
                     @if($detail->type==0)
-                    $("#markdown_container_{{ $detail->cdid }}").html(marked("{!!$detail->content!!}"),{
+                    $("#markdown_container_{{ $detail->cdid }}").html(marked(decodeURIComponent("{!! rawurlencode($detail->slash_content) !!}"),{
                         sanitize:true,
                         sanitizer:DOMPurify.sanitize,
                         highlight: function (code) {
                             return hljs.highlightAuto(code).value;
                         }
-                    });
+                    }));
                     $("#markdown_container_{{ $detail->cdid }}").css("opacity","1");
                     @endif
                 @endforeach

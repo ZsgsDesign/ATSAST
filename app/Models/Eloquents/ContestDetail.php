@@ -10,9 +10,11 @@ class ContestDetail extends Model
     protected $primaryKey = 'cdid';
     public $timestamps = false;
 
-    public function getContentAttribute($value)
+    protected $fillable = ['type','content','status'];
+
+    public function getSlashContentAttribute()
     {
-        $content = $value;
+        $content = $this->content;
         $slash_map = [
             '\\'    => '\\\\',
             '\r\n'  => '\\n',
