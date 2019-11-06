@@ -20,7 +20,7 @@ class Manage
         $course = $request->course;
         if(!$course->is_manager(Auth::user()->id)){
             if($request->isMethod('get')){
-                return redirect()->route('course');
+                return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
             }else{
                 return ResponseModel::err(2003);
             }

@@ -18,7 +18,7 @@ class Script
         $syllabus = $request->syllabus;
         if(!$syllabus->script){
             $course = $request->course;
-            return redirect()->route('course.detail',['cid'=>$course->course_id]);
+            return redirect(request()->ATSAST_DOMAIN.route('course.detail',['cid'=>$course->course_id],false));
         }
         return $next($request);
     }

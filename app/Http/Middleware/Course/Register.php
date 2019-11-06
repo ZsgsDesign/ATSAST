@@ -21,7 +21,7 @@ class Register
         $register = $course->registers()->where('uid',$user->id);
         if(empty($register)){
             if($request->isMethod('get')){
-                return redirect()->route('course.detail',['cid' => $course->course_id]);
+                return redirect(request()->ATSAST_DOMAIN.route('course.detail',['cid' => $course->course_id],false));
             }else{
                 return ResponseModel::err(3001);
             }

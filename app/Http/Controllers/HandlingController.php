@@ -26,7 +26,7 @@ class HandlingController extends Controller
 
     public function publish(){
         if(!Auth::user()->vip){
-            return redirect($request->ATSAST_DOMAIN.route('handling.index',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('handling.index',null,false));
         }
         return view('handling.publish',[
             'page_title'=>"发布物品",
@@ -49,7 +49,7 @@ class HandlingController extends Controller
     public function detail($itemId){
         $itemModel = new ItemModel();
         $item_info = $itemModel->detail($itemId);
-        if(empty($item_info)) return redirect(route('handling.index',null,false));
+        if(empty($item_info)) return redirect(request()->ATSAST_DOMAIN.route('handling.index',null,false));
         return view('handling.detail',[
             'page_title'=>"物品详情",
             'site_title'=>"SAST教学辅助平台",

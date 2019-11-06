@@ -19,7 +19,7 @@ class Feedback
         $syllabus = $request->syllabus;
         if(!$syllabus->feedback){
             $course = $request->course;
-            return redirect()->route('course.detail',['cid'=>$course->course_id]);
+            return redirect(request()->ATSAST_DOMAIN.route('course.detail',['cid'=>$course->course_id],false));
         }
         $user = Auth::user();
         $feedback = $syllabus->feedbacks()->where('uid',$user->id)->first();
