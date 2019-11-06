@@ -273,7 +273,7 @@ input{
     }
 
     function borrowImmediately(id) {
-        window.location.href= "{{route('handling.orderCreate')}}?iid="+id+"&count="+$('#count' + id).text().trim()
+        window.location.href= "{{$ATSAST_DOMAIN.route('handling.orderCreate',null,false)}}?iid="+id+"&count="+$('#count' + id).text().trim()
     }
 
 </script>

@@ -26,7 +26,7 @@ class ContestController extends Controller
         $cid = $request->cid;
         $contest = Contest::with('details')->find($cid);
         if(empty($contest)){
-            return Redirect::route('contest');
+            return redirect($request->ATSAST_DOMAIN.'/contest');
         }
         $details = $contest->details()->where('status',1)->get();
         return view('contests.detail', [
@@ -42,12 +42,12 @@ class ContestController extends Controller
     {
         $cid = $request->cid;
         if(!Auth::check()){
-            return redirect('/login');
+            return redirect($request->ATSAST_DOMAIN.'/login');
         }
         $user_id = Auth::user()->id;
         $contest = Contest::find($cid);
         if(empty($contest)){
-            return Redirect::route('contest');
+            return redirect($request->ATSAST_DOMAIN.'/contest');
         }
         $contest_register = $contest->userRegister($user_id);
         return view('contests.register', [

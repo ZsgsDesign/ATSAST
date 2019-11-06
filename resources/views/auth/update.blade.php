@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记原密码？</button></a>
+                                <a href="{{ $ATSAST_DOMAIN.route('password.request',null,false) }}"><button type="button" class="btn btn-secondary">忘记原密码？</button></a>
                                 <button type="button" class="btn btn-danger" onclick="updatePassword()">更新</button>
                             </div>
                     </div>

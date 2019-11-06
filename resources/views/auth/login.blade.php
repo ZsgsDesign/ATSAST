@@ -117,7 +117,7 @@
                 </div>
                 <div class="tab-content" id="accountTabContent">
                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                        <form class="needs-validation" action="{{ route('login') }}" method="post" id="login_form" novalidate>
+                        <form class="needs-validation" action="{{ $ATSAST_DOMAIN.route('login',null,false) }}" method="post" id="login_form" novalidate>
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <a href="{{ route('password.request') }}"><button type="button" class="btn btn-secondary">忘记密码？</button></a>
+                                <a href="{{ $ATSAST_DOMAIN.route('password.request',null,false) }}"><button type="button" class="btn btn-secondary">忘记密码？</button></a>
                                 <button type="submit" class="btn btn-danger">登录</button>
                             </div>
                         </form>

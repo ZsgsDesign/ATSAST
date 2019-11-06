@@ -346,7 +346,7 @@ card.order-card > div {
     }
 
     function borrowImmediately(id) {
-        location.href= "{{route('handling.orderCreate')}}?iid="+id+"&count=" + $('#count' + id).text();
+        location.href= "{{$ATSAST_DOMAIN.route('handling.orderCreate',null,false)}}?iid="+id+"&count=" + $('#count' + id).text();
     }
 </script>
 @endsection

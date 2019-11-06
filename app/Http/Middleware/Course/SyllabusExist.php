@@ -20,7 +20,7 @@ class SyllabusExist
         $syllabus = $course->syllabus()->where('syid',$syid)->first();
         if(empty($syllabus)){
             if($request->isMethod('get')){
-                return redirect()->route('course.manage',['cid' => $course->cid]);
+                return redirect(($request->ATSAST_DOMAIN).route('course.manage',['cid' => $course->cid],false));
             }else{
                 return ResponseModel::err(3003);
             }

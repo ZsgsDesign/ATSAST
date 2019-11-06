@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ $ATSAST_DOMAIN.route('password.email',null,false) }}">
                         @csrf
 
                         <div class="form-group row">

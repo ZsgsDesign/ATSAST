@@ -207,12 +207,12 @@
                                     <a class="dropdown-item" href="{{request()->header('ATSAST-DOMAIN', '')}}/system/bugs"><i class="MDI bug"></i> 汇报BUG</a>
                                     <div class="dropdown-divider"></div>
                                     <a  class="dropdown-item text-danger"
-                                        href="{{ route('logout') }}"
+                                        href="{{ request()->header('ATSAST-DOMAIN', '').route('logout',null,false) }}"
                                         onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
                                         <i class="MDI exit-to-app text-danger"></i> 退出
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ request()->header('ATSAST-DOMAIN', '').route('logout',null,false) }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>

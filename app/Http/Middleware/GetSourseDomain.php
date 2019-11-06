@@ -23,8 +23,14 @@ class GetSourseDomain
         ];
         if(in_array($domain,$allow_domain)){
             view()->share('ATSAST_DOMAIN',$domain);
+            $request->merge([
+                'ATSAST_DOMAIN' => $domain,
+            ]);
         }else{
             view()->share('ATSAST_DOMAIN','');
+            $request->merge([
+                'ATSAST_DOMAIN' => '',
+            ]);
         }
         return $next($request);
     }

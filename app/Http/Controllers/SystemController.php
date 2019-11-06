@@ -21,7 +21,7 @@ class SystemController extends Controller
     public function bugs(Request $request)
     {
         if(!Auth::Check()){
-            return Redirect::route('login');
+            return redirect($request->ATSAST_DOMAIN.route('login',null,false));;
         }
         return view('system.bugs', [
             'page_title'=>"汇报BUG",

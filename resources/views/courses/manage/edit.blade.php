@@ -507,7 +507,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <button class="btn btn-default" onclick="location.href='{{route('course.manage',['cid'=>$course->cid])}}'">返回管理中心</button>
+                <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN.route('course.manage',['cid'=>$course->cid],false)}}'">返回管理中心</button>
                 <button type="submit" class="btn btn-outline-primary" onclick="update()">更新信息</button>
             </div>
         </card>

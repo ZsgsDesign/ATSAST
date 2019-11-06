@@ -21,7 +21,7 @@ class Exist
         $course = Course::with('organization')->find($cid);
         if(empty($course)){
             if($request->isMethod('get')){
-                return redirect()->route('course');
+                return redirect($request->ATSAST_DOMAIN.route('course',null,false));
             }else{
                 return ResponseModel::err(3002);
             }

@@ -203,7 +203,7 @@ card.order-card > div {
                 for(let i=1;i<items.length;i++){
                     args+="&item[]="+items[i];
                 }
-                window.location.href="{{route('handling.orderCreate')}}"+args;
+                window.location.href="{{$ATSAST_DOMAIN.route('handling.orderCreate',null,false)}}"+args;
             }
         }
 
@@ -295,7 +295,7 @@ card.order-card > div {
     }
 
     function borrowImmediately(id) {
-        window.location.href= "{{route('handling.orderCreate')}}?item_id="+id+"&count="+$('#count' + id).text().trim;
+        window.location.href= "{{$ATSAST_DOMAIN.route('handling.orderCreate',null,false)}}?item_id="+id+"&count="+$('#count' + id).text().trim;
     }
 </script>
 
