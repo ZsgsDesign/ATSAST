@@ -256,12 +256,12 @@
         margin-bottom: 0px !important;
     }
 </style>
-<img class="atsast-profile-focus" src="{{ $imgurl }}">
+<img class="atsast-profile-focus" src="{{ $ATSAST_DOMAIN.$imgurl }}">
 <div class="container mundb-standard-container">
     <div class="atsast-profile-container">
         <div class="atsast-left-panel">
             <div class="card mb-3 atsast-user-card">
-                <img class="card-img-top" src="{{ $detail->avatar }}">
+                <img class="card-img-top" src="{{ $ATSAST_DOMAIN.$detail->avatar }}">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>用户名</strong><p>{{ $detail->name }}</p></li>
@@ -326,7 +326,7 @@
                     <div class="col-lg-6 col-md-12 atsast-courses">
                         <contest>
                             <div class="atsast-img-container-small">
-                                <img src="{{$c->image}}">
+                                <img src="{{$ATSAST_DOMAIN.$c->image}}">
                             </div>
                             <div class="atsast-content-container">
                                 <h3 class="mundb-text-truncate-1">{{$c->name}}</h3>

@@ -150,7 +150,7 @@ input{
         <div class="col-lg-3 col-md-4 col-6">
             <card class="item-card mb-3">
                 <div>
-                    <a class="card-link" href="{{$ATSAST_DOMAIN}}/handling/detail/{{$l->iid}}"><img class="card-img-top mhs-item-img" src="{{$l->pic}}"></a>
+                    <a class="card-link" href="{{$ATSAST_DOMAIN}}/handling/detail/{{$l->iid}}"><img class="card-img-top mhs-item-img" src="{{$ATSAST_DOMAIN.$l->pic}}"></a>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title mhs-item-text mundb-text-truncate-1">{{$l->name}}</h5>

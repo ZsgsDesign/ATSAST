@@ -163,7 +163,7 @@ card.order-card > div {
     <div class="row">
         <div class="col-lg-4 col-sm-12 col-12 text-center">
             <figure class="figure">
-                <img class="mhs-item-img-detailed flo" src="{{$item_info->pic}}">
+                <img class="mhs-item-img-detailed flo" src="{{$ATSAST_DOMAIN.$item_info->pic}}">
                 <figcaption class="figure-caption text-center">
                     @if($item_info->scode>-1)
                     @if($item_info->owner!=Auth::user()->id)

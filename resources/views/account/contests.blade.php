@@ -168,7 +168,7 @@
                 <div class="col-lg-6 col-md-12 atsast-courses">
                     <contest>
                         <div class="atsast-img-container-small">
-                            <img src="{{$c->image}}">
+                            <img src="{{$ATSAST_DOMAIN.$c->image}}">
                         </div>
                         <div class="atsast-content-container">
                             <h3 class="mundb-text-truncate-2">{{$c->name}}</h3>
@@ -193,7 +193,7 @@
                 <div class="col-lg-6 col-md-12 atsast-courses">
                     <contest>
                         <div class="atsast-img-container-small">
-                            <img src="{{$c->image}}">
+                            <img src="{{$ATSAST_DOMAIN.$c->image}}">
                         </div>
                         <div class="atsast-content-container">
                             <h3 class="mundb-text-truncate-2">{{$c->name}}</h3>

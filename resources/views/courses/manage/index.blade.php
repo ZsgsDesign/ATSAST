@@ -294,7 +294,7 @@
             <strong>课程提供：</strong>{{$result['creator_name']}}
         </p>
 
-        <img class="atsast-course-creator" src="{{$result['creator_logo']}}">
+        <img class="atsast-course-creator" src="{{$ATSAST_DOMAIN.$result['creator_logo']}}">
 
         <hr class="atsast-line">
 
@@ -307,7 +307,7 @@
             @foreach($instructor as $r)
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <instructor>
-                    <img src="{{ $r['avatar'] }}">
+                    <img src="{{ $ATSAST_DOMAIN.$r['avatar'] }}">
                     <div>
                         <p><strong>{{ $r['course_title'] }}：</strong>@if($r["real_name"]){{$r["real_name"]}}@else{{$r["SID"]}}@endif</p>
                         <small>{{ $r['title'] }}</small>

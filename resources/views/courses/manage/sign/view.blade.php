@@ -370,7 +370,7 @@
         @foreach($sign_details as $s)
         <user-card class="mb-3">
                 <div>
-                    <img src="{{$s['avatar']}}" style="border-radius:200px;" onerror="this.src=unknown_svg;">
+                    <img src="{{$ATSAST_DOMAIN.$s['avatar']}}" style="border-radius:200px;" onerror="this.src=unknown_svg;">
                 </div>
                 <div>
                     <h5 class="mundb-text-truncate-1 text-info">{{$s['real_name']}} {{$s['SID']}}</h5>

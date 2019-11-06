@@ -131,7 +131,7 @@
             <div class="col-md-4 col-sm-12">
                 <contest>
                     <div class="atsast-img-container-small">
-                        <img src="{{$contest->image}}">
+                        <img src="{{$ATSAST_DOMAIN.$contest->image}}">
                     </div>
                     <div class="atsast-content-container">
                         <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>
@@ -147,7 +147,7 @@
                         @foreach($details as $detail)
                             @if($detail->type==1)
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="{{$detail->content}}">
+                                <img class="d-block w-100" src="{{$ATSAST_DOMAIN.$detail->content}}">
                             </div>
                             @endif
                         @endforeach

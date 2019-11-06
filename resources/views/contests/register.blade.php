@@ -135,7 +135,7 @@
             <div class="col-md-4 col-sm-12">
                 <contest>
                     <div class="atsast-img-container-small">
-                        <img src="{{$contest->image}}">
+                        <img src="{{$ATSAST_DOMAIN.$contest->image}}">
                     </div>
                     <div class="atsast-content-container">
                         <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>

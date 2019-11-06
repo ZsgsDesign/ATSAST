@@ -153,7 +153,7 @@ card.order-card > div {
                     <label for="agreement{{$item->item_id}}"><input class="form-control" type="checkbox" name="agreement" id="agreement{{$item->item_id}}" item_id="{{$item->item_id}}" @if($item->scode != 1) disabled @endif></label>
                 </div>
             </div>
-            <img class="mhs-item-img-order" src="{{$item->pic}}">
+            <img class="mhs-item-img-order" src="{{$ATSAST_DOMAIN.$item->pic}}">
             <div class="media-body ml-3 mt-3">
                 <h5 class="text-left mundb-text-truncate-1 "><a href="{{$ATSAST_DOMAIN}}/handling/detail/{{$item->item_id}}">{{$item->name}}</a></h5>
                 @if($item->scode == 1)

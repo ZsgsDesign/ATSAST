@@ -98,10 +98,10 @@
         @foreach($contests as $contest)
         <contest>
             <div class="d-block d-lg-none atsast-img-container-small">
-                <img src="{{$contest->image}}">
+                <img src="{{$ATSAST_DOMAIN.$contest->image}}">
             </div>
             <div class="d-none d-lg-block atsast-img-container">
-                <img src="{{$contest->image}}">
+                <img src="{{$ATSAST_DOMAIN.$contest->image}}">
             </div>
             <div class="atsast-content-container">
                 <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>

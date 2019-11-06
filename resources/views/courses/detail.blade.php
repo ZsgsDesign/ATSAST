@@ -263,7 +263,7 @@
             <strong>课程提供：</strong>{{$course->organization->name}}
         </p>
 
-        <img class="atsast-course-creator" src="{{$course->organization->logo}}">
+        <img class="atsast-course-creator" src="{{$ATSAST_DOMAIN.$course->organization->logo}}">
 
         <hr class="atsast-line">
 
@@ -276,7 +276,7 @@
                 @foreach($course->instructors as $instructor)
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <instructor>
-                        <a href="{{$ATSAST_DOMAIN}}/user/{{ $instructor->uid }}"><img src="{{ $instructor->user->avatar }}"></a>
+                        <a href="{{$ATSAST_DOMAIN}}/user/{{ $instructor->uid }}"><img src="{{ $ATSAST_DOMAIN.$instructor->user->avatar }}"></a>
                         <div>
                             <p><strong>{{ $instructor->course_title }}：</strong>@if($instructor->user->real_name){{$instructor->user->real_name}}@else{{$instructor->user->SID}}@endif</p>
                             <small>{{ $instructor->user->title }}</small>
