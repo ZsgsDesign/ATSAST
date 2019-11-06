@@ -43,21 +43,23 @@ class AccountController extends Controller
     public function updateInfo(Request $request)
     {
         $request->validate([
-            'real_name' => 'required',
-            'name' => 'required',
+            'real_name' => 'required|string',
+            'name' => 'required|string',
             'gender' => 'required',
+            'SID' => 'required|string'
         ]);
         $real_name = $request->input('real_name');
         $name = $request->input('name');
         $gender = $request->input('gender');
         $avatar = $request->file('avatar');
+        $SID = $request->SID;
         if($avatar && $avatar->isValid() && in_array($avatar->extension(),['jpg','jpeg','png'])){
             $url = Storage::url($avatar->store('/avatar','public'));
         }else{
             $url = null;
         }
         $accountmodel = new AccountModel();
-        $ret = $accountmodel->updateInfo($real_name,$name,$gender,$url,Auth::user()->id);
+        $ret = $accountmodel->updateInfo($real_name,$name,$gender,$url,$SID,Auth::user()->id);
         return ResponseModel::success();
     }
 

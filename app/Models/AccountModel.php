@@ -93,12 +93,12 @@ class AccountModel extends Model
         return DB::table('users')->where('id','=',$uid)->get()->first();
     }
 
-    public function updateInfo($real_name,$name,$gender,$url,$uid)
+    public function updateInfo($real_name,$name,$gender,$url,$SID,$uid)
     {
         if($url){
-            return DB::table('users')->where('id','=',$uid)->update(['real_name'=>$real_name,'name'=>$name,'gender'=>$gender,'avatar'=>$url]);
+            return DB::table('users')->where('id','=',$uid)->update(['real_name'=>$real_name,'name'=>$name,'gender'=>$gender,'avatar'=>$url,'SID' => $SID]);
         }else{
-            return DB::table('users')->where('id','=',$uid)->update(['real_name'=>$real_name,'name'=>$name,'gender'=>$gender]);
+            return DB::table('users')->where('id','=',$uid)->update(['real_name'=>$real_name,'name'=>$name,'gender'=>$gender,'SID' => $SID]);
         }
     }
 

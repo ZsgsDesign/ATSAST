@@ -186,7 +186,7 @@
                 </div>
                 <div class="form-group">
                     <label for="SID" class="bmd-label-floating">学号</label>
-                    <input type="text" class="form-control" name="SID" value="{{$detail->SID}}" id="SID" disabled>
+                    <input type="text" class="form-control" name="SID" value="{{$detail->SID}}" id="SID">
                 </div>
                 <div class="form-group" style="padding-top: 2.75rem;">
                     <label for="gender" class="bmd-label-floating">性别</label>
@@ -328,10 +328,12 @@
         var data = new FormData();
         var name = $('#name').val();
         var real_name = $('#real_name').val();
+        var SID = $('#SID').val();
         data.set('gender',$('input[name="gender"]:checked').val());
         data.set('name',$('#name').val());
         data.set('real_name',$('#real_name').val());
         data.set('avatar',pic);
+        data.set('SID',SID);
         if(!name) return alert("请填写用户名");
         else if(!real_name) return alert("请填写真实姓名");
         else {
