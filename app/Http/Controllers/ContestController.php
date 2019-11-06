@@ -23,11 +23,7 @@ class ContestController extends Controller
 
     public function detail(Request $request)
     {
-        $cid = $request->cid;
-        $contest = Contest::with('details')->find($cid);
-        if(empty($contest)){
-            return redirect($request->ATSAST_DOMAIN.'/contest');
-        }
+        $contest = $request->contest;
         $details = $contest->details()->where('status',1)->get();
         return view('contests.detail', [
             'page_title' => "活动详情",
@@ -40,15 +36,8 @@ class ContestController extends Controller
 
     public function register(Request $request)
     {
-        $cid = $request->cid;
-        if(!Auth::check()){
-            return redirect($request->ATSAST_DOMAIN.'/login');
-        }
         $user_id = Auth::user()->id;
-        $contest = Contest::find($cid);
-        if(empty($contest)){
-            return redirect($request->ATSAST_DOMAIN.'/contest');
-        }
+        $contest = $request->contest;
         $contest_register = $contest->userRegister($user_id);
         return view('contests.register', [
             'page_title'       => "活动报名",
@@ -59,6 +48,15 @@ class ContestController extends Controller
                                                            : $contest_register->members,
             'fields'           => $contest->fields,
             'contest_register' => $contest_register
+        ]);
+    }
+
+    public function add(Request $request)
+    {
+        return view('contests.add', [
+            'page_title'       => "举办活动",
+            'site_title'       => "SAST教学辅助平台",
+            'navigation'       => "Contests",
         ]);
     }
 }

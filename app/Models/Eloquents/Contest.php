@@ -11,6 +11,8 @@ class Contest extends Model
     protected $primaryKey = 'contest_id';
     public $timestamps = false;
 
+    protected $fillable = ['name','creator','desc','start_date','end_date','due_register','type','require_register','image','min_participants','max_participants','status','tips'];
+
     public function organization()
     {
         return $this->belongsTo('App\Models\Eloquents\Organization','creator','oid');
@@ -115,8 +117,9 @@ class Contest extends Model
     {
         $user = User::find($user_id);
         if(!empty($user)){
-            return $this->registers()->where('uid', $user->id)
-                ->orWhere('info','like','%"SID":"'.$user->SID.'"%')->first();
+            return $this->registers()->where(function($query) use ($user) {
+                $query->where('uid', $user->id)->orWhere('info','like','%"SID":"'.$user->SID.'"%');
+            })->first();
         }else{
             return null;
         }

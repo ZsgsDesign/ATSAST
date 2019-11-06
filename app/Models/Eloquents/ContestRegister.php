@@ -22,7 +22,7 @@ class ContestRegister extends Model
 
     public function getTeamNameAttribute()
     {
-        return $this->info['team_name'];
+        return $this->info['team_name'] ?? '';
     }
 
     public function getMembersAttribute()

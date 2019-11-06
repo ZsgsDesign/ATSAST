@@ -2,8 +2,8 @@
 
 namespace App;
 
+use App\Models\Eloquents\Privilege;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -36,4 +36,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function privileges()
+    {
+        return $this->hasMany('App\Models\Eloquents\Privilege','uid','id');
+    }
+
+    public function hasAccess($privilege)
+    {
+        if(in_array($privilege,array_keys(Privilege::$privilege_map))){
+            $condition = Privilege::$privilege_map[$privilege];
+            $p = Privilege::where($condition)->first();
+            if(!empty($p)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

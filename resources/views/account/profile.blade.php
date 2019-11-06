@@ -256,7 +256,7 @@
         margin-bottom: 0px !important;
     }
 </style>
-<img class="atsast-profile-focus" src="{{ $ATSAST_DOMAIN.$imgurl }}">
+<img class="atsast-profile-focus" src="{{ $imgurl }}">
 <div class="container mundb-standard-container">
     <div class="atsast-profile-container">
         <div class="atsast-left-panel">

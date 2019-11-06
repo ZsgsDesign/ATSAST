@@ -48,8 +48,9 @@ Route::group(['prefix' => 'course'], function () {
 
 Route::group(['prefix' => 'contest'], function () {
     Route::get('/', 'ContestController@index')->name('contest');
-    Route::get('/{cid}/detail', 'ContestController@detail')->name('contest.detail');
-    Route::get('/{cid}/register', 'ContestController@register')->name('contest.register');
+    Route::get('/add', 'ContestController@add')->middleware('auth','contest.access.add')->name('contest.add');
+    Route::get('/{cid}/detail', 'ContestController@detail')->middleware('auth','contest.exist')->name('contest.detail');
+    Route::get('/{cid}/register', 'ContestController@register')->middleware('auth','contest.exist')->name('contest.register');
 });
 
 Route::group(['prefix' => 'handling'], function () {
@@ -121,6 +122,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax', 'as' => 'ajax.'], funct
     });
 
     Route::group(['prefix' => 'contest'], function () {
+        Route::post('add', 'ContestController@add')->middleware('auth','contest.access.add','organization.exist')->name('ajax.contest.add');
         Route::post('register', 'ContestController@register')->middleware('auth')->name('ajax.contest.register');
     });
 

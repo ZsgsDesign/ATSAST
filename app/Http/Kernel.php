@@ -67,6 +67,9 @@ class Kernel extends HttpKernel
         'course.feedback' => \App\Http\Middleware\Course\Feedback::class,
         'course.register' => \App\Http\Middleware\Course\Register::class,
         'course.syllabus.script' => \App\Http\Middleware\Course\Script::class,
+        'contest.exist'      => \App\Http\Middleware\Contest\Exist::class,
+        'contest.access.add' => \App\Http\Middleware\Contest\AccessAdd::class,
+        'organization.exist' => \App\Http\Middleware\Organization\Exist::class,
     ];
 
     /**
@@ -90,5 +93,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\Course\Register::class,
         \App\Http\Middleware\Course\Feedback::class,
         \App\Http\Middleware\Course\Script::class,
+        \App\Http\Middleware\Contest\Exist::class,
+        \App\Http\Middleware\Contest\AccessAdd::class
     ];
 }

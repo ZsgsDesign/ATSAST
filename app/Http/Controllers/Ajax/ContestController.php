@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use App\Http\Controllers\Controller;
+use App\Models\Eloquents\Contest;
+use App\Models\Eloquents\ContestRequireInfo;
 use App\Models\ResponseModel;
-use App\User;
+use Storage;
 
 class ContestController extends Controller
 {
@@ -166,5 +168,78 @@ class ContestController extends Controller
             "register_time"=>date("Y-m-d H:i:s"),
         ]);
         return ResponseModel::success(200,'成功',request()->ATSAST_DOMAIN.route('contest',[],false));
+    }
+
+    public function add(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|string',
+            'due_register' => 'required|string',
+            'image' => 'required|file',
+            'desc' => 'required|string',
+            'minp' => 'required|integer',
+            'maxp' => 'required|integer',
+            'register_info' => 'required|string',
+            'tips' => 'required|string',
+            'type' => 'required|integer',
+        ]);
+        try{
+            $start = strtotime($request->start_date);
+            $end = strtotime($request->end_date);
+            if($start > $end) {
+                return ResponseModel::err(4007);
+            }
+            $start_date = date('Y-m-d',$start);
+            $end_date = date('Y-m-d',$end);
+            $due_register = date('Y-m-d h:i:s',strtotime($request->due_register));
+        }catch(\Throwable $e){
+            return ResponseModel::err(1004,$e->getMessage());
+        }
+
+        if($request->minp > $request->maxp) {
+            return ResponseModel::err(4008);
+        }
+
+        $register_infos = explode(',',$request->register_info);
+        $ris = [];
+        foreach($register_infos as $register_info){
+            if(substr($register_info,0,1) == '*') {
+                $cri = ContestRequireInfo::where('name',substr($register_info,1))->first();
+            }else{
+                $cri = ContestRequireInfo::where('name',$register_info)->first();
+            }
+            if(empty($cri)) {
+                return ResponseModel::err(4009);
+            }
+            $ris[] = $cri->name;
+        }
+        if(count($ris) != count(array_unique($ris))){
+            return ResponseModel::err(4010);
+        }
+
+        $allow_extension = ['png','jpg','bmp','gif'];
+        if(!in_array($request->image->extension(),$allow_extension)){
+            return ResponseModel::err(1005);
+        }
+        $image_path = Storage::url($request->image->store('/contest/image','public'));
+
+        Contest::create([
+            'name'    => $request->name,
+            'creator' => $request->organization->oid,
+            'desc' => $request->desc,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'due_register' => $due_register,
+            'type' => boolval($request->type),
+            'require_register' => $request->register_info,
+            'image' => $image_path,
+            'min_participants' => $request->minp,
+            'max_participants' => $request->maxp,
+            'status' => 1,
+            'tips' => $request->tips
+        ]);
+        return ResponseModel::success();
     }
 }
