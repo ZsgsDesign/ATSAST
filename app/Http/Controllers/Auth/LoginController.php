@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -18,14 +19,19 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers{
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected function redirectTo()
+    {
+        return request()->ATSAST_DOMAIN.'/contest';
+    }
 
     /**
      * Create a new controller instance.
@@ -35,7 +41,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->redirectTo = request()->ATSAST_DOMAIN.'/';
     }
 
     public function showLoginForm()
@@ -45,5 +50,11 @@ class LoginController extends Controller
             'site_title'=>"SAST教学辅助平台",
             'navigation' => "Account"
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        return redirect(request()->ATSAST_DOMAIN.'/');
     }
 }

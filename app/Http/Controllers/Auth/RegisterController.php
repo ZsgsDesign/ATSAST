@@ -28,7 +28,10 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected function redirectTo()
+    {
+        return request()->ATSAST_DOMAIN.'/';
+    }
 
     /**
      * Create a new controller instance.
