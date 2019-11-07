@@ -30,7 +30,7 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        return request()->ATSAST_DOMAIN.'/contest';
+        return request()->ATSAST_DOMAIN.'/';
     }
 
     /**

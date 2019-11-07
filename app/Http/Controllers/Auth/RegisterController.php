@@ -41,8 +41,6 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-
-        $this->redirectTo = request()->ATSAST_DOMAIN.'/';
     }
 
     /**
