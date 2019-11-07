@@ -3,7 +3,6 @@
 @section('template')
 
 <style>
-
     contest{
         display: block;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
@@ -90,11 +89,22 @@
         z-index: -1;
         top:0;
     }
+    contest.add span{
+        font-size: 5rem;
+        font-weight: bolder
+    }
 </style>
 <div class="container mundb-standard-container">
     <section class="mb-5">
         <h1>活动</h1>
         <p>Activities</p>
+        @if(Auth::check() && Auth::user()->hasAccess('contest.add'))
+        <contest class="add" style="cursor: pointer;" onclick="window.location='{{$ATSAST_DOMAIN}}/contest/add'">
+            <div class="text-center">
+                <span>+</span>
+            </div>
+        </contest>
+        @endif
         @foreach($contests as $contest)
         <contest>
             <div class="d-block d-lg-none atsast-img-container-small">
