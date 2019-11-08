@@ -185,7 +185,7 @@
                     <input type="email" class="form-control" name="email" value="{{$detail->email}}" id="email" disabled>
                 </div>
                 <div class="form-group">
-                    <label for="SID" class="bmd-label-floating">学号</label>
+                    <label for="SID" class="bmd-label-floating">学号 (外校同学填写 学校缩写_学号,如NUU_XXXXXXXX)</label>
                     <input type="text" class="form-control" name="SID" value="{{$detail->SID}}" id="SID">
                 </div>
                 <div class="form-group" style="padding-top: 2.75rem;">
