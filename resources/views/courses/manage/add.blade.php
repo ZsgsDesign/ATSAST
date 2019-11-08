@@ -18,16 +18,15 @@
     <section class="mb-5">
         <h5>新增</h5>
         <div class="form-group">
-            <label for="course_name" class="bmd-label-floating">课程名称</label>
+            <label for="course_name" class="bmd-label-floating">课程名称(后端组 2019-2020)</label>
             <input type="text" class="form-control" name="course_name" value=" 组2019-2020" id="course_name" required>
-            <span class="bmd-help">课程名称不应该过长。</span>
         </div>
         <div class="form-group">
-            <label for="course_organization" class="bmd-label-floating">课程开设单位</label>
-            <input type="text" class="form-control" name="course_organization" value="校大学生科学与技术协会" id="course_organization" required>
+            <label for="course_organization" class="bmd-label-floating">课程开设单位(组织全名如:校大学生科学与技术协会)</label>
+            <input type="text" class="form-control" name="course_organization" value="" id="course_organization" required>
         </div>
         <div class="form-group">
-            <label for="course_email" class="bmd-label-floating">负责讲师</label>
+            <label for="course_email" class="bmd-label-floating">负责讲师(填写讲师的邮箱,必须在ATSAST注册账号)</label>
             <input type="email" class="form-control" name="course_email" value="@njupt.edu.cn" id="course_email" required>
         </div>
         <div class="form-group">

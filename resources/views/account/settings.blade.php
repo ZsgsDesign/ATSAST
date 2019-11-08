@@ -249,7 +249,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <card class="img-card @if($detail->album=='bing')album-selected @endif" data-album="bing" onclick="changeAlbum(this)">
-                        <img src="{{$ATSAST_DOMAIN}}/static/img/bing.png">
+                        <img src="{{$imgurl}}">
                         <div>必应&trade;精选美图</div>
                     </card>
                 </div>

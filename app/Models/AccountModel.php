@@ -77,7 +77,7 @@ class AccountModel extends Model
             $array = json_decode($str);
             $imgurl="https://cn.bing.com/".$array->{"images"}[0]->{"url"};
         } else {
-            $imgurl="{$this->ATSAST_CDN}/img/njupt.jpg";
+            $imgurl=request()->ATSAST_DOMAIN."/img/njupt.jpg";
         }
 
         return [
