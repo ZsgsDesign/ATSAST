@@ -41,11 +41,19 @@ class AccountController extends Controller
     {
         $accountmodel = new AccountModel();
         $detail = $accountmodel->detail(Auth::user()->id);
+        if ($detail->album=="bing") {
+            $str = file_get_contents('http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN');
+            $array = json_decode($str);
+            $imgurl="https://cn.bing.com/".$array->{"images"}[0]->{"url"};
+        } else {
+            $imgurl=request()->ATSAST_DOMAIN."/img/njupt.jpg";
+        }
         return view('account.settings', [
             'page_title'=>"用户设置",
             'site_title'=>"SAST教学辅助平台",
             'navigation'=>"Account",
             'detail'=>$detail,
+            'imgurl'=>$imgurl,
         ]);
     }
 
