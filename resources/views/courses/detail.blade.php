@@ -321,12 +321,12 @@
                     @if(!empty($syllabus->signs()->where('uid',Auth::user()->id)->first()))
                         <button type="button" class="btn" disabled><action class="d-block d-lg-inline-block atsast-finished"><i class="MDI account-check"></i> 已签到</action></button>
                     @else
-                        <a href="{{ $course->cid }}/sign/{{ $syllabus->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-check"></i> 签到</action></button></a>
+                        <a href="{{ $ATSAST_DOMAIN.route('course.sign',['cid' => $course->cid, 'syid' => $syllabus->syid],false) }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-check"></i> 签到</action></button></a>
                     @endif
                 @endif
                 @if($syllabus->script)<a href="{{$ATSAST_DOMAIN.route('course.script',['cid' => $course->cid, 'syid' => $syllabus->syid],false)}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI script"></i> 授课笔记</action></button></a>@endif
-                @if($syllabus->homework)<a href="homework/{{ $syllabus->syid }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI pen"></i> 查看作业</action></button></a>@endif
-                @if($syllabus->feedback)<a href="{{$ATSAST_DOMAIN.route('course.feedback',['cid' => $course->cid, 'syid' => $syllabus->syid],false)}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
+                @if($syllabus->homework)<a href="{{homework/{{ $syllabus->syid }}}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI pen"></i> 查看作业</action></button></a>@endif
+                @if($syllabus->feedback)<a href="{{ $ATSAST_DOMAIN.route('course.feedback',['cid' => $course->cid, 'syid' => $syllabus->syid],false) }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
                 @if($syllabus->video)<a href="{{ $syllabus->video }}" target="_blank"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI video"></i> 视频地址</action></button></a>@endif
             @elseif(Auth::check())
             <a href="register"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
