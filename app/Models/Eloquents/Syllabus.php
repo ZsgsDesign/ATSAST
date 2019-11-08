@@ -10,6 +10,8 @@ class Syllabus extends Model
     protected $primaryKey = 'syid';
     public $timestamps = false;
 
+    protected $fillable = ['title','time','location','desc','signed','script','homework','feedback','video'];
+
     public function feedbacks()
     {
         return $this->hasMany('App\Models\Eloquents\SyllabusFeedback','syid','syid');

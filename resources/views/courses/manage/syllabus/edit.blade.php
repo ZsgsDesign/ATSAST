@@ -354,7 +354,7 @@
                     <input type="text" class="form-control" name="desc" value="{{$syllabus->desc}}" id="desc" required>
                 </div>
                 <div class="form-group">
-                    <label for="time" class="bmd-label-floating">授课时间 (YYYY-mm-dd HH:ii:ss)</label>
+                    <label for="time" class="bmd-label-floating">授课时间 (格式如 2019-11-22 23:59:59)</label>
                     <input type="text" class="form-control" name="time" value="{{$syllabus->time}}" id="time" required>
                 </div>
                 <div class="form-group">
@@ -363,7 +363,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN.route('course.manage',['cid' => $course->cid])}}'">返回管理中心</button>
+                <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN.route('course.manage',['cid' => $course->cid],false)}}'">返回管理中心</button>
                 <button type="submit" class="btn btn-outline-primary" onclick="update()">更新信息</button>
             </div>
         </card>

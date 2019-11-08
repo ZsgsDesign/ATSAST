@@ -210,26 +210,24 @@ class CourseController extends Controller
     public function addSyllabusInfo(Request $request)
     {
         $request->validate([
-            'cid' => 'required',
-            'title' => 'required',
-            'desc' => 'required',
-            'location' => 'required',
-            'time' => 'required',
-            'endtime' => 'required'
+            'title' => 'required|string',
+            'desc' => 'required|string',
+            'location' => 'required|string',
+            'time' => 'required|string'
         ]);
-        $cid = $request->input('cid');
-        $title = $request->input('title');
-        $desc = $request->input('desc');
-        $location = $request->input('location');
-        $time = $request->input('time');
-        $endtime = $request->input('endtime');
-        $coursemodel = new CourseModel();
-        $ret = $coursemodel->addSyllabusInfo($cid,$title,$desc,$location,$time,$endtime);
-        if($ret==0){
-            return ResponseModel::success(200, "新建成功", $ret);
-        }else{
-            return ResponseModel::err($ret);
-        }
+        $course = $request->course;
+        $course->syllabus()->create([
+            'title'    => $request->title,
+            'desc'     => $request->desc,
+            'location' => $request->location,
+            'time'     => $request->time,
+            'signed'   => substr(md5(uniqid(microtime(true), true)), 0, 6),
+            'script'   => 0,
+            'feedback' => 0,
+            'video'    => 0,
+            'homework' => 0
+        ]);
+        return ResponseModel::success(200);
     }
 
     public function addCourse(Request $request)

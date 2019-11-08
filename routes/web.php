@@ -43,7 +43,7 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/view_sign/{syid}', 'CourseController@viewSign')->middleware('auth')->name('course.viewSign');
     Route::get('{cid}/view_register', 'CourseController@viewRegister')->middleware('auth')->name('course.viewRegister');
     Route::get('{cid}/view_feedback/{syid}', 'CourseController@viewFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.viewFeedback');
-    Route::get('{cid}/add_syllabus', 'CourseController@addSyllabus')->middleware('auth')->name('course.addSyllabus');
+    Route::get('{cid}/add_syllabus', 'CourseController@addSyllabus')->middleware('auth','course.exist','course.manage')->name('course.addSyllabus');
 });
 
 Route::group(['prefix' => 'contest'], function () {
@@ -112,7 +112,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax', 'as' => 'ajax.'], funct
         Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth','course.exist','course.syllabus.exist','course.feedback')->name('ajax.course.submitFeedBack');
         Route::post('addInstructor', 'CourseController@addInstructor')->middleware('auth')->name('course.addInstructor');
         Route::post('removeInstructor', 'CourseController@removeInstructor')->middleware('auth')->name('course.removeInstructor');
-        Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth')->name('course.addSyllabusInfo');
+        Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth','course.exist','course.manage')->name('course.addSyllabusInfo');
         Route::post('addCourse', 'CourseController@addCourse')->middleware('auth')->name('course.addCourse');
         Route::post('editSign','CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSign');
         Route::post('editVideo','CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editVideo');

@@ -332,18 +332,18 @@
 <div class="atsast-course-header">
     <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-{{$result['course_color']}}">
-            <i class="devicon-{{$result['course_logo']}}-plain"></i>
+        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
+            <i class="devicon-{{$course->course_logo}}-plain"></i>
         </div>
-        <p class="d-none d-lg-block">{{$result['creator_name']}} ·@if($result['course_type']==1) 线上课程@else 线下课程@endif</p>
-        <h1 class="d-none d-lg-block">{{$result['course_name']}}</h1>
+        <p class="d-none d-lg-block">{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
+        <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
     </div>
 </div>
 </div>
 <div class="container mundb-standard-container">
     <div class="d-block d-lg-none atsast-title">
-        <h1>{{$result['course_name']}}</h1>
-        <p>{{$result['creator_name']}} ·@if($result['course_type']==1) 线上课程@else 线下课程@endif</p>
+        <h1>{{$course->course_name}}</h1>
+        <p>{{$course->organization->name}}·{{$course->course_type == 1 ? '线上' : '线下'}}课程</p>
     </div>
 
     <div class="mb-5">
@@ -359,8 +359,8 @@
                         <input type="text" class="form-control" name="desc" id="desc" required>
                     </div>
                     <div class="form-group">
-                        <label for="time" class="bmd-label-floating">授课时间</label>
-                        <input type="text" class="form-control" name="time" value="2019-10-24 18:30:00 ~ 2019-10-24 20:30:00" id="time" required>
+                        <label for="time" class="bmd-label-floating">授课时间 (格式如 2019-11-22 23:59:59)</label>
+                        <input type="text" class="form-control" name="time" value="" id="time" required>
                     </div>
                     <div class="form-group">
                         <label for="location" class="bmd-label-floating">授课地点</label>
@@ -368,7 +368,7 @@
                     </div>
             </div>
             <div class="text-right">
-                <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN}}/course/{{$cid}}/manage'">返回管理中心</button>
+                <button class="btn btn-default" onclick="location.href='{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/manage'">返回管理中心</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="update()">确定</button>
             </div>
         </card>
@@ -381,7 +381,7 @@
             type: 'POST',
             url: '{{$ATSAST_DOMAIN}}/ajax/course/addSyllabusInfo',
             data: {
-                cid:{{$cid}},
+                cid:{{$course->cid}},
                 title:$("#title").val(),
                 desc:$("#desc").val(),
                 location:$("#location").val(),
@@ -392,11 +392,12 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, success: function(ret){
-                console.log(ret);
                 alert(ret.desc);
-                setTimeout(function(){
-                    location.href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/manage";
-                }, 1000);
+                if(ret.ret == 200){
+                    setTimeout(function(){
+                        location.href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/manage";
+                    }, 1000);
+                }
             }, error: function(xhr, type){
                 console.log(xhr);
                 switch(xhr.status) {

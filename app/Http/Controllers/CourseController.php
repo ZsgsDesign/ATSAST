@@ -221,22 +221,12 @@ class CourseController extends Controller
 
     public function addSyllabus(Request $request)
     {
-        $cid = $request->cid;
-        $coursemodel = new CourseModel();
-        $access_right = $coursemodel->accessRightViewSign(Auth::user()->id,$cid);
-        if (!$access_right) {
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
-        }
-        $ret = $coursemodel->addSyllabus($cid);
-        if(!$ret){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
-        }
+        $course = $request->course;
         return view('courses.manage.syllabus.add', [
-            'page_title'=>"新增课时",
-            'site_title'=>$ret['course_name'],
-            'navigation'=>"Courses",
-            'cid'=>$cid,
-            'result'=>$ret,
+            'page_title' => "新增课时",
+            'site_title' => $course->name,
+            'navigation' => "Courses",
+            'course'     => $course,
         ]);
     }
 
