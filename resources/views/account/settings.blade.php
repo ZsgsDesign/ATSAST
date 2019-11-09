@@ -140,7 +140,7 @@
 <div class="container mundb-standard-container">
     <h1 class="mb-3"><i class="MDI settings"></i> 设置</h1>
     <hr class="atsast-line mb-5">
-    <notify>
+    {{-- <notify>
         <div class="d-block d-lg-none atsast-img-container-small">
             <img src="{{$ATSAST_DOMAIN}}/static/img/atsast/encryption.jpg">
         </div>
@@ -158,7 +158,7 @@
             <button class="btn btn-outline-primary" onclick="sendActivateEmail()">再次发送</button>
             @endif
         </div>
-    </notify>
+    </notify> --}}
     <card class="mb-5" id="user-info">
         <h5><i class="MDI account-circle"></i> 用户信息</h5>
         <div class="row">
