@@ -10,7 +10,7 @@ class Instructor extends Model
     protected $primaryKey = 'iid';
     public $timestamps = false;
 
-    protected $fillable = ['cid','uid','title'];
+    protected $fillable = ['cid','uid','course_title'];
 
     public function user()
     {
