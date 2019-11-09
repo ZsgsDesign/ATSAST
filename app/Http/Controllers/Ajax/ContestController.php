@@ -219,7 +219,7 @@ class ContestController extends Controller
             return ResponseModel::err(4010);
         }
 
-        $allow_extension = ['png','jpg','bmp','gif'];
+        $allow_extension = ['png','jpg','jpeg','bmp','gif'];
         if(!in_array($request->image->extension(),$allow_extension)){
             return ResponseModel::err(1005);
         }
