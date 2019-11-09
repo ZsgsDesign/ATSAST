@@ -324,7 +324,7 @@
                 alert(ret.desc);
                 if(ret.ret == 200){
                     setTimeout(function(){
-                        location.href="{{$ATSAST_DOMAIN}}/contest/"+ret.data;
+                        location.href="{{$ATSAST_DOMAIN}}/contest/";
                     }, 1000);
                 }
                 ajaxing = false;
