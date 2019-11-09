@@ -10,6 +10,8 @@ class Course extends Model
     protected $primaryKey = 'cid';
     public $timestamps = false;
 
+    protected $fillable = ['course_name','course_creator','course_logo','course_desc','course_type','course_suitable','course_color'];
+
     public function organization()
     {
         return $this->belongsTo('App\Models\Eloquents\Organization','course_creator','oid');

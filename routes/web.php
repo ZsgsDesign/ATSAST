@@ -113,7 +113,7 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax', 'as' => 'ajax.'], funct
         Route::post('addInstructor', 'CourseController@addInstructor')->middleware('auth')->name('course.addInstructor');
         Route::post('removeInstructor', 'CourseController@removeInstructor')->middleware('auth')->name('course.removeInstructor');
         Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth','course.exist','course.manage')->name('course.addSyllabusInfo');
-        Route::post('addCourse', 'CourseController@addCourse')->middleware('auth')->name('course.addCourse');
+        Route::post('addCourse', 'CourseController@addCourse')->middleware('auth','course.access.add','organization.exist','course.instructors.email.exist','course.valid.color.logo')->name('course.addCourse');
         Route::post('editSign','CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSign');
         Route::post('editVideo','CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editVideo');
         Route::post('editFeedback','CourseController@editFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editFeedback');

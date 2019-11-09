@@ -10,6 +10,8 @@ class Privilege extends Model
     protected $primaryKey = 'pid';
     public $timestamps = false;
 
+    protected $guarded = [];
+
     public static $privilege_map = [
         'course.add' => [
             'type'       => 'system',

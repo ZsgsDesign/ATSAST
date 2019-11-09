@@ -21,14 +21,18 @@ class ResponseModel extends Model
         return response()->json($output);
     }
 
-    public static function err($statusCode, $desc=null, $data=null)
+    public static function err($statusCode, $desc=null, $data=null, $extra=null)
     {
         if (($statusCode<1000)) {
             $statusCode=1000;
         }
+        $desc = is_null($desc) ? self::desc($statusCode) : $desc;
+        foreach ($extra as $key => $value) {
+            $desc = str_replace($key,$value,$desc);
+        }
         $output=[
              'ret' => $statusCode,
-            'desc' => is_null($desc) ? self::desc($statusCode) : $desc,
+            'desc' => $desc,
             'data' => $data
         ];
         return response()->json($output);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\ResponseModel;
 use App\Models\CourseModel;
+use App\Models\Eloquents\Course;
 use App\Models\Eloquents\Instructor;
 use App\Models\Eloquents\SyllabusFeedback;
 use App\Models\Eloquents\SyllabusScript;
@@ -233,29 +234,32 @@ class CourseController extends Controller
     public function addCourse(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'organization' => 'required',
-            'major' => 'required',
-            'desc' => 'required',
-            'color' => 'required',
-            'suitable' => 'required',
-            'type' => 'required',
+            'name' => 'required|string',
+            'desc' => 'required|string',
+            'suitable' => 'required|string',
+            'type' => 'required|integer',
         ]);
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $organization = $request->input('organization');
-        $major = $request->input('major');
-        $desc = $request->input('desc');
-        $color = $request->input('color');
-        $suitable = $request->input('suitable');
-        $type = $request->input('type');
-        $coursemodel = new CourseModel();
-        $ret = $coursemodel->addCourse($name,$email,$organization,$major,$desc,$color,$suitable,$type);
-        if(is_array($ret)){
-            return ResponseModel::success(200, "新建成功", $ret[1]);
-        }else{
-            return ResponseModel::err($ret);
+        $course = Course::create([
+            'course_name' => $request->name,
+            'course_creator' => $request->organization->oid,
+            'course_logo' => $request->logo,
+            'course_color' => $request->color,
+            'course_desc' => $request->desc,
+            'course_suitable' => $request->suitable,
+            'course_type' => boolval($request->type)
+        ]);
+        $instructors = $request->instructors;
+        foreach ($instructors as $instructor) {
+            $course->instructors()->create([
+                'uid' => $instructor->id,
+                'course_title' => '讲师'
+            ]);
+            $course->privileges()->create([
+                'uid' => $instructor->id,
+                'type' => 'cid',
+                'clearance' => 4
+            ]);
         }
+        return ResponseModel::success();
     }
 }

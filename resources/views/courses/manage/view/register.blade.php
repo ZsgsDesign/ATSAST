@@ -362,8 +362,12 @@
 <div class="atsast-course-header">
     <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-{{$result['course_color']}}">
-            <i class="devicon-{{$result['course_logo']}}-plain"></i>
+        <div class="atsast-course-avatar {{$result['course_color']}}">
+            @if(strlen($result['course_logo']) <= 3)
+                <i>{{$result['course_logo']}}</i>
+            @else
+                <i class="{{$result['course_logo']}}"></i>
+            @endif
         </div>
         <p class="d-none d-lg-block">{{$result['creator_name']}} ·@if($result['course_type']==1) 线上课程@else 线下课程@endif</p>
         <h1 class="d-none d-lg-block">{{$result['course_name']}}</h1>

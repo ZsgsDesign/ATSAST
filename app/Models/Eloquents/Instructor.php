@@ -10,6 +10,8 @@ class Instructor extends Model
     protected $primaryKey = 'iid';
     public $timestamps = false;
 
+    protected $fillable = ['cid','uid','title'];
+
     public function user()
     {
         return $this->belongsTo('App\User','uid','id');

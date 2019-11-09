@@ -234,8 +234,12 @@
 <div class="atsast-course-header">
     <img src="{{$ATSAST_DOMAIN}}/static/img/bg.jpg" class="atsast-focus-img">
     <div class="container">
-        <div class="atsast-course-avatar wemd-{{$course->course_color}}">
-            <i class="devicon-{{$course->course_logo}}-plain"></i>
+        <div class="atsast-course-avatar {{$course->course_color}}">
+            @if(strlen($course->course_logo) <= 3)
+                <i>{{$course->course_logo}}</i>
+            @else
+                <i class="{{$course->course_logo}}"></i>
+            @endif
         </div>
         <p class="d-none d-lg-block">{{$course->organization->name}} ·@if($course->course_type==1) 线上课程@else 线下课程@endif</p>
         <h1 class="d-none d-lg-block">{{$course->course_name}}</h1>
@@ -329,7 +333,7 @@
                 @if($syllabus->feedback)<a href="{{ $ATSAST_DOMAIN.route('course.feedback',['cid' => $course->cid, 'syid' => $syllabus->syid],false) }}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI comment-text-outline"></i> 课程反馈</action></button></a>@endif
                 @if($syllabus->video)<a href="{{ $syllabus->video }}" target="_blank"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI video"></i> 视频地址</action></button></a>@endif
             @elseif(Auth::check())
-            <a href="register"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
+            <a href="{{$ATSAST_DOMAIN.route('course.register',['cid' => $course->cid],false)}}"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI checkbox-marked-circle-outline"></i> 请先报名本课程</action></button></a>
             @else
             <a href="{{$ATSAST_DOMAIN}}/login"><button type="button" class="btn"><action class="d-block d-lg-inline-block"><i class="MDI account-circle"></i> 请在登录后查看课时详情</action></button></a>
             @endif

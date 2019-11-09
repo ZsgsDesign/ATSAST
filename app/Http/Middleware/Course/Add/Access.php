@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Middleware\Contest;
+namespace App\Http\Middleware\Course\Add;
 
 use Closure;
 use Auth;
+use App\Models\ResponseModel;
 
-class AccessAdd
+class Access
 {
     /**
      * Handle an incoming request.
@@ -17,9 +18,9 @@ class AccessAdd
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if(!$user->hasAccess('contest.add')){
+        if(!$user->hasAccess('course.add')){
             if($request->isMethod('get')){
-                return redirect($request->ATSAST_DOMAIN.route('contest',null,false));
+                return redirect($request->ATSAST_DOMAIN.route('course',null,false));
             }else{
                 return ResponseModel::err(2003);
             }

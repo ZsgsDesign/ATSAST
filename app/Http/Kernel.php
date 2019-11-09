@@ -67,6 +67,9 @@ class Kernel extends HttpKernel
         'course.feedback' => \App\Http\Middleware\Course\Feedback::class,
         'course.register' => \App\Http\Middleware\Course\Register::class,
         'course.syllabus.script' => \App\Http\Middleware\Course\Script::class,
+        'course.access.add' => \App\Http\Middleware\Course\Add\Access::class,
+        'course.instructors.email.exist' => \App\Http\Middleware\Course\Add\InstructorsEmailExist::class,
+        'course.valid.color.logo' => \App\Http\Middleware\Course\Add\ValidColorAndLogo::class,
         'contest.exist'      => \App\Http\Middleware\Contest\Exist::class,
         'contest.access.add' => \App\Http\Middleware\Contest\AccessAdd::class,
         'organization.exist' => \App\Http\Middleware\Organization\Exist::class,
@@ -93,7 +96,11 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\Course\Register::class,
         \App\Http\Middleware\Course\Feedback::class,
         \App\Http\Middleware\Course\Script::class,
+        \App\Http\Middleware\Course\Add\Access::class,
+        \App\Http\Middleware\Course\Add\InstructorsEmailExist::class,
+        \App\Http\Middleware\Course\Add\ValidColorAndLogo::class,
         \App\Http\Middleware\Contest\Exist::class,
         \App\Http\Middleware\Contest\AccessAdd::class
+
     ];
 }
