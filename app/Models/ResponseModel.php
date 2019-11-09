@@ -27,8 +27,10 @@ class ResponseModel extends Model
             $statusCode=1000;
         }
         $desc = is_null($desc) ? self::desc($statusCode) : $desc;
-        foreach ($extra as $key => $value) {
-            $desc = str_replace($key,$value,$desc);
+        if(!empty($extra)){
+            foreach ($extra as $key => $value) {
+                $desc = str_replace($key,$value,$desc);
+            }
         }
         $output=[
              'ret' => $statusCode,
