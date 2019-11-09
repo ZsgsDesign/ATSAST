@@ -12,7 +12,7 @@ class ContestController extends Controller
 {
     public function index()
     {
-        $contests = Contest::with('organization')->orderBy('contest_id','DESC')->paginate(8);
+        $contests = Contest::with('organization')->where('status',1)->orderBy('contest_id','DESC')->paginate(8);
         return view('contests.index', [
             'page_title' => "活动",
             'site_title' => "SAST教学辅助平台",
