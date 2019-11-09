@@ -170,7 +170,7 @@
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Pastebin") active @endif" href="{{$ATSAST_DOMAIN}}/pb">PASTEBIN</a>
                     </li>
-                    <li class="nav-item />">
+                    {{-- <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Cloud") active @endif" href="{{$ATSAST_DOMAIN}}/cloud">网盘</a>
                     </li>
                     <li class="nav-item />">
@@ -181,7 +181,7 @@
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Finance") active @endif" href="{{$ATSAST_DOMAIN}}/finance">报销</a>
-                    </li>
+                    </li> --}}
                 </ul>
 
                 <ul class="navbar-nav mundb-nav-right">
