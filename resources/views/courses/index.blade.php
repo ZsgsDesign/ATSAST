@@ -34,6 +34,17 @@
         <h1>课程</h1>
         <p>courses</p>
         <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a class="attsast-course" href="{{$ATSAST_DOMAIN}}/course/add">
+                    <div class="btn card text-white wemd-green mb-3 text-center">
+                        <div class="card-body">
+                            <i class="MDI plus"></i>
+                            <h5 class="card-title mundb-text-truncate-1">添加课程</h5>
+                            <p class="card-text mundb-text-truncate-1">添加你们的课程</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
             @foreach($result as $r)
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <a class="attsast-course" href="{{$ATSAST_DOMAIN}}/course/{{$r->cid}}/detail">
