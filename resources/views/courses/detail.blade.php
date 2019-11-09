@@ -253,7 +253,11 @@
         @if(Auth::check())<a href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/register"><button type="button" class="btn btn-@if(!empty($register))success @else info @endif btn-raised d-inline-block d-lg-none" @if(!empty($register))disabled @endif ><i class="MDI @if(!empty($register))check-circle-outline @else checkbox-marked-circle-outline @endif"></i> @if(!empty($register)) 已报名@else 报名@endif</button></a>@endif
     </div>
     <section class="mb-5">
-
+        @if(Auth::check() && $course->is_manager(Auth::user()->id))
+        <div class="text-right">
+            <a class="btn btn-outline-danger m-0" href="{{$ATSAST_DOMAIN.route('course.manage',['cid'=>$course->cid],false)}}"><i class="MDI wrench"></i> 课程管理</a>
+        </div>
+        @endif
         <p>
             <strong>关于此课程：</strong>{{$course->course_desc}}
         </p>

@@ -263,7 +263,7 @@
                 操作
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item text-secondary" href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/edit"><i class="MDI pencil"></i> 编辑</a>
+                {{-- <a class="dropdown-item text-secondary" href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/edit"><i class="MDI pencil"></i> 编辑</a> --}}
                 <a class="dropdown-item text-secondary" href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/view_register"><i class="MDI check-circle-outline"></i> 查看报名情况</a>
             </div>
         </div>
@@ -278,7 +278,7 @@
                 操作
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item text-secondary" href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/edit"><i class="MDI pencil"></i> 编辑</a>
+                {{-- <a class="dropdown-item text-secondary" href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/edit"><i class="MDI pencil"></i> 编辑</a> --}}
                 <a class="dropdown-item text-secondary" href="{{$ATSAST_DOMAIN}}/course/{{$cid}}/view_register"><i class="MDI check-circle-outline"></i> 查看报名情况</a>
             </div>
         </div>
