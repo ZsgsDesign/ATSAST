@@ -13,7 +13,7 @@ class CourseModel extends Model
 {
     public function list()
     {
-        $paginator = DB::table('courses')->orderBy('cid', 'desc')->paginate(9);
+        $paginator = DB::table('courses')->orderBy('cid', 'asc')->paginate(9);
         $list = $paginator->all();
         return [
             'paginator' => $paginator,
