@@ -18,7 +18,7 @@ class Manage
     public function handle($request, Closure $next)
     {
         $course = $request->course;
-        if(!$course->is_manager(Auth::user()->id)){
+        if(!$course->is_manager(Auth::user()->id) && !Auth::user()->hasAccess('system.course.manage')){
             if($request->isMethod('get')){
                 return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
             }else{

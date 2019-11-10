@@ -253,10 +253,15 @@ class CourseModel extends Model
     {
         $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
+        $access_right_2 = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','system')->where('type_value','=',8)->where('clearance','>',0)->get()->first();
+        $access_right_2 = (array)$access_right_2;
         $result = DB::table('courses')->where('cid','=',$cid)->get()->first();
         $result = (array)$result;
-        if (empty($result) || empty($access_right)) {
+        if (empty($result) || (empty($access_right) && empty($access_right_2))) {
             return null;
+        }
+        if(empty($access_right)){
+            $access_right = $access_right_2;
         }
         $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->first();
         $creator = (array)$creator;

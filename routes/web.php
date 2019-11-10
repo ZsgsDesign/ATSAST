@@ -108,32 +108,32 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax', 'as' => 'ajax.'], funct
     });
 
     Route::group(['prefix' => 'course'], function () {
-        Route::post('sign', 'CourseController@sign')->middleware('auth')->name('ajax.course.sign');
-        Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth','course.exist','course.syllabus.exist','course.feedback')->name('ajax.course.submitFeedBack');
+        Route::post('sign', 'CourseController@sign')->middleware('auth')->name('course.sign');
+        Route::post('submitFeedBack', 'CourseController@submitFeedBack')->middleware('auth','course.exist','course.syllabus.exist','course.feedback')->name('course.submitFeedBack');
         Route::post('addInstructor', 'CourseController@addInstructor')->middleware('auth')->name('course.addInstructor');
         Route::post('removeInstructor', 'CourseController@removeInstructor')->middleware('auth')->name('course.removeInstructor');
         Route::post('addSyllabusInfo', 'CourseController@addSyllabusInfo')->middleware('auth','course.exist','course.manage')->name('course.addSyllabusInfo');
         Route::post('addCourse', 'CourseController@addCourse')->middleware('auth','course.access.add','organization.exist','course.instructors.email.exist','course.valid.color.logo')->name('course.addCourse');
-        Route::post('editSign','CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSign');
-        Route::post('editVideo','CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editVideo');
-        Route::post('editFeedback','CourseController@editFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editFeedback');
-        Route::post('editSyllabus','CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editSyllabus');
-        Route::post('editScript','CourseController@editScript')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('ajax.course.editScript');
+        Route::post('editSign','CourseController@editSign')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSign');
+        Route::post('editVideo','CourseController@editVideo')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editVideo');
+        Route::post('editFeedback','CourseController@editFeedback')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editFeedback');
+        Route::post('editSyllabus','CourseController@editSyllabus')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editSyllabus');
+        Route::post('editScript','CourseController@editScript')->middleware('auth','course.exist','course.manage','course.syllabus.exist')->name('course.editScript');
     });
 
     Route::group(['prefix' => 'contest'], function () {
-        Route::post('add', 'ContestController@add')->middleware('auth','contest.access.add','organization.exist')->name('ajax.contest.add');
-        Route::post('register', 'ContestController@register')->middleware('auth')->name('ajax.contest.register');
+        Route::post('add', 'ContestController@add')->middleware('auth','contest.access.add','organization.exist')->name('contest.add');
+        Route::post('register', 'ContestController@register')->middleware('auth')->name('contest.register');
     });
 
     Route::group(['prefix' => 'handling'], function () {
-        Route::post('publishItem', 'HandlingController@publishItem')->middleware('auth')->name('ajax.handling.publishitem');
-        Route::post('addToCart', 'HandlingController@addToCart')->middleware('auth')->name('ajax.handling.addtocart');
-        Route::post('removeItem', 'HandlingController@removeItem')->middleware('auth')->name('ajax.handling.removeitem');
-        Route::post('restoreItem', 'HandlingController@restoreItem')->middleware('auth')->name('ajax.handling.restoreitem');
-        Route::post('deleteFromCart', 'HandlingController@deleteFromCart')->middleware('auth')->name('ajax.handling.deleteFromCart');
-        Route::post('createOrder', 'HandlingController@createOrder')->middleware('auth')->name('ajax.handling.createOrder');
-        Route::post('operateOrder', 'HandlingController@operateOrder')->middleware('auth')->name('ajax.handling.operateOrder');
+        Route::post('publishItem', 'HandlingController@publishItem')->middleware('auth')->name('handling.publishitem');
+        Route::post('addToCart', 'HandlingController@addToCart')->middleware('auth')->name('handling.addtocart');
+        Route::post('removeItem', 'HandlingController@removeItem')->middleware('auth')->name('handling.removeitem');
+        Route::post('restoreItem', 'HandlingController@restoreItem')->middleware('auth')->name('handling.restoreitem');
+        Route::post('deleteFromCart', 'HandlingController@deleteFromCart')->middleware('auth')->name('handling.deleteFromCart');
+        Route::post('createOrder', 'HandlingController@createOrder')->middleware('auth')->name('handling.createOrder');
+        Route::post('operateOrder', 'HandlingController@operateOrder')->middleware('auth')->name('handling.operateOrder');
     });
 });
 

@@ -115,11 +115,11 @@ class CourseController extends Controller
         $cid = $request->cid;
         $coursemodel = new CourseModel();
         if(!Auth::Check() || !$coursemodel->existCid($cid)){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $ret = $coursemodel->manage($cid);
         if(!$ret){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $result = $ret['result'];
         $site = $ret['site'];

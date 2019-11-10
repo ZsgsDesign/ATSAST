@@ -16,12 +16,17 @@ class Privilege extends Model
         'course.add' => [
             'type'       => 'system',
             'type_value' => 4,
-            'clearance'    => 1
+            'clearance'  => 1
         ],
         'contest.add' => [
             'type'       => 'system',
             'type_value' => 7,
-            'clearance'    => 1
+            'clearance'  => 1
         ],
+        'system.course.manage' => [
+            'type'       => 'system',
+            'type_value' => 8,
+            'clearance'  => 1
+        ]
     ];
 }
