@@ -47,7 +47,7 @@ class CourseController extends Controller
         $syid = $request->syid;
         $coursemodel = new CourseModel();
         if(!Auth::Check() || !$coursemodel->existCid($cid) || !$coursemodel->existSyid($cid,$syid)){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $sign_status = $coursemodel->signStatus($cid,$syid,Auth::user()->id);
         $syllabus = $coursemodel->syllabusInfo($cid,$syid);
@@ -67,7 +67,7 @@ class CourseController extends Controller
         $cid = $request->cid;
         $coursemodel = new CourseModel();
         if(!Auth::Check() || !$coursemodel->existCid($cid)){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $register_status = $coursemodel->registerStatus($cid,Auth::user()->id);
         return view('courses.register', [
@@ -146,7 +146,7 @@ class CourseController extends Controller
         $coursemodel = new CourseModel();
         $access_right = $coursemodel->accessRightAdd(Auth::user()->id);
         if (!$access_right) {
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         return view('courses.manage.add', [
             'page_title'=>"新增课程",
@@ -174,11 +174,11 @@ class CourseController extends Controller
         $access_right = $coursemodel->accessRightViewSign(Auth::user()->id,$cid);
         $existSyid = $coursemodel->existSyid($cid,$syid);
         if (!$access_right || !$existSyid) {
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $ret = $coursemodel->viewSign($cid,$syid);
         if(!$ret){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $sign_details = $ret['sign_details'];
         $result = $ret['result'];
@@ -201,11 +201,11 @@ class CourseController extends Controller
         $coursemodel = new CourseModel();
         $access_right = $coursemodel->accessRightViewSign(Auth::user()->id,$cid);
         if (!$access_right) {
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $ret = $coursemodel->viewRegister($cid);
         if(!$ret){
-            return redirect(request()->ATSAST_DOMAIN.route('contest',null,false));
+            return redirect(request()->ATSAST_DOMAIN.route('course',null,false));
         }
         $register_details = $ret['register_details'];
         $result = $ret['result'];

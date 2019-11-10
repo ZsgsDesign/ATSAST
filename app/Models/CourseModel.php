@@ -307,7 +307,9 @@ class CourseModel extends Model
 
     public function accessRightViewSign($uid,$cid)
     {
-        return DB::table('privilege')->where('uid','=',$uid)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->count();
+        $a = DB::table('privilege')->where('uid','=',$uid)->where('type','=','system')->where('type_value','=',8)->where('clearance','>',0)->count();
+        $b = DB::table('privilege')->where('uid','=',$uid)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->count();
+        return $a + $b;
     }
 
     public function viewSign($cid,$syid)
@@ -318,8 +320,13 @@ class CourseModel extends Model
         $result = (array)$result;
         $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
-        if (empty($access_right)) {
+        $access_right_2 = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','system')->where('type_value','=',8)->where('clearance','>',0)->get()->first();
+        $access_right_2 = (array)$access_right_2;
+        if (empty($result) || (empty($access_right) && empty($access_right_2))) {
             return null;
+        }
+        if(empty($access_right)){
+            $access_right = $access_right_2;
         }
         $syllabus_info = DB::table('syllabus')->where('cid','=',$cid)->where('syid','=',$syid)->get()->first();
         $syllabus_info = (array)$syllabus_info;
@@ -352,8 +359,13 @@ class CourseModel extends Model
         $result = (array)$result;
         $access_right = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','cid')->where('type_value','=',$cid)->where('clearance','>',0)->get()->first();
         $access_right = (array)$access_right;
-        if (empty($access_right)) {
+        $access_right_2 = DB::table('privilege')->where('uid','=',Auth::user()->id)->where('type','=','system')->where('type_value','=',8)->where('clearance','>',0)->get()->first();
+        $access_right_2 = (array)$access_right_2;
+        if (empty($access_right) && empty($access_right_2)) {
             return null;
+        }
+        if(empty($access_right)){
+            $access_right = $access_right_2;
         }
         $creator = DB::table('organization')->where('oid','=',$result['course_creator'])->get()->first();
         $creator = (array)$creator;
