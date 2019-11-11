@@ -135,7 +135,7 @@
         </label>
         <input style="display: none" type="file" name="image" id="image">
         <div class="form-group">
-            <label for="organization" class="bmd-label-floating">举办单位 (如:校大学生科学与技术协会)</label>
+            <label for="organization" class="bmd-label-floating">举办单位 (如:大学生科学技术协会)</label>
             <input type="text" class="form-control" name="organization" value="" id="organization" autocomplete="off" required>
         </div>
         <div class="row">

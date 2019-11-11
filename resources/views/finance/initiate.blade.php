@@ -35,7 +35,7 @@
         <div class="form-group">
             <label for="department" class="bmd-label-floating">部门与组织</label>
             <input type="text" name="department" class="form-control" id="department" autocomplete="new-password" required>
-            <small class="form-text text-muted">填写完整的组织和部门的名字并以空格分隔 eg. 校大学生科学与技术协会 软件研发中心</small>
+            <small class="form-text text-muted">填写完整的组织和部门的名字并以空格分隔 eg. 大学生科学技术协会 应用开发部</small>
         </div>
         <div class="row" style="margin-top: 3rem;">
             <div class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4">

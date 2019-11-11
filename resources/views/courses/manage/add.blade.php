@@ -235,7 +235,7 @@
             <textarea class="form-control" id="course_desc" name="course_desc" rows="10" required></textarea>
         </div>
         <div class="form-group">
-            <label for="course_organization" class="bmd-label-floating">课程主开设单位(组织全名如:校大学生科学与技术协会)</label>
+            <label for="course_organization" class="bmd-label-floating">课程主开设单位(组织全名如:大学生科学技术协会)</label>
             <input type="text" class="form-control" name="course_organization" value="" id="course_organization" required>
         </div>
         <div class="form-group">
