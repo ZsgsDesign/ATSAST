@@ -74,7 +74,7 @@ class RegisterController extends Controller
             'album' => "bing",
             'cloud_size' => 100,
             'cur_version' => version(),
-            'SID' => strtoupper(substr($data['email'],0,strpos($data['email'],'@')+1)),
+            'SID' => strtoupper(substr($data['email'],0,strpos($data['email'],'@'))),
         ]);
     }
 
