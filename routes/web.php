@@ -49,6 +49,7 @@ Route::group(['prefix' => 'course'], function () {
 Route::group(['prefix' => 'contest'], function () {
     Route::get('/', 'ContestController@index')->name('contest');
     Route::get('/add', 'ContestController@add')->middleware('auth','contest.access.add')->name('contest.add');
+    Route::get('/{cid}', 'ContestController@detail')->middleware('auth','contest.exist');
     Route::get('/{cid}/detail', 'ContestController@detail')->middleware('auth','contest.exist')->name('contest.detail');
     Route::get('/{cid}/register', 'ContestController@register')->middleware('auth','contest.exist')->name('contest.register');
 });
