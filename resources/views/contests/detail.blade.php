@@ -141,7 +141,15 @@
                         <h3 class="mundb-text-truncate-2">{{$contest->name}}</h3>
                         <p class="mundb-text-truncate-1">{{$contest->organization->name}} ·@if($contest->type==1) 线上活动@else 线下活动@endif</p>
                         <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$contest->parse_date}} </p>
-                        @if(Auth::check())@if(empty($contest->userRegister(Auth::user()->id)))<a href="{{$ATSAST_DOMAIN}}/contest/{{$contest->contest_id}}/register"><button class="btn btn-outline-info">立即报名</button></a>@else<a href="{{$ATSAST_DOMAIN}}/contest/{{$contest->contest_id}}/register"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>@endif @else<a href="{{$ATSAST_DOMAIN}}/login"><button class="btn btn-outline-secondary"><i class="MDI account-circle"></i> 请先登录再报名</button></a>@endif
+                        @if(Auth::check())
+                            @if(empty($contest->userRegister(Auth::user()->id)))
+                                <a href="{{$ATSAST_DOMAIN.route('contest.register',['cid' => $contest->contest_id],null)}}"><button class="btn btn-outline-info">立即报名</button></a>
+                            @else
+                                <a href="{{$ATSAST_DOMAIN.route('contest.register',['cid' => $contest->contest_id],null)}}"><button class="btn btn-outline-warning"><i class="MDI pencil"></i> 查看报名信息</button></a>
+                            @endif
+                        @else
+                            <a href="{{$ATSAST_DOMAIN}}/login"><button class="btn btn-outline-secondary"><i class="MDI account-circle"></i> 请先登录再报名</button></a>
+                        @endif
                     </div>
                 </contest>
             </div>

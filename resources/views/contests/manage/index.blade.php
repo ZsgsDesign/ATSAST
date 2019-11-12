@@ -133,7 +133,7 @@
         height: 10rem;
     }
 
-    badge{
+    badge-tip{
         display: inline-block;
         padding: 0.25rem 0.75em;
         font-weight: 700;
@@ -161,27 +161,27 @@
     <h1 class="mb-3"><i class="MDI view-dashboard"></i> 我管理的活动</h1>
     <hr class="atsast-line mb-5">
     <paper-card class="mb-5">
-        <div class="row <{if empty($contest_result)}>atsast-empty<{/if}>">
-            <{if empty($contest_result)}>
-                <badge>这里将会展示所有我管理的活动</badge>
-            <{else}>
-            <{foreach $contest_result as $c}>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <contest-card>
-                    <div class="atsast-img-container-small">
-                        <img src="<{$c['image']}>">
-                    </div>
-                    <div class="atsast-content-container">
-                        <h3 class="mundb-text-truncate-1"><{$c['name']}></h3>
-                        <p class="mundb-text-truncate-1"><{$c['creator_name']}> · <{if $c['type']==1}>线上<{else}>线下<{/if}>活动</p>
-                        <p class="mundb-text-truncate-1 atsast-basic-info"> <i class="MDI clock"></i> <{$c['parse_date']}> </p>
-                        <a href="<{$ATSAST_DOMAIN}>/contest/<{$c['contest_id']}>/detail"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
-                        <a href="<{$ATSAST_DOMAIN}>/ajax/ExportContestRegisterInfo?contest_id=<{$c['contest_id']}>"><button class="btn btn-outline-warning"><i class="MDI eye"></i> 查看报名</button></a>
-                    </div>
-                </contest-card>
-            </div>
-            <{/foreach}>
-            <{/if}>
+        <div class="row @if(empty($contests)) atsast-empty @endif">
+            @if(empty($contests))
+                <badge-tip>这里将会展示所有我管理的活动</badge-tip>
+            @else
+                @foreach($contests as $contest)
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <contest-card>
+                        <div class="atsast-img-container-small">
+                            <img src="{{$ATSAST_DOMAIN.$contest->image}}">
+                        </div>
+                        <div class="atsast-content-container">
+                            <h3 class="mundb-text-truncate-1">{{$contest->name}}</h3>
+                            <p class="mundb-text-truncate-1">{{$contest->organization->name}} · {{$contest->type == 1 ? '线上' : '线下'}}活动</p>
+                            <p class="mundb-text-truncate-1 atsast-basic-info"> <i class="MDI clock"></i> {{$contest->parse_date}} </p>
+                            <a href="{{$ATSAST_DOMAIN.route('contest.detail',['cid' => $contest->contest_id], null)}}"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
+                            <a href="{{$ATSAST_DOMAIN.route('contest.manage.export',['cid' => $contest->contest_id], null)}}>"><button class="btn btn-outline-warning"><i class="MDI eye"></i> 导出报名信息</button></a>
+                        </div>
+                    </contest-card>
+                </div>
+                @endforeach
+            @endif
         </div>
     </paper-card>
 </div>
