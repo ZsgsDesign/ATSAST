@@ -92,7 +92,7 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-            <img class="d-block w-100" src="{{$imgurl}}" alt="First slide">
+                <img class="d-block w-100" src="{{"https://cn.bing.com/".bing_img_url()}}" alt="First slide">
                 <div class="carousel-caption">
                     <div>
                         <h5 class="card-title mundb-text-truncate-2">@SAST正式启用啦</h5>
@@ -101,16 +101,20 @@
                     </div>
                 </div>
             </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="{{$ATSAST_DOMAIN}}/static/img/coding.jpeg" alt="First slide">
-                <div class="carousel-caption">
-                    <div>
-                        <h5 class="card-title mundb-text-truncate-2">新生杯开始报名啦</h5>
-                        <p class="card-text d-none d-md-block mundb-text-truncate-2">新生杯是科技节期间校科协专门面向新生开展的计算机基础知识大赛，我们欢迎你的参加哦！</p>
-                        <a href="{{$ATSAST_DOMAIN}}/contest/1/detail"><button class="btn btn-outline-light">了解更多</button></a>
+            @if(!empty($carousels))
+                @foreach($carousels as $carousel)
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ substr($carousel->image,0,4) == 'http' ? $carousel->image : $ATSAST_DOMAIN.$carousel->image}}" alt="First slide">
+                        <div class="carousel-caption">
+                            <div>
+                                <h5 class="card-title mundb-text-truncate-2">{{$carousel->title}}</h5>
+                                <p class="card-text d-none d-md-block mundb-text-truncate-2">{{$carousel->content}}</p>
+                                <a href="{{ substr($carousel->url,0,4) == 'http' ? $carousel->url : $ATSAST_DOMAIN.$carousel->url}}"><button class="btn btn-outline-light">{{$carousel->button}}</button></a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                @endforeach
+            @endif
         </div>
         <a class="carousel-control-prev" href="#mixed" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

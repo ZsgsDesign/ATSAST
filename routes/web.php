@@ -59,7 +59,6 @@ Route::group(['prefix' => 'contest','as' => 'contest.','namespace' => 'Contest']
     Route::get('/{cid}', 'IndexController@detail')->middleware('auth','contest.exist')->name('detail');
     Route::get('/{cid}/detail', 'IndexController@detail')->middleware('auth','contest.exist');
     Route::get('/{cid}/register', 'IndexController@register')->middleware('auth','contest.exist')->name('register');
-
 });
 
 Route::group(['prefix' => 'handling'], function () {

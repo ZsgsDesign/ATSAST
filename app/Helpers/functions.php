@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ToolModel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
@@ -31,5 +32,12 @@ if (!function_exists('version')) {
             base_path()
         );
         return $version->getVersion();
+    }
+}
+
+if (!function_exists('bing_img_url')) {
+    function bing_img_url()
+    {
+        return ToolModel::bing_img_url();
     }
 }
