@@ -53,4 +53,16 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function manage_contests()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Eloquents\Contest',
+            'App\Models\Eloquents\ContestPrivilege',
+            'user_id',
+            'contest_id',
+            'id',
+            'contest_id'
+        );
+    }
 }
