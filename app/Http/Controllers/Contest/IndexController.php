@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contest;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContestModel;
 use App\Models\Eloquents\Contest;
 use Illuminate\Http\Request;
 use Auth;
 
-class ContestController extends Controller
+class IndexController extends Controller
 {
     public function index()
     {
@@ -51,9 +50,9 @@ class ContestController extends Controller
         ]);
     }
 
-    public function add(Request $request)
+    public function add()
     {
-        return view('contests.add', [
+        return view('contests.manage.add', [
             'page_title'       => "举办活动",
             'site_title'       => "SAST教学辅助平台",
             'navigation'       => "Contests",

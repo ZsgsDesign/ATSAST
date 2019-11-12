@@ -19,7 +19,7 @@ class AccessAdd
         $user = Auth::user();
         if(!$user->hasAccess('contest.add')){
             if($request->isMethod('get')){
-                return redirect($request->ATSAST_DOMAIN.route('contest',null,false));
+                return redirect($request->ATSAST_DOMAIN.route('contest.index',null,false));
             }else{
                 return ResponseModel::err(2003);
             }

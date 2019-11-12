@@ -27,6 +27,11 @@ class Privilege extends Model
             'type'       => 'system',
             'type_value' => 8,
             'clearance'  => 1
+        ],
+        'system.contest.manage' => [
+            'type'       => 'system',
+            'type_value' => 9,
+            'clearance'  => 1
         ]
     ];
 }

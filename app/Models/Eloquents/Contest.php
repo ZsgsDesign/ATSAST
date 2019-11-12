@@ -28,6 +28,11 @@ class Contest extends Model
         return $this->hasMany('App\Models\Eloquents\ContestDetail','contest_id','contest_id');
     }
 
+    public function privileges()
+    {
+        return $this->hasMany('App\Models\Eloquents\Privilege','type_value','cid')->where('type','contest_id');
+    }
+
     public function getParseDateAttribute()
     {
         if($this->start_date == $this->end_date) {
@@ -123,5 +128,11 @@ class Contest extends Model
         }else{
             return null;
         }
+    }
+
+    public function is_manager($user_id)
+    {
+        $privilege = $this->privileges()->where('uid',$user_id)->first();
+        return !empty($privilege);
     }
 }

@@ -124,6 +124,10 @@
             transform: translate3d(0,0,0)
         }
     }
+
+    .markdown_container img{
+        max-width: 100%;
+    }
 </style>
 <div class="container mundb-standard-container">
     <section class="mb-5">
@@ -165,7 +169,7 @@
                     <h5><i class="MDI information"></i> 基本信息</h5>
                     @foreach($details as $detail)
                         @if($detail->type==0)
-                        <div class="mb-1" id="markdown_container_{{$detail->cdid}}">
+                        <div class="mb-1 markdown_container" id="markdown_container_{{$detail->cdid}}">
 
                         </div>
                         @endif

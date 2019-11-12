@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
         'course.exist' => \App\Http\Middleware\Course\Exist::class,
         'course.manage' => \App\Http\Middleware\Course\Manage::class,
         'course.syllabus.exist' => \App\Http\Middleware\Course\SyllabusExist::class,
@@ -70,8 +71,11 @@ class Kernel extends HttpKernel
         'course.access.add' => \App\Http\Middleware\Course\Add\Access::class,
         'course.instructors.email.exist' => \App\Http\Middleware\Course\Add\InstructorsEmailExist::class,
         'course.valid.color.logo' => \App\Http\Middleware\Course\Add\ValidColorAndLogo::class,
+
         'contest.exist'      => \App\Http\Middleware\Contest\Exist::class,
+        'contest.manage' => \App\Http\Middleware\Contest\Manage::class,
         'contest.access.add' => \App\Http\Middleware\Contest\AccessAdd::class,
+
         'organization.exist' => \App\Http\Middleware\Organization\Exist::class,
     ];
 
@@ -99,8 +103,9 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\Course\Add\Access::class,
         \App\Http\Middleware\Course\Add\InstructorsEmailExist::class,
         \App\Http\Middleware\Course\Add\ValidColorAndLogo::class,
-        \App\Http\Middleware\Contest\Exist::class,
-        \App\Http\Middleware\Contest\AccessAdd::class
 
+        \App\Http\Middleware\Contest\Exist::class,
+        \App\Http\Middleware\Contest\Manage::class,
+        \App\Http\Middleware\Contest\AccessAdd::class
     ];
 }

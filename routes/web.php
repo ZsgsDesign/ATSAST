@@ -46,12 +46,20 @@ Route::group(['prefix' => 'course'], function () {
     Route::get('{cid}/add_syllabus', 'CourseController@addSyllabus')->middleware('auth','course.exist','course.manage')->name('course.addSyllabus');
 });
 
-Route::group(['prefix' => 'contest'], function () {
-    Route::get('/', 'ContestController@index')->name('contest');
-    Route::get('/add', 'ContestController@add')->middleware('auth','contest.access.add')->name('contest.add');
-    Route::get('/{cid}', 'ContestController@detail')->middleware('auth','contest.exist');
-    Route::get('/{cid}/detail', 'ContestController@detail')->middleware('auth','contest.exist')->name('contest.detail');
-    Route::get('/{cid}/register', 'ContestController@register')->middleware('auth','contest.exist')->name('contest.register');
+Route::group(['prefix' => 'contest','as' => 'contest.','namespace' => 'Contest'], function () {
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::get('/add', 'IndexController@add')->middleware('auth','contest.access.add')->name('add');
+    Route::group(['prefix' => 'manage','as' => 'manage.'],function() {
+        Route::get('/', 'ManageController@index')->middleware('auth')->name('contest.manage.index');
+        Route::get('/{cid}', 'ManageController@detail')->middleware('auth','contest.manage')->name('detail');
+        Route::get('/{cid}/edit', 'ManageController@edit')->middleware('auth','contest.manage')->name('edit');
+        Route::get('/{cid}/export', 'ManageController@export')->middleware('auth','contest.manage')->name('export');
+    });
+
+    Route::get('/{cid}', 'IndexController@detail')->middleware('auth','contest.exist')->name('detail');
+    Route::get('/{cid}/detail', 'IndexController@detail')->middleware('auth','contest.exist');
+    Route::get('/{cid}/register', 'IndexController@register')->middleware('auth','contest.exist')->name('register');
+
 });
 
 Route::group(['prefix' => 'handling'], function () {

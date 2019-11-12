@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware\Contest;
 
-use App\Models\Eloquents\Contest;
 use Closure;
 
-class Exist
+class Manage
 {
     /**
      * Handle an incoming request.
@@ -16,18 +15,14 @@ class Exist
      */
     public function handle($request, Closure $next)
     {
-        $cid = $request->cid;
-        $contest = Contest::find($cid);
-        if(empty($contest)){
+        $contest = $request->contest;
+        if(!$contest->is_manager(Auth::user()->id) && !Auth::user()->hasAccess('system.contest.manage')){
             if($request->isMethod('get')){
-                return redirect($request->ATSAST_DOMAIN.route('contest.index'));
+                return redirect(request()->ATSAST_DOMAIN.route('contest.index',null,false));
             }else{
-                return ResponseModel::err(2003);
+                return ResponseModel::err(4011);
             }
         }
-        $request->merge([
-            'contest' => $contest
-        ]);
         return $next($request);
     }
 }

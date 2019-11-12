@@ -88,6 +88,7 @@ class ResponseModel extends Model
             '4008' => "最少人数不得多于最多人数",
             '4009' => "要求输入的参赛信息存在未知参数,若有需要请联系管理员",
             '4010' => "存在重复的参赛信息",
+            '4011' => "活动没有找到",
 
             '5000' => "Organization-Related Error",
 

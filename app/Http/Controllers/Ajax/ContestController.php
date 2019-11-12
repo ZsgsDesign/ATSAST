@@ -157,7 +157,7 @@ class ContestController extends Controller
                 "status"=>$defaultStatus,
                 "register_time"=>date("Y-m-d H:i:s"),
             ]);
-            return ResponseModel::success(200,'成功',request()->ATSAST_DOMAIN.route('contest',[],false));
+            return ResponseModel::success(200,'成功',request()->ATSAST_DOMAIN.route('contest.index',[],false));
         }
         DB::table('contest_register')->where([
             'uid' => $uid,
@@ -167,7 +167,7 @@ class ContestController extends Controller
             "status"=>$defaultStatus,
             "register_time"=>date("Y-m-d H:i:s"),
         ]);
-        return ResponseModel::success(200,'成功',request()->ATSAST_DOMAIN.route('contest',[],false));
+        return ResponseModel::success(200,'成功',request()->ATSAST_DOMAIN.route('contest.index',[],false));
     }
 
     public function add(Request $request)
