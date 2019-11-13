@@ -380,7 +380,10 @@
 </div>
 
 <script>
+    var ajaxing = false;
     function update(){
+        if(ajaxing) return;
+        ajaxing = true;
         $.ajax({
             type: 'POST',
             url: '{{$ATSAST_DOMAIN}}/ajax/course/addSyllabusInfo',
@@ -402,6 +405,7 @@
                         location.href="{{$ATSAST_DOMAIN}}/course/{{$course->cid}}/manage";
                     }, 1000);
                 }
+                ajaxing = false;
             }, error: function(xhr, type){
                 console.log(xhr);
                 switch(xhr.status) {
