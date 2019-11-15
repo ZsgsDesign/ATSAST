@@ -38,6 +38,7 @@ class OrderModel extends Model
     public function operateOrder($oid,$operation)
     {
         $ret = DB::table('order')->where('oid','=',$oid)->get()->first();
+        $item = DB::table('item')->where('iid','=',$ret->item_id)->get()->first();
         if($ret->scode==1&&$operation=="confirm"){
             DB::table('order')->where('oid','=',$oid)->update([
                 "scode"=>2
@@ -47,10 +48,17 @@ class OrderModel extends Model
             DB::table('order')->where('oid','=',$oid)->update([
                 "scode"=>0
             ]);
+            DB::table('item')->where('iid','=',$item->iid)->update([
+                "count"=>$ret->count+$item->count
+            ]);
             return true;
         }elseif($ret->scode==2&&$operation=="return"){
             DB::table('order')->where('oid','=',$oid)->update([
                 "scode"=>3 //留了后门，方便我还东西
+            ]);
+            DB::table('item')->where('iid','=',$item->iid)->update([
+                "count"=>$ret->count+$item->count,
+                "order_count"=>$item->order_count+1
             ]);
             return true;
         }else{
