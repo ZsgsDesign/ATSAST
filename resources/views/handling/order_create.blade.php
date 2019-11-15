@@ -169,7 +169,7 @@ card.order-card > div {
             @foreach($items as $q)
             <div class="media item m-3" iid="{{$q->iid}}" count="{{$q->order_count_}}">
                 <figure class="figure">
-                    <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="{{$ATSAST_DOMAIN}}/static/img/handling/{{$q->iid}}">
+                    <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="{{$ATSAST_DOMAIN.$q->pic}}">
                     <figcaption class="figure-caption text-right top-fc"><span class="badge badge-pill badge-primary">X {{$q->order_count_}}</span></figcaption>
                 </figure>
                 <div class="media-body ml-3">
