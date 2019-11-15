@@ -185,7 +185,7 @@
                         <div class="text-center">
                             @if(empty($contest->xlsx))
                                 <a class="btn btn-primary btn-block" href="#" role="button"><i class="MDI download"></i> 表格未生成 </a>
-                                <small class="text-muted" style="opacity: 0">生成时间: <span> - </span></small>
+                                <small class="text-muted">生成时间: <span> - </span></small>
                             @else
                                 <a class="btn btn-primary btn-block" href="{{$ATSAST_DOMAIN.$contest->xlsx}}" role="button"><i class="MDI download"></i> 下载报名信息表格 </a>
                                 <small class="text-muted">生成时间: <span> {{$contest->xlsx_time}} </span></small>
