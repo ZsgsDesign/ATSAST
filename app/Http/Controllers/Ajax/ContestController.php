@@ -275,7 +275,7 @@ class ContestController extends Controller
         $contest->xlsx_time = null;
         $contest->save();
 
-        ProcessContestRegistersExport::dispatch($contest);
-        return ResponseModel::success(200,'已收到请求，表格将在几分钟内生成完毕');
+        ProcessContestRegistersExport::dispatch($contest)->onQueue('default');
+        return ResponseModel::success(200,'已收到请求，xlsx表格文件将会在一分钟内为您生成(如果服务器够顶的话)');
     }
 }

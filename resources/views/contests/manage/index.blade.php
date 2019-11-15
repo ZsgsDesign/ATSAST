@@ -218,7 +218,7 @@
             },
             success: function(ret){
                 alert(ret.desc);
-                $(`contest-card#contest-${cid} div:last-of-type a`).html('<i class="MDI download"></i> 表格生成ing').attr('href','#');
+                $(`contest-card#contest-${cid} div:last-of-type a`).html('<i class="MDI autorenew cm-refreshing"></i> 表格生成中').attr('href','#');
                 $(`contest-card#contest-${cid} div:last-of-type small`).html('生成时间: <span> - </span>');
                 startQueryInterval(cid);
                 ajaxing = false;
