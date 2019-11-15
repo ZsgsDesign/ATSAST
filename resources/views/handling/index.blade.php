@@ -134,16 +134,16 @@ input{
 </style>
 <div class="container mundb-standard-container">
     <h5 class="mhs-title mt-3"><i class="MDI gift"></i> SAST 物品借还系统</h5>
-    @if(Auth::user()->vip)
     <br>
     <div class="input-group text-center">
         <div class="input-group-btn" style="margin:0 auto">
+            @if(Auth::user()->vip)
             <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='{{$ATSAST_DOMAIN}}/handling/publish'">发布物品</button>
+            @endif
             <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='{{$ATSAST_DOMAIN}}/handling/cart'">购物车</button>
             <button type="button" class="btn btn-raised btn-warning" aria-label="Left Align" onclick="window.location.href='{{$ATSAST_DOMAIN}}/handling/order'">订单详情</button>
         </div>
     </div>
-    @endif
     <br>
     <div class="row">
         @foreach($list as $l)
