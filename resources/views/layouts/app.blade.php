@@ -175,11 +175,11 @@
                     </li>
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Blog") active @endif" href="{{$ATSAST_DOMAIN}}/blog">博客</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Handling") active @endif" href="{{$ATSAST_DOMAIN}}/handling">借还</a>
                     </li>
-                    <li class="nav-item />">
+                    {{-- <li class="nav-item />">
                         <a class="nav-link @if ($navigation === "Finance") active @endif" href="{{$ATSAST_DOMAIN}}/finance">报销</a>
                     </li> --}}
                 </ul>
