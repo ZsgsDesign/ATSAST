@@ -165,12 +165,11 @@ class HandlingController extends Controller
             'iid' => 'required|integer',
             'count' => 'required|integer',
         ]);
-
         $item = ItemModel::findOrFail($request->iid);
-        if($item->count > $request->count){
+        if($item->count < $request->count){
             return ResponseModel::err(7011);
         }
-        $orderModel = new OrderModel;
+        $orderModel = new OrderModel();
         $orderModel->item_id = $request->iid;
         $orderModel->scode = 1;
         $orderModel->renter_id = Auth::id();

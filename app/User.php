@@ -46,7 +46,7 @@ class User extends Authenticatable
     {
         if(in_array($privilege,array_keys(Privilege::$privilege_map))){
             $condition = Privilege::$privilege_map[$privilege];
-            $p = Privilege::where($condition)->first();
+            $p = $this->privileges()->where($condition)->first();
             if(!empty($p)){
                 return true;
             }
