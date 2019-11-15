@@ -271,6 +271,9 @@ class ContestController extends Controller
     public function requestExport(Request $request)
     {
         $contest = $request->contest;
+        if(!empty($contest->xlsx)){
+            Storage::disk('public')->delete(substr($contest->xlsx,8));
+        }
         $contest->xlsx      = null;
         $contest->xlsx_time = null;
         $contest->save();
