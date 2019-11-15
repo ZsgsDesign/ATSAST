@@ -14,6 +14,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "maatwebsite/excel": "^3.1",
         "npm-asset/dompurify": "^2.0",
         "npm-asset/marked": "^0.7.0",
         "npm-asset/monaco-editor": "^0.17.1",
