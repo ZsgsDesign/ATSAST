@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware\Contest;
 
+use App\Models\ResponseModel;
 use Closure;
+use Auth;
 
 class Manage
 {
@@ -20,7 +22,7 @@ class Manage
             if($request->isMethod('get')){
                 return redirect(request()->ATSAST_DOMAIN.route('contest.index',null,false));
             }else{
-                return ResponseModel::err(4011);
+                return ResponseModel::err(2003);
             }
         }
         return $next($request);

@@ -167,7 +167,7 @@
             @else
                 @foreach($contests as $contest)
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <contest-card>
+                    <contest-card id="contest-{{$contest->contest_id}}">
                         <div class="atsast-img-container-small">
                             <img src="{{$ATSAST_DOMAIN.$contest->image}}">
                         </div>
@@ -176,7 +176,20 @@
                             <p class="mundb-text-truncate-1">{{$contest->organization->name}} · {{$contest->type == 1 ? '线上' : '线下'}}活动</p>
                             <p class="mundb-text-truncate-1 atsast-basic-info"> <i class="MDI clock"></i> {{$contest->parse_date}} </p>
                             <a href="{{$ATSAST_DOMAIN.route('contest.detail',['cid' => $contest->contest_id], null)}}"><button class="btn btn-outline-info"><i class="MDI information-outline"></i> 活动信息</button></a>
-                            <a href="{{$ATSAST_DOMAIN.route('contest.manage.export',['cid' => $contest->contest_id], null)}}>"><button class="btn btn-outline-warning"><i class="MDI eye"></i> 导出报名信息</button></a>
+                            @if(empty($contest->xlsx))
+                                <a href="#"><button class="btn btn-outline-warning" onclick="requestExport({{$contest->contest_id}})"><i class="MDI eye"></i> 生成报名信息表格</button></a>
+                            @else
+                                <a href="#"><button class="btn btn-outline-warning" onclick="requestExport({{$contest->contest_id}})"><i class="MDI eye"></i> 重新生成报名信息表格</button></a>
+                            @endif
+                        </div>
+                        <div class="text-center">
+                            @if(empty($contest->xlsx))
+                                <a class="btn btn-primary btn-block" href="#" role="button"><i class="MDI download"></i> 表格未生成 </a>
+                                <small class="text-muted" style="opacity: 0">生成时间: <span> - </span></small>
+                            @else
+                                <a class="btn btn-primary btn-block" href="{{$ATSAST_DOMAIN.$contest->xlsx}}" role="button"><i class="MDI download"></i> 下载报名信息表格 </a>
+                                <small class="text-muted">生成时间: <span> {{$contest->xlsx_time}} </span></small>
+                            @endif
                         </div>
                     </contest-card>
                 </div>
@@ -185,5 +198,70 @@
         </div>
     </paper-card>
 </div>
+
+<script>
+    var ajaxing = false;
+    var interval = null;
+
+    function requestExport(cid){
+        if(ajaxing) return;
+        ajaxing = true;
+        $.ajax({
+            type: 'POST',
+            url: '{{$ATSAST_DOMAIN}}/ajax/contest/manage/requestExport',
+            data: {
+                cid:cid,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(ret){
+                alert(ret.desc);
+                $(`contest-card#contest-${cid} div:last-of-type a`).html('<i class="MDI download"></i> 表格生成ing').attr('href','#');
+                $(`contest-card#contest-${cid} div:last-of-type small`).html('生成时间: <span> - </span>');
+                startQueryInterval(cid);
+                ajaxing = false;
+            },
+            error: function(){
+                alert('炸了');
+            }
+        });
+    }
+
+    function startQueryInterval(cid){
+        interval = setInterval(function() {
+            queryExport(cid);
+        },5000);
+    }
+
+    function queryExport(cid){
+        $.ajax({
+            type: 'POST',
+            url: '{{$ATSAST_DOMAIN}}/ajax/contest/manage/queryExport',
+            data: {
+                cid:cid,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(ret){
+                var data = ret.data;
+                if(data != undefined) {
+                    if(data.status) {
+                        $(`contest-card#contest-${cid} div:last-of-type a`).html('<i class="MDI download"></i> 下载报名信息表格').attr('href',data.url);
+                        $(`contest-card#contest-${cid} div:last-of-type small span`).html(` ${data.last_time} `);
+                        clearInterval(interval);
+                    }
+                }
+            },
+            error: function(){
+                alert('炸了');
+                clearInterval(interval);
+            }
+        });
+    }
+</script>
 
 @endsection

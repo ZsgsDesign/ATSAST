@@ -30,7 +30,7 @@ class Contest extends Model
 
     public function privileges()
     {
-        return $this->hasMany('App\Models\Eloquents\Privilege','type_value','cid')->where('type','contest_id');
+        return $this->hasMany('App\Models\Eloquents\ContestPrivilege','contest_id','contest_id');
     }
 
     public function getParseDateAttribute()
@@ -132,7 +132,7 @@ class Contest extends Model
 
     public function is_manager($user_id)
     {
-        $privilege = $this->privileges()->where('uid',$user_id)->first();
+        $privilege = $this->privileges()->where('user_id',$user_id)->first();
         return !empty($privilege);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessContestRegistersExport;
 use App\Models\Eloquents\Contest;
 use App\Models\Eloquents\ContestRequireInfo;
 use App\Models\ResponseModel;
@@ -246,5 +247,35 @@ class ContestController extends Controller
             'status' => 1
         ]);
         return ResponseModel::success();
+    }
+
+    public function queryExport(Request $request)
+    {
+        $contest = $request->contest;
+        $xlsx = $contest->xlsx;
+        if(empty($xlsx)){
+            return ResponseModel::success(200,null,[
+                'status'    => 0,
+                'url'       => null,
+                'last_time' => null
+            ]);
+        }else{
+            return ResponseModel::success(200,null,[
+                'status'    => 1,
+                'url'       => $request->ATSAST_DOMAIN.$xlsx,
+                'last_time' => $contest->xlsx_time
+            ]);
+        }
+    }
+
+    public function requestExport(Request $request)
+    {
+        $contest = $request->contest;
+        $contest->xlsx      = null;
+        $contest->xlsx_time = null;
+        $contest->save();
+
+        ProcessContestRegistersExport::dispatch($contest);
+        return ResponseModel::success(200,'已收到请求，表格将在几分钟内生成完毕');
     }
 }

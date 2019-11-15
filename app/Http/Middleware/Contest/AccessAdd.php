@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\Contest;
 
+use App\Models\ResponseModel;
 use Closure;
 use Auth;
 

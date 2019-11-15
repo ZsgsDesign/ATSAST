@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Contest;
 
 use App\Models\Eloquents\Contest;
+use App\Models\ResponseModel;
 use Closure;
 
 class Exist
@@ -22,7 +23,7 @@ class Exist
             if($request->isMethod('get')){
                 return redirect($request->ATSAST_DOMAIN.route('contest.index'));
             }else{
-                return ResponseModel::err(2003);
+                return ResponseModel::err(4011);
             }
         }
         $request->merge([
