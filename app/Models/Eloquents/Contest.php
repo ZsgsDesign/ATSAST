@@ -135,4 +135,22 @@ class Contest extends Model
         $privilege = $this->privileges()->where('user_id',$user_id)->first();
         return !empty($privilege);
     }
+
+    public function register_is_due()
+    {
+        $due_time = strtotime($this->due_register);
+        if(time() > $due_time) {
+            return true;
+        }
+        return false;
+    }
+
+    public function is_end()
+    {
+        $end_time = strtotime($this->end_date) + 24*60*60;
+        if(time() > $end_time) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -171,18 +171,20 @@
                         <p class="text-center">请确认上述填写信息均为准确信息，然后点击下方的提交按钮。</p>
                         <p class="text-center">{{$contest->tips}}</p>
                         <div class="text-center">
-                            <button onclick="@if(!empty($contest_register))
-                                                @if($contest_register->leader->id == Auth::user()->id) edit()
-                                                @endif
-                                            @else submit()
-                                            @endif" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">
-                                            @if(!empty($contest_register))
-                                                @if($contest_register->leader->id == Auth::user()->id) 修改报名信息
-                                                @else 修改报名信息请联系队长
-                                                @endif
-                                            @else 提交
-                                            @endif
-                                            <div class="ripple-container"></div></button>
+                            @if($contest->register_is_due())
+                                <a data-toggle="tooltip" data-placement="top" title="活动报名时间已过，如有需要请联系活动管理员"><button style="opacity:0.5 " class="btn btn-outline-primary">修改报名信息</button></a>
+
+                            @else
+                                @if(!empty($contest_register))
+                                    @if($contest_register->leader->id == Auth::user()->id)
+                                        <button onclick="edit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">修改报名信息</button>
+                                    @else
+                                        <button data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">修改报名信息请联系队长</button>
+                                    @endif
+                                @else
+                                    <button onclick="submit()" data-hid="3" id="btn_submit_3" class="btn btn-outline-primary">提交</button>
+                                @endif
+                            @endif
                         </div>
                     </card>
             </div>
@@ -209,7 +211,7 @@
     <script>
         function submit() {
             var $inputs = $("card input");
-            var data = { contest_id: {{$contest->contest_id}} };
+            var data = { cid: {{$contest->contest_id}} };
             for (var i = 0; i < $inputs.length; ++i) {
                 var input = $inputs[i];
                 if (input.id == 'group_name') data['group_name'] = input.value;

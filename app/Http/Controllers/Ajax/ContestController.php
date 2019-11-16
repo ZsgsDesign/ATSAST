@@ -16,14 +16,14 @@ class ContestController extends Controller
 {
     public function register(Request $request)
     {
-        if (!$request->has('contest_id')) {
+        if (!$request->has('cid')) {
             return ResponseModel::err(1003);
         }
         if (!Auth::check()) {
             return ResponseModel::err(2001);
         }
         $uid=Auth::user()->id;
-        $coid=$request->contest_id;
+        $coid=$request->cid;
         $datas=[];
         $result=DB::table('contest_require_info')->get()->all();
         foreach($result as &$c) $c = (array)$c;

@@ -118,9 +118,13 @@
                 <p class="mundb-text-truncate-1">{{$contest->organization->name}} ·@if($contest->type==1) 线上活动@else 线下活动@endif</p>
                 <p class="mundb-text-truncate-1"><i class="MDI clock"></i> {{$contest->parse_date}} </p>
                 <a href="{{$ATSAST_DOMAIN}}/contest/{{$contest->contest_id}}/detail"><button class="btn btn-outline-info">了解更多</button></a>
-                @if(Auth::check())
+                @if(Auth::check() && !$contest->is_end())
                     @if(empty($contest->userRegister(Auth::user()->id)))
-                        <a href="{{$ATSAST_DOMAIN}}/contest/{{$contest->contest_id}}/register"><button class="btn btn-info">立即报名</button></a>
+                        @if($contest->register_is_due())
+                            <a data-toggle="tooltip" data-placement="top" title="活动报名时间已过，如有需要请联系活动管理员"><button class="btn btn-primary">立即报名</button></a>
+                        @else
+                            <a href="{{$ATSAST_DOMAIN}}/contest/{{$contest->contest_id}}/register"><button class="btn btn-info">立即报名</button></a>
+                        @endif
                     @else
                         <a href="{{$ATSAST_DOMAIN}}/account/contests/"><button class="btn btn-success">已报名</button></a>
                     @endif

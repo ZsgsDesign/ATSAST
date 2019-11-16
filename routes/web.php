@@ -57,7 +57,7 @@ Route::group(['prefix' => 'contest','as' => 'contest.','namespace' => 'Contest']
 
     Route::get('/{cid}', 'IndexController@detail')->middleware('auth','contest.exist')->name('detail');
     Route::get('/{cid}/detail', 'IndexController@detail')->middleware('auth','contest.exist');
-    Route::get('/{cid}/register', 'IndexController@register')->middleware('auth','contest.exist')->name('register');
+    Route::get('/{cid}/register', 'IndexController@register')->middleware('auth','contest.exist','contest.register.due')->name('register');
 });
 
 Route::group(['prefix' => 'handling'], function () {
@@ -129,8 +129,8 @@ Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax', 'as' => 'ajax.'], funct
     });
 
     Route::group(['prefix' => 'contest'], function () {
-        Route::post('add', 'ContestController@add')->middleware('auth','contest.access.add','organization.exist')->name('contest.add');
-        Route::post('register', 'ContestController@register')->middleware('auth')->name('contest.register');
+        Route::post('add', 'ContestController@add')->middleware('auth', 'contest.access.add', 'organization.exist')->name('contest.add');
+        Route::post('register', 'ContestController@register')->middleware('auth', 'contest.exist', 'contest.register.due')->name('contest.register');
         Route::group(['prefix' => 'manage','as' => 'manage.'],function() {
             Route::post('/queryExport', 'ContestController@queryExport')->middleware('auth', 'contest.exist', 'contest.manage')->name('contest.export.query');
             Route::post('/requestExport', 'ContestController@requestExport')->middleware('auth', 'contest.exist', 'contest.manage')->name('contest.export.request');

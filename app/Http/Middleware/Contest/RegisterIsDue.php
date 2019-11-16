@@ -6,7 +6,7 @@ use App\Models\ResponseModel;
 use Closure;
 use Auth;
 
-class Manage
+class RegisterIsDue
 {
     /**
      * Handle an incoming request.
@@ -18,14 +18,14 @@ class Manage
     public function handle($request, Closure $next)
     {
         $contest = $request->contest;
-        if(!$contest->is_manager(Auth::user()->id) && !Auth::user()->hasAccess('system.contest.manage')){
+        $due_time = strtotime($contest->due_register);
+        if(time()>$due_time && !$contest->userRegister(Auth::user()->id)) {
             if($request->isMethod('get')){
-                return redirect(request()->ATSAST_DOMAIN.route('contest.index',null,false));
+                return redirect(request()->ATSAST_DOMAIN.route('contest.detail',['cid' => $contest->contest_id],false));
             }else{
-                return ResponseModel::err(2003);
+                return ResponseModel::err(4012);
             }
         }
-
         return $next($request);
     }
 }
