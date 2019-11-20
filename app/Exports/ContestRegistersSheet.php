@@ -77,7 +77,7 @@ class ContestRegistersSheet implements FromCollection, WithEvents, WithStrictNul
                 $row ++;
             }
         }
-        $this->size[1] = $row;
+        $this->size[1] = $row + 1;
         return collect($this->data);
     }
 
